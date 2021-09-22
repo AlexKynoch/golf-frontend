@@ -1,23 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react"
+import { ApiClient } from "./apiClient"
+import './App.css'
 
 function App() {
+  const [sessions, cSessions] = useState([]);
+  const client = new ApiClient()
+
+  const refreshList = () => {
+    client.getSessions().then((response) => cSessions(response.data));
+  };
+
+  const makeSessionTable = () => {
+    console.log(sessions)
+    return sessions.map((session, index) => {
+      return (
+        <tr key={index}>
+          <td>{session.date}</td>
+          <td>{session.volunteer}</td>
+        </tr>
+      );
+    });
+  };
+
+  useEffect(() => {
+    refreshList();
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Volunteer</th>
+          </tr>
+        </thead>
+        <tbody>{makeSessionTable()}</tbody>
+      </table>
+
     </div>
   );
 }
