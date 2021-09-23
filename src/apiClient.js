@@ -1,5 +1,5 @@
 import axios from "axios"
-const url = "http://localhost:3005/"
+const url = "https://golf-dka.herokuapp.com/"
 
 export class ApiClient {
 
