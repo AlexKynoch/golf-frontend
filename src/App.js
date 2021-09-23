@@ -32,7 +32,7 @@ function App() {
         <thead>
           <tr>
             <th>Date</th>
-            <th>Test</th>
+            <th>volunteer</th>
           </tr>
         </thead>
         <tbody>{makeSessionTable()}</tbody>
