@@ -6,7 +6,8 @@
     padding: 7px 14px;
   } */
 
-
-  .navbar-brand {
-      
-  }
+img {
+  width: 35%;
+  display: flex;
+  justify-content: flex-start;
+}
