@@ -25,4 +25,20 @@ export class ApiClient {
     addSession(date, volunteer) {
         return this.apiCall("post", url, { date, volunteer });
     }
+
+    addUser(userName, password) {
+    return this.apiCall('post', url + 'user', {userName, password})
+    }
+
+  async login(userName, password) {
+    return await axios({
+      method: 'POST',
+      url: `${url}auth`,
+      data: {
+        userName,
+        password,
+      }
+    })
+  }    
+
 }
