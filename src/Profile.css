@@ -1,0 +1,37 @@
+* {
+  box-sizing: border-box;
+  /* font-family: Arial, Helvetica, sans-serif; */
+  margin: 0;
+  padding: 0;
+  /* color: #333; */
+}
+
+.container {
+  display: flex;
+  justify-content: space-around; /*centers horizontally*/
+  align-items: center; /*centers vertically*/
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.card-body {
+  border: 0.1rem solid black;
+  border-radius: 5px;
+}
+
+.btn {
+  margin-top: 1rem;
+  /* width: 50%; */
+
+  display: flex;
+  justify-content: space-around;
+  align-items: baseline;
+  background-color: rgb(204, 221, 221);
+}
+
+.btn-container {
+  display: flex;
+  justify-content: right;
+  border: none !important;
+}
