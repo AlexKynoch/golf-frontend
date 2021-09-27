@@ -1,49 +1,75 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import * as dateFns from 'date-fns'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Popover from 'react-bootstrap/Popover'
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 function Calendar() {
   const [currentMonth, cCurrentMonth] = useState(new Date())
+  const [userBooking, cUserBooking] = useState(false)
   const [currentDate, cCurrentDate] = useState(new Date())
-  const [selectedDate, cSelectedDate] = useState(new Date())
-  const [sessionInfo, cSessionInfo] = useState("")
+  // const [selectedDate, cSelectedDate] = useState(new Date())
+  const [sessionInfo, cSessionInfo] = useState([
+    {name: "One-to-One Coaching",
+    description:"These person-centred sessions are delivered by one of our trained team at a local golf club. The service provides an enjoyable & rewarding day for the golfer PLUS a deserved respite break for carers. No golfing experience is necessary.",
+    cost: "£20 per hour"
+    },
+    {name: "The Perfect Three Ball",
+    description:"Two golfers enjoying golf & companionship with a member of our team at a local golf club. This service provides an enjoyable & rewarding day out, the chance to make new friends and a well deserved respite break for carers. No golfing experience is necessary.",
+    cost: "£15 per hour"
+    },
+    {name: "Group Session",
+    description:"At present we’re limited to the “rule of six”. The sessions are perfect for people who enjoy socialising, being part of a team and group coaching.",
+    cost: "£10 per hour"
+    }
+  ])
   const [users, cUsers] = useState([
     {id: "1",
     userName: "Pauln1",
     location: "Sheffield",
     role: "user",
-    firstName: "Paul"
+    firstName: "Paul",
+    booked:[]
     },
     {id: "2",
     userName: "Jenny12m",
     location: "Sheffield",
     role: "user",
-    firstName: "Jenny"
+    firstName: "Jenny",
+    booked:[]
     }
   ])
   const [sessions, cSessions] = useState([
-  { volunteer: "Paul",
-    users: [],
+  { volunteer: "Thomas",
+    users: ["3"],
     location: "Sheffield",
     date: "7 September 2021",
-    timeStart: "2.00pm",
-    timeEnd: "3.00pm",
-    limit: 1
+    timeStart: "14:00",
+    timeEnd: "15:00",
+    limit: 1,
+    id:"1a"
   },
-  { volunteer: "Paul",
-    users: [],
+  { volunteer: "John",
+    users: ['1'],
     location: "Sheffield",
-    date: "7 September 2021",
-    timeStart: "2.00pm",
-    timeEnd: "3.00pm",
-    limit: 2
-  }])
+    date: "6 September 2021",
+    timeStart: "16:00",
+    timeEnd: "17:00",
+    limit: 2,
+    id:"2a"
+  },
+  {volunteer: "Jenny",
+  users: [],
+  location: "Sheffield",
+  date: "17 September 2021",
+  timeStart: "13:00",
+  timeEnd: "14:00",
+  limit: 5,
+  id:"3a"
+},])
   
   const renderHeader = () => {
     const dateFormat = "MMMM yyyy";
@@ -98,7 +124,6 @@ function Calendar() {
     while (day <= endDate) {
       for (let i = 0; i < 7; i++) {
         formattedDate = dateFns.format(day, dateFormat);
-        const cloneDay = day;
         days.push(
           <div
             className={`col cell ${
@@ -106,12 +131,10 @@ function Calendar() {
                 ? "disabled"
                 : dateFns.isSameDay(day, currentDate) ? "selected" : ""
             }`}
-            key={day}
-            onClick={() => onDateClick(dateFns.toDate(cloneDay))}
+            key={day} 
           >
             <span className="number">{formattedDate}</span>
-            <span><ul>{showInfo(day)}</ul></span>
-            <span className="bg">{formattedDate}</span>
+            <span><ul>{showSessions(day)}</ul></span>
           </div>
         );
         day = dateFns.addDays(day, 1); 
@@ -127,29 +150,26 @@ function Calendar() {
     return <div className="body">{rows}</div>;
   }
 
-
-  const displaySessionInfo = (session) => {
-    return (
-        <li className = "dis-session-info">
-          {session.date}
-        </li>
-    )    
-  }
-
-  //puts session into the calendar
-  const showInfo = (day) => {
-    return sessions.map((session) => {
+  //puts sessions into the calendar
+  const showSessions = (day) => {
+    return sessions.map((session, i) => {
       const sessionDate = new Date(session.date)
       if (sessionDate.getTime() === day.getTime()){
-        return displaySessionInfo(session)
+        return displaySessions(session, i)
       } 
     }) 
   }
-  
-  const onDateClick = (day) => {
-    cSelectedDate(day)
-    
-  };
+
+  // // displays session info
+  const displaySessions = (session, i) => {
+    return (
+      <OverlayTrigger key = {i} trigger="click" placement="bottom" overlay={popoverClick(session)} rootClose>
+        <li style={{ backgroundColor : session.users.includes(users[0].id) ? 'rgb(29, 143, 29)': 'White', color : session.users.includes(users[0].id) ? 'White': 'Black' }} className = "dis-session-info">
+          {session.timeStart}{" "}{displaySessionDescription(session.limit).name}
+        </li>
+      </OverlayTrigger>
+    )    
+  }
 
   const nextMonth = () => {
     cCurrentMonth(dateFns.addMonths(currentMonth, 1))
@@ -159,22 +179,83 @@ function Calendar() {
     cCurrentMonth(dateFns.subMonths(currentMonth, 1))
   };
 
-  // const popoverClick = (
-  //   <Popover id="popover-trigger-click" title="Popover bottom">
-  //     <Card className = "popover-card">
-  //       {/* <Card.Header className = "popover-header">{session.name}</Card.Header> */}
-  //       <Card.Body className = "popover-body">
-  //         <Row>
-  //         {session.name}
-  //         </Row>
-  //         <Row>
-  //         {session.date}{" "}{session.time}
-  //         </Row>
-  //         </Card.Body>
-  //     </Card>
-  //   </Popover>
-  // );
+    // display correct session details based on the user limit
+    const displaySessionDescription = (limit) => {
+      switch(limit) {
+        case 1:
+          return sessionInfo[0] 
+        case 2:
+          return sessionInfo[1]
+        case 5:
+          return sessionInfo[2]
+        default:
+          break
+      }
+    }
+
+
+  const bookingHandler = (e, ses) => {
+    e.preventDefault()
+    sessions.forEach((session, index) => {
+      if (session.id === ses.id) {
+        sessions[index].users.push(users[0].id)
+      }
+    })
+    cUserBooking(!userBooking) 
+  }
+
+  const cancelBookingHandler = (e, ses) => {
+    e.preventDefault()
+    console.log("hi", sessions)
+    sessions.forEach((session, index) => {
+      if (session.id === ses.id) {
+        sessions[index].users = sessions[index].users.filter((i) => i !== users[0].id)
+      }
+    })
+    console.log(sessions)
+    cUserBooking(!userBooking) 
+  }
   
+  const showBookingButton = (session) => {
+    if (session.users.includes(users[0].id)) {
+      return <Button className = 'booking-btn btn-danger' onClick={(e) => cancelBookingHandler(e, session)}>Cancel booking</Button>
+    } if (!session.users.includes(users[0].id) && session.users.length === session.limit) {
+      return <Button className = 'booking-btn btn-secondary'>Fully booked</Button>
+    } else {
+      return <Button className = 'booking-btn' onClick={(e) => bookingHandler(e, session)}>Book session</Button>
+    }
+  }
+
+  useEffect(() => {
+    renderHeader()
+    renderDays()
+    renderCells()
+  }, [userBooking])
+
+  const popoverClick = (session) => (
+    <Popover className = "popover-main" id="popover-trigger-click" title="Popover bottom">
+      <Card className = "popover-card">
+        <Card.Body className = "popover-body">
+          <Row className = "session-name">
+          {displaySessionDescription(session.limit).name}
+          </Row>
+          <Row>
+          {session.date}{" "}{session.timeStart}{"-"}{session.timeEnd}
+          </Row>
+          <Row className = "session-description">
+          {displaySessionDescription(session.limit).description}
+          </Row>
+          <Row>
+          {displaySessionDescription(session.limit).cost}
+          </Row>
+          <Row className = 'booking-btn-row'>
+          {showBookingButton(session)}
+          </Row>
+          </Card.Body>
+      </Card>
+    </Popover>
+  );
+
   return (
     
     <div className="calendar">

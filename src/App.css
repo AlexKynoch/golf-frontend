@@ -176,7 +176,7 @@ main {
 
 .calendar .body .selected {
   border-left: 10px solid transparent;
-  border-image: linear-gradient(45deg, #1a8fff 0%,#53cbf1 40%);
+  border-image: linear-gradient(45deg, #8a9197 0%,#abb8c3 40%);
   border-image-slice: 1;
 }
 
@@ -241,11 +241,38 @@ ul {
   list-style-type: none
 }
 
-li:hover {
-  background-color: rgb(179, 209, 179);
-  border-radius: 5px
+li {
+  border-radius: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 ul:first-child {
   margin-top: 20%;
+}
+
+.session-name {
+  font-size:20px;
+}
+
+.popover-main {
+  max-width: 50em
+}
+
+.session-description {
+  margin-top:10px;
+  margin-bottom:10px;
+}
+
+.booking-btn-row {
+  width:22% !important;
+}
+
+.booking-btn {
+  margin-top:10px
+}
+
+.row>* {
+  padding-left: 2px;
+  padding-right: 2px;
 }
