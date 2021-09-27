@@ -164,7 +164,10 @@ function Calendar() {
   const displaySessions = (session, i) => {
     return (
       <OverlayTrigger key = {i} trigger="click" placement="bottom" overlay={popoverClick(session)} rootClose>
-        <li style={{ backgroundColor : session.users.includes(users[0].id) ? 'rgb(29, 143, 29)': 'White', color : session.users.includes(users[0].id) ? 'White': 'Black' }} className = "dis-session-info">
+        <li className = "dis-session-info" 
+        style={{ backgroundColor : session.users.includes(users[0].id) ? '#5cb85c': session.users.length === session.limit ? 'White' : '#0D6EFD', 
+        color : session.users.length === session.limit ? 'rgb(170, 163, 163)' : 'White'}} 
+        >
           {session.timeStart}{" "}{displaySessionDescription(session.limit).name}
         </li>
       </OverlayTrigger>
