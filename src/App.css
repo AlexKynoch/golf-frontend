@@ -232,7 +232,6 @@ main {
 
 .dis-session-info {
   font-size: 82.5%;
-  margin-top: 20%;
   white-space: nowrap;
   overflow: hidden;
 }
@@ -242,7 +241,11 @@ ul {
   list-style-type: none
 }
 
-ul:hover {
+li:hover {
   background-color: rgb(179, 209, 179);
   border-radius: 5px
+}
+
+ul:first-child {
+  margin-top: 20%;
 }

@@ -13,12 +13,37 @@ function Calendar() {
   const [currentDate, cCurrentDate] = useState(new Date())
   const [selectedDate, cSelectedDate] = useState(new Date())
   const [sessionInfo, cSessionInfo] = useState("")
-  const [session, cSession] = useState({
-    user: "Paul",
-    date: "6 September 2021",
-    time: "2.00pm",
-    name: "ONE-TO-ONE COACHING"
-  })
+  const [users, cUsers] = useState([
+    {id: "1",
+    userName: "Pauln1",
+    location: "Sheffield",
+    role: "user",
+    firstName: "Paul"
+    },
+    {id: "2",
+    userName: "Jenny12m",
+    location: "Sheffield",
+    role: "user",
+    firstName: "Jenny"
+    }
+  ])
+  const [sessions, cSessions] = useState([
+  { volunteer: "Paul",
+    users: [],
+    location: "Sheffield",
+    date: "7 September 2021",
+    timeStart: "2.00pm",
+    timeEnd: "3.00pm",
+    limit: 1
+  },
+  { volunteer: "Paul",
+    users: [],
+    location: "Sheffield",
+    date: "7 September 2021",
+    timeStart: "2.00pm",
+    timeEnd: "3.00pm",
+    limit: 2
+  }])
   
   const renderHeader = () => {
     const dateFormat = "MMMM yyyy";
@@ -85,7 +110,7 @@ function Calendar() {
             onClick={() => onDateClick(dateFns.toDate(cloneDay))}
           >
             <span className="number">{formattedDate}</span>
-            <span>{showInfo(day)}</span>
+            <span><ul>{showInfo(day)}</ul></span>
             <span className="bg">{formattedDate}</span>
           </div>
         );
@@ -102,23 +127,23 @@ function Calendar() {
     return <div className="body">{rows}</div>;
   }
 
-  const displaySessionInfo = () => {
+
+  const displaySessionInfo = (session) => {
     return (
-      <ul>
-        <OverlayTrigger trigger="click" placement="bottom" overlay={popoverClick}>
-        <li>
-          <div className = "dis-session-info">{session.time}{" "}{session.name}</div>
+        <li className = "dis-session-info">
+          {session.date}
         </li>
-        </OverlayTrigger>
-      </ul>   
-    )
+    )    
   }
 
+  //puts session into the calendar
   const showInfo = (day) => {
-    const sessionDate = new Date(session.date)
-    if (sessionDate.getTime() === day.getTime()) {
-      return displaySessionInfo()
-    } 
+    return sessions.map((session) => {
+      const sessionDate = new Date(session.date)
+      if (sessionDate.getTime() === day.getTime()){
+        return displaySessionInfo(session)
+      } 
+    }) 
   }
   
   const onDateClick = (day) => {
@@ -134,21 +159,21 @@ function Calendar() {
     cCurrentMonth(dateFns.subMonths(currentMonth, 1))
   };
 
-  const popoverClick = (
-    <Popover id="popover-trigger-click" title="Popover bottom">
-      <Card className = "popover-card">
-        {/* <Card.Header className = "popover-header">{session.name}</Card.Header> */}
-        <Card.Body className = "popover-body">
-          <Row>
-          {session.name}
-          </Row>
-          <Row>
-          {session.date}{" "}{session.time}
-          </Row>
-          </Card.Body>
-      </Card>
-    </Popover>
-  );
+  // const popoverClick = (
+  //   <Popover id="popover-trigger-click" title="Popover bottom">
+  //     <Card className = "popover-card">
+  //       {/* <Card.Header className = "popover-header">{session.name}</Card.Header> */}
+  //       <Card.Body className = "popover-body">
+  //         <Row>
+  //         {session.name}
+  //         </Row>
+  //         <Row>
+  //         {session.date}{" "}{session.time}
+  //         </Row>
+  //         </Card.Body>
+  //     </Card>
+  //   </Popover>
+  // );
   
   return (
     
