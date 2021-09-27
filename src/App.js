@@ -1,45 +1,21 @@
-import React, { useState, useEffect } from "react"
-import { ApiClient } from "./apiClient"
-import './App.css'
+import React from "react";
 
-function App() {
-  const [sessions, cSessions] = useState([]);
-  const client = new ApiClient()
+import Calendar from "./components/Calendar";
 
-  const refreshList = () => {
-    client.getSessions().then((response) => cSessions(response.data));
-  };
+import "./App.css";
 
-  const makeSessionTable = () => {
-    console.log(sessions)
-    return sessions.map((session, index) => {
-      return (
-        <tr key={index}>
-          <td>{session.date}</td>
-          <td>{session.volunteer}</td>
-        </tr>
-      );
-    });
-  };
-
-  useEffect(() => {
-    refreshList();
-  }, []);
-
-  return (
-    <div className="App">
-      <table>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>volunteer</th>
-          </tr>
-        </thead>
-        <tbody>{makeSessionTable()}</tbody>
-      </table>
-
-    </div>
-  );
+class App extends React.Component {
+ 
+  render() {
+    return (
+      <div className="App">
+        
+        <main>
+          <Calendar />
+        </main>
+      </div>
+    );
+  }
 }
 
 export default App;
