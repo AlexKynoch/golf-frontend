@@ -30,7 +30,7 @@ const NavBar = () => {
               <Nav.Link href="/home">Active</Nav.Link>
             </Nav.Item> */}
               <Nav.Item>
-                <Nav.Link eventKey="link-1">Calender</Nav.Link>
+                <Nav.Link eventKey="link-1">Calendar</Nav.Link>
               </Nav.Item>
               <Nav.Item>
                 <Nav.Link eventKey="link-2">Profile</Nav.Link>
