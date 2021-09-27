@@ -3,44 +3,34 @@ import React from 'react';
 import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
 import './Profile.css'
+import ProfileForm from './ProfileForm'
 
 
 function Profile() {
     return (
         <div class="container" >
-            <Card style={{ width: '18rem' }}>
+            <Card id="myProfile" style={{ width: '30rem' }}>
                 <Card.Body>
-                    <Card.Title>Card Title</Card.Title>
+                    <Card.Title>My Profile</Card.Title>
                     <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
-                    <Card.Text>
-                        Some quick example text to build on the card title and make up the bulk of
-                        the card's content.
-                    </Card.Text>
-                    {/* <Card.Link href="#">Card Link</Card.Link> */}
-                    {/* <Card.Link href="#">Update</Card.Link> */}
+                    <ProfileForm />
+                    <div className="btn-container justify-content-end">
+                        <Button variant="light">Update</Button>
+                    </div>
                 </Card.Body>
-                <div className="btn-container">
-                    <Button variant="light">Light</Button>
-                </div>
             </Card>
 
-            <Card style={{ width: '18rem' }}>
+            <Card id="volunteer" style={{ width: '30rem' }}>
                 <Card.Body>
-                    <Card.Title>Card Title</Card.Title>
+                    <Card.Title >Volunteer</Card.Title>
                     <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
-                    <Card.Text>
-                        Some quick example text to build on the card title and make up the bulk of
-                        the card's content.
-                    </Card.Text>
-                    {/* <Card.Link href="#">Card Link</Card.Link> */}
-                    {/* <Card.Link href="#">Update</Card.Link> */}
+                    <ProfileForm />
+                    <div className="btn-container justify-content-end">
+                        <Button variant="light">Update</Button>
+                    </div>
                 </Card.Body>
-                <div className="btn-container">
-                    <Button variant="light">Light</Button>
-                </div>
             </Card>
-
-        </div>
+        </div >
     )
 }
 
