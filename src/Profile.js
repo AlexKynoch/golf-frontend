@@ -5,7 +5,8 @@ import Button from 'react-bootstrap/Button'
 import './Profile.css'
 import ProfileForm from './ProfileForm'
 import React, { useState, useEffect } from "react"
-
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 
 function Profile() {
@@ -23,8 +24,43 @@ function Profile() {
         }
     )
 
+
+    const showSuccess = () => {
+        toast.success("Your details have been updated");
+    };
+
+
     // userInfo = [...users];
-    console.log(users)
+    const handleChange = (e) => {
+
+        const updatedState = { ...users }
+
+        updatedState[e.target.name] = e.target.value
+        // name === "username"
+        // updatedState["username"] === updated.usernname
+        // name === "email"
+        // updatedState["email"] === updated.email
+
+        cUsers(updatedState)
+
+        console.log(e.target.value);
+
+
+        // obj = { key: 1, value : 2}
+        // obj.key === 1
+
+        // if(true){
+        //let string = "key"
+        // obj[string]==== obj["key"] ==== obj.key === 1
+        // }
+        //let string = "value"
+        // obj[string]==== obj["value"] ==== obj.value === 2
+        // }
+    }
+    const handleSubmit = () => {
+        console.log("submitting form data")
+        showSuccess();
+    }
 
     return (
         <div className="container" >
@@ -35,48 +71,108 @@ function Profile() {
 
                     <form>
                         <div className="form-group row">
-                            <label form="inputUsername3" className="col-sm-3 col-form-label">Username</label>
+                            <label
+                                form="inputemail3"
+                                className="col-sm-3 col-form-label">Username
+                            </label>
                             <div className="col-sm-8">
-                                <input type="username" className="form-control" id="inputUsername3" value={users.username}></input>
+                                <input
+                                    type="username"
+                                    onInput={(e) => handleChange(e)}
+                                    className="form-control"
+                                    id="inputUsername3"
+                                    name="username"
+                                    value={users.username}>
+                                </input>
                             </div>
                         </div>
                         <div className="form-group row">
-                            <label form="inputFirstName3" className="col-sm-3 col-form-label">First Name</label>
+                            <label
+                                form="inputFirstName3"
+                                className="col-sm-3 col-form-label">First Name
+                            </label>
                             <div className="col-sm-8">
-                                <input type="firstname" className="form-control" id="inputFirstName3" value={users.firstName}></input>
+                                <input
+                                    type="firstname"
+                                    onInput={(e) => handleChange(e)}
+                                    className="form-control"
+                                    id="inputFirstName3"
+                                    name="firstName"
+                                    value={users.firstName}></input>
                             </div>
                         </div>
                         <div className="form-group row">
-                            <label form="inputSurname3" className="col-sm-3 col-form-label">Surname</label>
+                            <label
+                                form="inputSurname3"
+                                className="col-sm-3 col-form-label">Surname
+                            </label>
                             <div className="col-sm-8">
-                                <input type="surname" className="form-control" id="inputSurname3" value={users.surname}></input>
+                                <input
+                                    type="surname"
+                                    onInput={(e) => handleChange(e)}
+                                    className="form-control"
+                                    id="inputSurname3"
+                                    name="surname"
+                                    value={users.surname}>
+                                </input>
                             </div>
                         </div>
                         <div className="form-group row">
-                            <label form="inputLocation3" className="col-sm-3 col-form-label">Location</label>
+                            <label
+                                form="inputLocation3"
+                                className="col-sm-3 col-form-label">Location
+                            </label>
                             <div className="col-sm-8">
-                                <input type="location" className="form-control" id="inputLocation3" value={users.location}></input>
+                                <input
+                                    type="location"
+                                    onInput={(e) => handleChange(e)}
+                                    className="form-control"
+                                    id="inputLocation3"
+                                    name="location"
+                                    value={users.location}>
+                                </input>
                             </div>
                         </div>
                         <div className="form-group row">
-                            <label form="inputEmail3" className="col-sm-3 col-form-label">Email</label>
+                            <label
+                                form="inputEmail3"
+                                className="col-sm-3 col-form-label">Email
+                            </label>
                             <div className="col-sm-8">
-                                <input type="email" className="form-control" id="inputEmail3" value={users.email}></input>
+                                <input
+                                    type="email"
+                                    onInput={(e) => handleChange(e)}
+                                    className="form-control"
+                                    id="inputEmail3"
+                                    name="email"
+                                    value={users.email}>
+                                </input>
                             </div>
                         </div>
                         <div className="form-group row">
-                            <label form="inputPhone3" className="col-sm-3 col-form-label">Phone</label>
+                            <label
+                                form="inputPhone3"
+                                className="col-sm-3 col-form-label">Phone
+                            </label>
                             <div className="col-sm-8">
-                                <input type="phone" className="form-control" id="inputPhone3" value={users.phone}></input>
+                                <input
+                                    type="phone"
+                                    onInput={(e) => handleChange(e)}
+                                    className="form-control"
+                                    id="inputPhone3"
+                                    name="phone"
+                                    value={users.phone}>
+                                </input>
                             </div>
                         </div>
 
 
+                        <div className="btn-container justify-content-end">
+                            <Button onClick={() => handleSubmit()} variant="light">Update</Button>
+                            <ToastContainer position='bottom-center' />
+                        </div>
                     </form >
 
-                    <div className="btn-container justify-content-end">
-                        <Button variant="light">Update</Button>
-                    </div>
                 </Card.Body>
             </Card>
 

@@ -6,6 +6,10 @@
     padding: 7px 14px;
   } */
 
+.navbar {
+  background-color: white;
+}
+
 img {
   width: 35%;
   display: flex;
