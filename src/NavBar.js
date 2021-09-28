@@ -26,17 +26,18 @@ const NavBar = () => {
 
 
             <Nav className="justify-content-end me-auto" activeKey="/home" style={{ width: "100%" }}>
+              {/* <Nav className="justify-content-xl-evenly" activeKey="/home" style={{ width: "100%" }}> */}
               {/* <Nav.Item>
               <Nav.Link href="/home">Active</Nav.Link>
             </Nav.Item> */}
               <Nav.Item>
-                <Nav.Link href="./Calendar">Calendar</Nav.Link>
+                <Nav.Link className="custom-nav-item" href="./Calendar">Calendar</Nav.Link>
               </Nav.Item>
               <Nav.Item>
-                <Nav.Link href="./Profile">Profile</Nav.Link>
+                <Nav.Link className="custom-nav-item" href="./Profile">Profile</Nav.Link>
               </Nav.Item>
               <Nav.Item>
-                <Nav.Link onClick={logout}>Log Out
+                <Nav.Link className="custom-nav-item" onClick={logout}>Log Out
                 </Nav.Link>
               </Nav.Item>
             </Nav>
