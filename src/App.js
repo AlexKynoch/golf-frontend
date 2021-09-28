@@ -1,6 +1,8 @@
 import React from "react";
 
-import Calendar from "./components/Calendar";
+import UserCalendar from "./components/UserCalendar";
+import VolunteerCalendar from "./components/VolunteerCalendar";
+import AdminCalendar from "./components/AdminCalendar";
 
 import "./App.css";
 
@@ -8,10 +10,9 @@ class App extends React.Component {
  
   render() {
     return (
-      <div className="App">
-        
+      <div className="App"> 
         <main>
-          <Calendar />
+          <AdminCalendar/>
         </main>
       </div>
     );

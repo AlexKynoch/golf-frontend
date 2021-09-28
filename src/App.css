@@ -313,6 +313,10 @@ main {
   color: #0D6EFD !important
 }
 
+.bullet-gray::before {
+  color: #62666b !important
+}
+
 /* dropdown */
 
 .dropdown-list {
@@ -328,5 +332,39 @@ main {
   display: flex;
   align-items: center;
   justify-content: flex-end 
+}
+
+.session-location {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.session-volunteer {
+  margin-top: 10px;
+}
+
+.location-icon {
+  display: inline-block;
+  margin-left: -5px
+}
+
+.location-text {
+  display: inline-block;
+  margin-top: 2px
+}
+
+.search-input{
+  float:right;
+  margin-top: 10px
+}
+
+.show-all{
+  float:right;
+  margin-top: 5px
+}
+
+.user-search-form-label {
+  color: black;
+  margin-right: 5px;
 }
 
