@@ -71,231 +71,244 @@ function Calendar() {
   limit: 5,
   id:"3a"
 },])
-const [sort, cSort] = useState('unsorted')
+const [sort, cSort] = useState('showAll')
   
-  const renderHeader = () => {
-    const dateFormat = "MMMM yyyy";
-
-    return (
-      <div className="header row flex-middle">
-        <div className="col col-start">
-          <div className="icon" onClick={() => prevMonth()}>
-            chevron_left
-          </div>
-        </div>
-        <div className="col col-center">
-          <span>{dateFns.format(currentMonth, dateFormat)}</span>
-        </div>
-        <div className="col col-end" onClick={() => nextMonth()}>
-          <div className="icon">chevron_right</div>
-        </div>
-      </div>
-    );
-  }
-
-  const renderFilters = () => {
-    return (
-      <Row>
-      <Col className = "filters">
-        <ul className = "filter-list-bullet">
-          <li className = "bullet-green"><span className = "bullet-text">Booked sessions</span></li>
-          <li className = "bullet-green bullet-blue"><span className = "bullet-text"> Sessions available to book</span></li>
-        </ul>
-      </Col>
-      <Col>
-      <div>
-      <div className = 'dropdown-container'>
-          <div className = 'dropdown-name'>Filter calendar by booked sessions or sessions available to book:</div>
-              <select className = 'dropdown-list' onChange={(e) => cSort(e.target.value)} value={sort}>
-                  <option value={'showAll'}>Show All</option>
-                  <option value={'booked'}>Booked Sessions</option>
-                  <option value={'available'}>Available Sessions</option>
-              </select>
-      </div>
-    </div>
-      </Col>
-      </Row>
-    )
-  }
-console.log(sort)
-  const renderDays = () => {
-    const dateFormat = "iiii";
-    const days = [];
-
-    let startDate = dateFns.startOfWeek(currentMonth);
-
-    for (let i = 0; i < 7; i++) {
-      days.push(
-        <div className="col col-center" key={i}>
-          {dateFns.format(dateFns.addDays(startDate, i), dateFormat)}
-        </div>
-      );
-    }
-
-    return <div className="days row">{days}</div>;
-  }
-
-  const renderCells = () => {
-    const monthStart = dateFns.startOfMonth(currentMonth);
-    const monthEnd = dateFns.endOfMonth(monthStart);
-    const startDate = dateFns.startOfWeek(monthStart);
-    const endDate = dateFns.endOfWeek(monthEnd);
-
-    const dateFormat = "d";
-    const rows = [];
-
-    let days = [];
-    let day = startDate;
-    let formattedDate = "";
-
-    while (day <= endDate) {
-      for (let i = 0; i < 7; i++) {
-        formattedDate = dateFns.format(day, dateFormat);
-        days.push(
-          <div
-            className={`col cell ${
-              !dateFns.isSameMonth(day, monthStart)
-                ? "disabled"
-                : dateFns.isSameDay(day, currentDate) ? "selected" : ""
-            }`}
-            key={day} 
-          >
-            <span className="number">{formattedDate}</span>
-            <span><ul className = "ul-show-sessions">{showSessions(day)}</ul></span>
-          </div>
-        );
-        day = dateFns.addDays(day, 1); 
-      }
-      rows.push(
-        <div className="row" key={day}>
-          {days}
-        </div>
-      );
-      
-      days = [];
-    }
-    return <div className="body">{rows}</div>;
-  }
-
-  //puts sessions into the calendar
-  const showSessions = (day) => {
-    return sessions.map((session, i) => {
-      const sessionDate = new Date(session.date)
-      if (sessionDate.getTime() === day.getTime()){
-        console.log(displaySessions(session, i))
-        return displaySessions(session, i)
-      } 
-    }) 
-  }
-
-  // // displays session info
-  const displaySessions = (session, i) => {
-    return (
-      <OverlayTrigger key = {i} trigger="click" placement="bottom" overlay={popoverClick(session)} rootClose>
-        <li className = "dis-session-info li-show-sessions" 
-        style={{ backgroundColor : session.users.includes(users[0].id) ? '#5cb85c': session.users.length === session.limit ? 'White' : '#0D6EFD', 
-        color : session.users.length === session.limit ? 'rgb(170, 163, 163)' : 'White'}} 
-        >
-          {session.timeStart}{" "}{displaySessionDescription(session.limit).name}
-        </li>
-      </OverlayTrigger>
-    )    
-  }
-
-  const nextMonth = () => {
-    cCurrentMonth(dateFns.addMonths(currentMonth, 1))
-  };
-
-  const prevMonth = () => {
-    cCurrentMonth(dateFns.subMonths(currentMonth, 1))
-  };
-
-    // display correct session details based on the user limit
-    const displaySessionDescription = (limit) => {
-      switch(limit) {
-        case 1:
-          return sessionInfo[0] 
-        case 2:
-          return sessionInfo[1]
-        case 5:
-          return sessionInfo[2]
-        default:
-          break
-      }
-    }
-
-
-  const bookingHandler = (e, ses) => {
-    e.preventDefault()
-    sessions.forEach((session, index) => {
-      if (session.id === ses.id) {
-        sessions[index].users.push(users[0].id)
-      }
-    })
-    cUserBooking(!userBooking) 
-  }
-
-  const cancelBookingHandler = (e, ses) => {
-    e.preventDefault()
-    console.log("hi", sessions)
-    sessions.forEach((session, index) => {
-      if (session.id === ses.id) {
-        sessions[index].users = sessions[index].users.filter((i) => i !== users[0].id)
-      }
-    })
-    console.log(sessions)
-    cUserBooking(!userBooking) 
-  }
-  
-  const showBookingButton = (session) => {
-    if (session.users.includes(users[0].id)) {
-      return <Button className = 'booking-btn btn-danger' onClick={(e) => cancelBookingHandler(e, session)}>Cancel booking</Button>
-    } if (!session.users.includes(users[0].id) && session.users.length === session.limit) {
-      return <Button className = 'booking-btn btn-secondary'>Fully booked</Button>
-    } else {
-      return <Button className = 'booking-btn' onClick={(e) => bookingHandler(e, session)}>Book session</Button>
-    }
-  }
-
-  useEffect(() => {
-    renderHeader()
-    renderDays()
-    renderCells()
-  }, [userBooking])
-
-  const popoverClick = (session) => (
-    <Popover className = "popover-main" id="popover-trigger-click" title="Popover bottom">
-      <Card className = "popover-card">
-        <Card.Body className = "popover-body">
-          <Row className = "session-name">
-          {displaySessionDescription(session.limit).name}
-          </Row>
-          <Row>
-          {session.date}{" "}{session.timeStart}{"-"}{session.timeEnd}
-          </Row>
-          <Row className = "session-description">
-          {displaySessionDescription(session.limit).description}
-          </Row>
-          <Row>
-          {displaySessionDescription(session.limit).cost}
-          </Row>
-          <Row className = 'booking-btn-row'>
-          {showBookingButton(session)}
-          </Row>
-          </Card.Body>
-      </Card>
-    </Popover>
-  );
+const renderHeader = () => {
+  const dateFormat = "MMMM yyyy";
 
   return (
-    
-    <div className="calendar">
-      {renderHeader()}
-      {renderFilters()}
-      {renderDays()}
-      {renderCells()}
+    <div className="header row flex-middle">
+      <div className="col col-start">
+        <div className="icon" onClick={() => prevMonth()}>
+          chevron_left
+        </div>
+      </div>
+      <div className="col col-center">
+        <span>{dateFns.format(currentMonth, dateFormat)}</span>
+      </div>
+      <div className="col col-end" onClick={() => nextMonth()}>
+        <div className="icon">chevron_right</div>
+      </div>
     </div>
-  ); 
+  );
+}
+
+const renderFilters = () => {
+  return (
+    <Row className = "filters">
+    <Col className = "bullet-list">
+      <ul className = "filter-list-bullet">
+        <li className = "bullet-green"><span className = "bullet-text">Booked sessions</span></li>
+        <li className = "bullet-green bullet-blue"><span className = "bullet-text"> Sessions available to book</span></li>
+      </ul>
+    </Col>
+    <Col>
+    <div>
+    <div className = 'dropdown-container'>
+        <div className = 'dropdown-name'>Filter calendar by your booked sessions or sessions still available to book:</div>
+            <select className = 'dropdown-list' onChange={(e) => cSort(e.target.value)} value={sort}>
+                <option value={'showAll'}>Show All</option>
+                <option value={'booked'}>Booked Sessions</option>
+                <option value={'available'}>Available Sessions</option>
+            </select>
+    </div>
+  </div>
+    </Col>
+    </Row>
+  )
+}
+
+const renderDays = () => {
+  const dateFormat = "iiii";
+  const days = [];
+
+let startDate = dateFns.startOfWeek(currentMonth);
+
+for (let i = 0; i < 7; i++) {
+  days.push(
+    <div className="col col-center" key={i}>
+      {dateFns.format(dateFns.addDays(startDate, i), dateFormat)}
+    </div>
+  );
+}
+
+  return <div className="days row">{days}</div>;
+}
+
+const renderCells = () => {
+  const monthStart = dateFns.startOfMonth(currentMonth);
+  const monthEnd = dateFns.endOfMonth(monthStart);
+  const startDate = dateFns.startOfWeek(monthStart);
+  const endDate = dateFns.endOfWeek(monthEnd);
+
+  const dateFormat = "d";
+  const rows = [];
+
+  let days = [];
+  let day = startDate;
+  let formattedDate = "";
+
+  while (day <= endDate) {
+    for (let i = 0; i < 7; i++) {
+      formattedDate = dateFns.format(day, dateFormat);
+      days.push(
+        <div
+          className={`col cell ${
+            !dateFns.isSameMonth(day, monthStart)
+              ? "disabled"
+              : dateFns.isSameDay(day, currentDate) ? "selected" : ""
+          }`}
+          key={day} 
+        >
+          <span className="number">{formattedDate}</span>
+          <span><ul className = "ul-show-sessions">{showSessions(day)}</ul></span>
+        </div>
+      );
+      day = dateFns.addDays(day, 1); 
+    }
+    rows.push(
+      <div className="row" key={day}>
+        {days}
+      </div>
+    );
+    
+    days = [];
+  }
+  return <div className="body">{rows}</div>;
+}
+
+// puts sessions into the calendar
+const showSessions = (day) => {
+  return sessions.map((session, i) => {
+    const sessionDate = new Date(session.date)
+    if (sessionDate.getTime() === day.getTime()){
+        return displaySessions(session, i)
+    } 
+  }) 
+}
+
+// builds invidual session entry in calendar 
+const sessionEntry = (session, i) => {
+  return (
+    <OverlayTrigger key = {i} trigger="click" placement="bottom" overlay={popoverClick(session)} rootClose>
+      <li className = "dis-session-info li-show-sessions" 
+      style={{ backgroundColor : session.users.includes(users[0].id) ? '#5cb85c': session.users.length === session.limit ? 'White' : '#0D6EFD', 
+      color : session.users.length === session.limit ? 'rgb(170, 163, 163)' : 'White'}} 
+      >
+        {session.timeStart}{" "}{displaySessionDescription(session.limit).name}
+      </li>
+    </OverlayTrigger>
+  )
+}
+
+// displays session info in calendar
+const displaySessions = (session, i) => {
+  if (sort === "booked" && session.users.includes(users[0].id)) {
+    return sessionEntry(session,i)
+  } else if (sort === "available" && !session.users.includes(users[0].id) && session.users.length < session.limit) {
+    return sessionEntry(session,i) 
+  } else if (sort === "showAll") {
+    return sessionEntry(session,i)
+  }
+}
+
+const nextMonth = () => {
+  cCurrentMonth(dateFns.addMonths(currentMonth, 1))
+};
+
+const prevMonth = () => {
+  cCurrentMonth(dateFns.subMonths(currentMonth, 1))
+};
+
+// display correct session details based on the user limit
+const displaySessionDescription = (limit) => {
+  switch(limit) {
+    case 1:
+      return sessionInfo[0] 
+    case 2:
+      return sessionInfo[1]
+    case 5:
+      return sessionInfo[2]
+    default:
+      break
+  }
+}
+
+// books user into a session
+const bookingHandler = (e, ses) => {
+  e.preventDefault()
+  sessions.forEach((session, index) => {
+    if (session.id === ses.id) {
+      sessions[index].users.push(users[0].id)
+    }
+  })
+  cUserBooking(!userBooking) 
+}
+
+// cancels users session booking
+const cancelBookingHandler = (e, ses) => {
+  e.preventDefault()
+  console.log("hi", sessions)
+  sessions.forEach((session, index) => {
+    if (session.id === ses.id) {
+      sessions[index].users = sessions[index].users.filter((i) => i !== users[0].id)
+    }
+  })
+  console.log(sessions)
+  cUserBooking(!userBooking) 
+}
+
+// displays either book session, cancel booking or fully booked button depending on the user
+const showBookingButton = (session) => {
+  if (session.users.includes(users[0].id)) {
+    return <Button className = 'booking-btn btn-danger' onClick={(e) => cancelBookingHandler(e, session)}>Cancel booking</Button>
+  } if (!session.users.includes(users[0].id) && session.users.length === session.limit) {
+    return <Button className = 'booking-btn btn-secondary'>Fully booked</Button>
+  } else {
+    return <Button className = 'booking-btn' onClick={(e) => bookingHandler(e, session)}>Book session</Button>
+  }
+}
+
+useEffect(() => {
+  renderHeader()
+  renderDays()
+  renderCells()
+}, [userBooking])
+
+// session calendar popover
+const popoverClick = (session) => (
+  <Popover className = "popover-main" id="popover-trigger-click" title="Popover bottom">
+    <Card className = "popover-card">
+      <Card.Body className = "popover-body">
+        <Row className = "session-name">
+        {displaySessionDescription(session.limit).name}
+        </Row>
+        <Row>
+        {session.date}{" "}{session.timeStart}{"-"}{session.timeEnd}
+        </Row>
+        <Row className = "session-description">
+        {displaySessionDescription(session.limit).description}
+        </Row>
+        <Row>
+        {displaySessionDescription(session.limit).cost}
+        </Row>
+        <Row className = 'booking-btn-row'>
+        {showBookingButton(session)}
+        </Row>
+        </Card.Body>
+    </Card>
+  </Popover>
+);
+
+return (
+  
+  <div className="calendar">
+    {renderHeader()}
+    {renderFilters()}
+    {renderDays()}
+    {renderCells()}
+  </div>
+); 
 }
 
 export default Calendar;

@@ -282,7 +282,11 @@ main {
   border-bottom: 1px solid var(--border-color);
   margin-top: 25px;
   padding-bottom: 12px;
-  margin-left: 25px
+  padding-right: 25px;
+}
+
+.bullet-list {
+  margin-left: 25px;
 }
 
 .bullet-text {
@@ -307,5 +311,22 @@ main {
 
 .bullet-blue::before {
   color: #0D6EFD !important
+}
+
+/* dropdown */
+
+.dropdown-list {
+  width: 200px;  
+}
+
+.dropdown-name {
+  margin-right:10px;
+  color: black;  
+}
+
+.dropdown-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end 
 }
 
