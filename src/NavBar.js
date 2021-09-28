@@ -9,7 +9,7 @@ import navImg from "./images/logo.png"
 const NavBar = () => {
 
   function logout() {
-    console.log("im the logout function")
+    // console.log("im the logout function")
   }
   return (
     <>
@@ -30,10 +30,10 @@ const NavBar = () => {
               <Nav.Link href="/home">Active</Nav.Link>
             </Nav.Item> */}
               <Nav.Item>
-                <Nav.Link eventKey="link-1">Calendar</Nav.Link>
+                <Nav.Link href="./Calendar">Calendar</Nav.Link>
               </Nav.Item>
               <Nav.Item>
-                <Nav.Link eventKey="link-2">Profile</Nav.Link>
+                <Nav.Link href="./Profile">Profile</Nav.Link>
               </Nav.Item>
               <Nav.Item>
                 <Nav.Link onClick={logout}>Log Out

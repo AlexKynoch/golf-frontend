@@ -29,8 +29,8 @@ function App() {
 
   return (
     <div className="App">
-    <NavBar/>
-      <table>
+      <NavBar />
+      {/* <table>
         <thead>
           <tr>
             <th>Date</th>
@@ -38,7 +38,7 @@ function App() {
           </tr>
         </thead>
         <tbody>{makeSessionTable()}</tbody>
-      </table>
+      </table> */}
 
     </div>
   );
