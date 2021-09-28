@@ -5,6 +5,7 @@ import Popover from 'react-bootstrap/Popover'
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 function Calendar() {
@@ -70,6 +71,7 @@ function Calendar() {
   limit: 5,
   id:"3a"
 },])
+const [sort, cSort] = useState('unsorted')
   
   const renderHeader = () => {
     const dateFormat = "MMMM yyyy";
@@ -91,6 +93,31 @@ function Calendar() {
     );
   }
 
+  const renderFilters = () => {
+    return (
+      <Row>
+      <Col className = "filters">
+        <ul className = "filter-list-bullet">
+          <li className = "bullet-green"><span className = "bullet-text">Booked sessions</span></li>
+          <li className = "bullet-green bullet-blue"><span className = "bullet-text"> Sessions available to book</span></li>
+        </ul>
+      </Col>
+      <Col>
+      <div>
+      <div className = 'dropdown-container'>
+          <div className = 'dropdown-name'>Filter calendar by booked sessions or sessions available to book:</div>
+              <select className = 'dropdown-list' onChange={(e) => cSort(e.target.value)} value={sort}>
+                  <option value={'showAll'}>Show All</option>
+                  <option value={'booked'}>Booked Sessions</option>
+                  <option value={'available'}>Available Sessions</option>
+              </select>
+      </div>
+    </div>
+      </Col>
+      </Row>
+    )
+  }
+console.log(sort)
   const renderDays = () => {
     const dateFormat = "iiii";
     const days = [];
@@ -134,7 +161,7 @@ function Calendar() {
             key={day} 
           >
             <span className="number">{formattedDate}</span>
-            <span><ul>{showSessions(day)}</ul></span>
+            <span><ul className = "ul-show-sessions">{showSessions(day)}</ul></span>
           </div>
         );
         day = dateFns.addDays(day, 1); 
@@ -155,6 +182,7 @@ function Calendar() {
     return sessions.map((session, i) => {
       const sessionDate = new Date(session.date)
       if (sessionDate.getTime() === day.getTime()){
+        console.log(displaySessions(session, i))
         return displaySessions(session, i)
       } 
     }) 
@@ -164,7 +192,7 @@ function Calendar() {
   const displaySessions = (session, i) => {
     return (
       <OverlayTrigger key = {i} trigger="click" placement="bottom" overlay={popoverClick(session)} rootClose>
-        <li className = "dis-session-info" 
+        <li className = "dis-session-info li-show-sessions" 
         style={{ backgroundColor : session.users.includes(users[0].id) ? '#5cb85c': session.users.length === session.limit ? 'White' : '#0D6EFD', 
         color : session.users.length === session.limit ? 'rgb(170, 163, 163)' : 'White'}} 
         >
@@ -263,6 +291,7 @@ function Calendar() {
     
     <div className="calendar">
       {renderHeader()}
+      {renderFilters()}
       {renderDays()}
       {renderCells()}
     </div>

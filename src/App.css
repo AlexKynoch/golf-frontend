@@ -121,6 +121,7 @@ main {
   width: 100%;
   background: var(--neutral-color);
   border: 1px solid var(--border-color);
+  margin-bottom:100px
 }
 
 .calendar .header {
@@ -236,18 +237,18 @@ main {
   overflow: hidden;
 }
 
-ul {
+.ul-show-sessions {
   padding-left:0px !important;
   list-style-type: none
 }
 
-li {
+.li-show-sessions {
   border-radius: 5px;
   padding-left: 10px;
   padding-right: 10px;
 }
 
-ul:first-child {
+.ul-show-sessions:first-child {
   margin-top: 20%;
 }
 
@@ -276,3 +277,35 @@ ul:first-child {
   padding-left: 2px;
   padding-right: 2px;
 }
+
+.filters {
+  border-bottom: 1px solid var(--border-color);
+  margin-top: 25px;
+  padding-bottom: 12px;
+  margin-left: 25px
+}
+
+.bullet-text {
+  font-size: 16px;
+  color: black;
+}
+
+.filter-list-bullet .bullet-green {
+  list-style: none;
+  position: relative;
+  padding: 3px 0 2px 25px;
+}
+
+.filter-list-bullet .bullet-green::before {
+  content: '■';
+  color:#5cb85c;
+  position: absolute;
+  font-size: 26pt;
+  top: -16px;
+  left: 0;
+}
+
+.bullet-blue::before {
+  color: #0D6EFD !important
+}
+
