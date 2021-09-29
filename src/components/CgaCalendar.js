@@ -9,12 +9,10 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
-function AdminCalendar() {
+function CgaCalendar() {
   const [currentMonth, cCurrentMonth] = useState(new Date())
-  const [userBooking, cUserBooking] = useState(false)
   const [currentDate, cCurrentDate] = useState(new Date())
-  const [currentUser, cCurrentUser] = useState(undefined)
-  const [sort, cSort] = useState('showAll')
+  const [location, cLocation] = useState("showAll")
   const [sessionInfo, cSessionInfo] = useState([
     {name: "One-to-One Coaching",
     description:"These person-centred sessions are delivered by one of our trained team at a local golf club. The service provides an enjoyable & rewarding day for the golfer PLUS a deserved respite break for carers. No golfing experience is necessary.",
@@ -62,7 +60,7 @@ function AdminCalendar() {
   const [sessions, cSessions] = useState([
   { volunteer: "Thomas",
     users: ["Helen"],
-    location: "Sheffield",
+    location: "Manchester",
     date: "7 September 2021",
     timeStart: "14:00",
     timeEnd: "15:00",
@@ -71,7 +69,7 @@ function AdminCalendar() {
   },
   { volunteer: "Jenny",
     users: ['Jack'],
-    location: "Sheffield",
+    location: "Leeds",
     date: "6 September 2021",
     timeStart: "16:00",
     timeEnd: "17:00",
@@ -88,6 +86,16 @@ function AdminCalendar() {
   id:"3a"
 },])
 
+// get all unique session locations
+const sessionLocations = () => {
+    let locations = []
+    sessions.forEach(session => {
+        if (!locations.includes(session.location)) {
+            locations.push(session.location)
+        }
+    })
+    return locations
+}
 
 
 // renders calendar header
@@ -115,40 +123,30 @@ const renderHeader = () => {
 const renderFilters = () => {
   return (
     <Container className = "filters">
-      <Row >
-        <Col className = "bullet-list">
-          <ul className = "filter-list-bullet">
-            <li className = "bullet-green"><span className = "bullet-text">Booked sessions for the selected user</span></li>
-            <li className = "bullet-green bullet-blue"><span className = "bullet-text"> Available to book</span></li>
-            <li className = "bullet-green bullet-gray"><span className = "bullet-text"> Fully booked</span></li>
-          </ul>
-        </Col>
-        <Col md={7}>
-          <Row>
-            <div>
-              <div className = 'dropdown-container'>
-                  <div className = 'dropdown-name'>Filter calendar by available sessions:</div> 
-                      <select className = 'dropdown-list' onChange={(e) => cSort(e.target.value)} value={sort}>
-                          <option className = 'dropdown-option' value={'showAll'}>Show All</option>
-                          <option className = 'dropdown-option' value={'available'}>Available Sessions</option>
-                      </select>
-                  </div>
-            </div> 
-          </Row>
-          <Row className = 'search-input'>
-          {renderSearchBar()} 
-          </Row>
-        </Col>
-      </Row>
+    <Row >
+    <Col className = "bullet-list">
+      <ul className = "filter-list-bullet">
+        <li className = "bullet-green bullet-blue"><span className = "bullet-text"> Available to book</span></li>
+        <li className = "bullet-green bullet-gray"><span className = "bullet-text"> Fully booked</span></li>
+      </ul>
+    </Col>
+    <Col>
+    <div>
+    <div className = 'dropdown-container'>
+        <div className = 'dropdown-name'>Filter calendar by location:</div> 
+            <select className = 'dropdown-list' onChange={(e) => cLocation(e.target.value)} value={location}>
+                <option value = {'showAll'}>Show All</option>
+                {sessionLocations().map((location) => (
+                <option value = {location}>{location}</option>))}
+            </select>
+        </div>
+    </div>
+  
+    </Col>
+    </Row>
     </Container>
   )
 }
-
-const showAll = () => {
-    cCurrentUser(undefined)
-    document.getElementById('addUserSearchForm').reset()
-  }
-
 // renders calendar days
 const renderDays = () => {
   const dateFormat = "iiii";
@@ -222,11 +220,10 @@ const showSessions = (day) => {
 
 // builds invidual session entries in calendar 
 const sessionEntry = (session, i) => {
-  console.log(currentUser)
   return (
     <OverlayTrigger key = {i} trigger="click" placement="bottom" overlay={popoverClick(session)} rootClose>
       <li className = "dis-session-info li-show-sessions" 
-      style={{ backgroundColor : currentUser !== undefined && session.users.includes(currentUser)? 'Green' : session.users.length < session.limit ? '#0D6EFD' : '#62666b', 
+      style={{ backgroundColor : session.users.length < session.limit ? '#0D6EFD' : '#62666b', 
       color : 'White'}} 
       >
         {session.timeStart}{" "}{displaySessionDescription(session.limit).name}
@@ -237,11 +234,11 @@ const sessionEntry = (session, i) => {
 
 // gets information for that particular session
 const displaySessions = (session, i) => {  
-  if (sort === "available"  && session.users.length < session.limit && !session.users.includes(currentUser)) {
+  if (location === session.location ) {
     return sessionEntry(session,i) 
-  } else if (sort === "showAll") {
-    return sessionEntry(session,i)
-  }
+  } else if (location === "showAll") {
+    return sessionEntry(session,i) 
+  } 
 }
 
 // switches calendar to next month
@@ -268,40 +265,6 @@ const displaySessionDescription = (limit) => {
   }
 }
 
-// books user into a session
-const bookingHandler = (e, ses) => {
-  e.preventDefault()
-  sessions.forEach((session, index) => {
-    if (session.id === ses.id && currentUser !== undefined) {
-      sessions[index].users.push(currentUser)
-    }
-  })
-  cUserBooking(!userBooking) 
-}
-
-// cancels booking for the selected user
-const cancelBookingHandler = (e, ses) => {
-  e.preventDefault()
-  console.log("hi", sessions)
-  sessions.forEach((session, index) => {
-    if (session.id === ses.id) {
-      sessions[index].users = sessions[index].users.filter((i) => i !== currentUser)
-    }
-  })
-  cUserBooking(!userBooking) 
-}
-
-// displays either book session, cancel booking or fully booked button depending on the user
-const showBookingButton = (session) => {
-  if (session.users.includes(currentUser)) {
-    return <Button className = 'booking-btn btn-danger' onClick={(e) => cancelBookingHandler(e, session)}>Cancel booking</Button>
-  } if (!session.users.includes(users[0].id) && session.users.length === session.limit && !session.users.includes(currentUser)) {
-    return <Button className = 'booking-btn btn-secondary'>Fully booked</Button>
-  } else {
-    return <Button className = 'booking-btn' onClick={(e) => bookingHandler(e, session)}>Book session</Button>
-  }
-}
-
 const findVolunteerName = (session) => {
   return volunteers.map((volunteer) => {
     if (volunteer.firstName === session.volunteer){
@@ -315,34 +278,6 @@ const findVolunteerEmail = (session) => {
       return "Volunteer contact: " + volunteer.email
     }}
   )
-}
-
-const locationSubmitHandler = (e) => {
-    e.preventDefault();
-    cCurrentUser(e.target.user.value)
-}
-
-const renderSearchBar = () => {
-    return ( 
-              <form className = "user-search-form" onSubmit = {(e) => locationSubmitHandler(e)} id = 'addUserSearchForm'>
-                  <label className = "user-search-form-label" for="userform">Search sessions by user: </label>
-                  <input 
-                    className = 'search-field' 
-                    type = 'text' 
-                    name = 'user' 
-                    placeholder = 'Search by user...' 
-                    autoComplete = 'off'
-                    id = 'userform'
-                  />
-                  <Button className = 'user-submit' type = 'submit'>
-                      Search
-                  </Button> 
-                  <Button className = 'show-all' onClick = {() => showAll()} >
-                      Show All
-                  </Button>
-              </form>
-              )
-
 }
 
 // session calendar popover
@@ -381,19 +316,10 @@ const popoverClick = (session) => (
         <Row>
         {findVolunteerEmail(session)}
         </Row>
-        <Row className = 'booking-btn-row'>
-        {showBookingButton(session)}
-        </Row>
         </Card.Body>
     </Card>
   </Popover>
 );
-
-useEffect(() => {
-  renderHeader()
-  renderDays()
-  renderCells()
-}, [userBooking])
 
 return (
   
@@ -406,4 +332,4 @@ return (
 ); 
 }
 
-export default AdminCalendar;
+export default CgaCalendar;

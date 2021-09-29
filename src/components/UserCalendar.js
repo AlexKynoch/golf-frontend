@@ -3,6 +3,8 @@ import * as dateFns from 'date-fns'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Popover from 'react-bootstrap/Popover'
 import Button from 'react-bootstrap/Button'
+import Dropdown from 'react-bootstrap/Dropdown'
+import DropdownButton from 'react-bootstrap/DropdownButton'
 import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -109,6 +111,7 @@ const renderHeader = () => {
   );
 }
 
+
 // renders calendar key and filters
 const renderFilters = () => {
   return (
@@ -119,18 +122,16 @@ const renderFilters = () => {
         <li className = "bullet-green bullet-blue"><span className = "bullet-text"> Sessions available to book</span></li>
       </ul>
     </Col>
-    <Col>
-    <div>
-    <div className = 'dropdown-container'>
-        <div className = 'dropdown-name'>Filter calendar by your booked sessions or sessions still available to book:</div>
-            <select className = 'dropdown-list' onChange={(e) => cSort(e.target.value)} value={sort}>
-                <option value={'showAll'}>Show All</option>
-                <option value={'booked'}>Booked Sessions</option>
-                <option value={'available'}>Available Sessions</option>
-            </select>
-    </div>
-  </div>
+    
+
+        <Col md = {5} className = 'dropdown-name'>Filter calendar by your booked sessions or sessions still available to book:</Col>
+         <Col md = {2}>   <select className = 'dropdown-list' onChange={(e) => cSort(e.target.value)} value={sort}>
+                <option className = 'dropdown-option' value={'showAll'}>Show All</option>
+                <option className = 'dropdown-option' value={'booked'}>Booked Sessions</option>
+                <option className = 'dropdown-option' value={'available'}>Available Sessions</option>
+            </select> 
     </Col>
+ 
     </Row>
   )
 }
