@@ -127,6 +127,7 @@ function Profile() {
                                     onSelect={(e) => handleDropdownChanger(e)}
                                     style={{ backgroundColor: '#ccdddd' }}>
                                     <Dropdown.Item eventKey={users.location[0]}>{users.location[0]}</Dropdown.Item>
+
                                     <Dropdown.Item eventKey={users.location[1]} href="#">{users.location[1]}</Dropdown.Item>
                                     <Dropdown.Item eventKey={users.location[2]} href="#">{users.location[2]}</Dropdown.Item>
                                     <Dropdown.Item eventKey={users.location[3]} href="#">{users.location[3]}</Dropdown.Item>
