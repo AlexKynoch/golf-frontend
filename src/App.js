@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { ApiClient } from "./apiClient"
 import './App.css'
+import PPVolunteer from "./PPVolunteer"
 
 function App() {
   const [sessions, cSessions] = useState([]);
@@ -28,7 +29,7 @@ function App() {
 
   return (
     <div className="App">
-      <table>
+      {/* <table>
         <thead>
           <tr>
             <th>Date</th>
@@ -36,8 +37,8 @@ function App() {
           </tr>
         </thead>
         <tbody>{makeSessionTable()}</tbody>
-      </table>
-
+      </table> */}
+      <PPVolunteer />
     </div>
   );
 }
