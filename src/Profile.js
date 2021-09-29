@@ -122,6 +122,7 @@ function Profile() {
                                 form="inputLocation3"
                                 className="col-form-label col-sm-3">
                                 <DropdownButton
+                                    className="dropdownButton"
                                     title="Location"
                                     onSelect={(e) => handleDropdownChanger(e)}
                                     style={{ backgroundColor: '#ccdddd' }}>
