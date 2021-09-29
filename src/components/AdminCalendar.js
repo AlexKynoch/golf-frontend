@@ -374,25 +374,24 @@ function AdminCalendar() {
   const adminUserCancelBooking = (session) => {
     return (
       <form className = 'user-book-form' onSubmit = {(e) => adminUserCancelHandler(e, session)} id = 'adminUserCancelForm'>
-      <label className = 'user-book-form-label' for='userform'>Cancel booking for a user: </label>
-      <input 
-        className = 'book-field' 
-        type = 'text' 
-        name = 'user' 
-        placeholder = 'Select user...' 
-        autoComplete = 'off'
-        id = 'userform'
-      />
-      <Button className = 'btn-danger' type = 'submit'>Cancel booking</Button> 
-  </form>)
+        <label className = 'user-book-form-label' for='userform'>Cancel booking for a user: </label>
+        <input 
+          className = 'book-field test2' 
+          type = 'text' 
+          name = 'user' 
+          placeholder = 'Select user...' 
+          autoComplete = 'off'
+          id = 'userform'
+        />
+        <Button className = 'btn-danger booking-submit' type = 'submit'>Cancel booking</Button> 
+      </form>)
   }
-
 
   const showBookingInput = (session) => {
     if (session.users.length === session.limit) {
       return (
         <div>
-          <Button className = 'booking-btn btn-secondary'>Fully booked</Button>
+          <Button className = 'btn-secondary'>Fully booked</Button>
           {adminUserCancelBooking(session)}
         </div>
       )
@@ -443,8 +442,11 @@ function AdminCalendar() {
           <Row>
             {findVolunteerEmail(session)}
           </Row>
-          <Row className = 'booking-btn-row'>
-            {currentUser ? <div>{showBookingButton(session)}</div> : <div>{showBookingInput(session)}</div>}
+          <Row className = 'booking-btn-row '>
+            {currentUser ? showBookingButton(session) : ""}
+          </Row>
+          <Row className = 'admin-user-booking-buttons'>
+            {currentUser ? "" : showBookingInput(session)}
           </Row>
         </Card.Body>
       </Card>

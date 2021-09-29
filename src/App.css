@@ -372,9 +372,38 @@ main {
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 
+.admin-user-booking-buttons {
+  margin-top: 5px;
+  margin-left: -2.5px;
+  justify-content: right;
+  display: flex;
+  align-items: center;
+}
+
+.user-book-form {
+  margin-bottom: 5px;
+}
+
+.user-book-form-label {
+  margin-right: 5px;
+}
+
+.book-field {
+  padding:5px;
+  border-radius: 5px;
+  outline: none !important;
+  border:1px solid gray;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+.booking-submit {
+  margin-right: 5px;
+  margin-left: 5px;
+  padding: -15px
+}
+
 .user-search-form {
   margin-top: 5px;
-  display: flex;
   justify-content: right;
   display: flex;
   align-items: center;
