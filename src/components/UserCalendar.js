@@ -98,6 +98,16 @@ function UserCalendar(props) {
     separateByRole()
   }
 
+  const addUser = (id, user) => {
+    props.client.addSessionUser(id, user)
+  }
+
+  const removeUser = (id, user) => {
+    props.client.removeSessionUser(id, user)
+  }
+
+
+  // separate volunteers from service users
   const separateByRole = () => {
     allUsers.forEach((user) => {
       if (user.role === 'user') {
@@ -160,12 +170,6 @@ function UserCalendar(props) {
     {day}
   </div>)
   }
-
-  useEffect(() => {
-    renderHeader()
-    renderDays()
-    renderCells()
-  }, [window.innerWidth])
 
   // renders calendar days
   const renderDays = () => {

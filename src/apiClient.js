@@ -30,11 +30,11 @@ export class ApiClient {
         return this.apiCall('delete', `${url}session/${id}`)
     }
     
-    addSessionUser(id, sessionUsers) {
-        return this.apiCall('put', `${url}session/${id}`, { sessionUsers })
+    addSessionUser(id, sessionUser) {
+        return this.apiCall('put', `${url}sessionUser/${id}`, { user: sessionUser } )
     }
 
-    removeSessionUser(id, sessionUsers) {
-        return this.apiCall('put', `${url}session/${id}`, { sessionUsers })
+    removeSessionUser(id, sessionUser) {
+        return this.apiCall('put', `${url}sessionDelUser/${id}`, { user: sessionUser})
     }
 }
