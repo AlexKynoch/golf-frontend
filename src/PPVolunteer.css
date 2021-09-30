@@ -1,0 +1,51 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  background-color: rgb(204, 221, 221);
+}
+
+.App {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+}
+.Container {
+  display: block;
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.card {
+  border: 0.15rem solid rgb(6, 101, 50);
+  border-radius: 10px;
+}
+
+.card-title {
+  background-color: white;
+}
+.card-body {
+  background-color: white;
+}
+
+.btn-primary {
+  background-color: white;
+  color: black;
+  border-style: none;
+}
+
+.btn-primary.active {
+  background-color: rgb(204, 221, 221);
+}
+
+.btn-container {
+  background-color: white;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.btn-light {
+  background-color: rgb(204, 221, 221);
+}

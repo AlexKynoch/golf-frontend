@@ -6,8 +6,15 @@
     padding: 7px 14px;
   } */
 
+
 .navbar {
   background-color: white;
+
+.custom-nav-item {
+  white-space: nowrap;
+
+  height: 10%;
+
 }
 
 img {
