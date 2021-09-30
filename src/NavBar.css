@@ -1,0 +1,21 @@
+/* .navbar-brand {
+    display: flex;
+    align-items: center;
+  }
+  .navbar-brand>img {
+    padding: 7px 14px;
+  } */
+
+.custom-nav-item {
+  white-space: nowrap;
+}
+
+.navbar {
+  height: 10%;
+}
+
+img {
+  width: 35%;
+  display: flex;
+  justify-content: flex-start;
+}
