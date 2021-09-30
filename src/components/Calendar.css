@@ -1,4 +1,4 @@
-/* FONT IMPORTS */
+/* Font imports */
 
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,700);
 @import url(https://fonts.googleapis.com/icon?family=Material+Icons);
@@ -22,7 +22,7 @@
 }
 
 
-/* VARIABLES */
+/* Variables */
 
 :root {
   --main-color: #1a8fff;
@@ -34,7 +34,7 @@
 }
 
 
-/* GENERAL */
+/* General */
 
 * {
   box-sizing: border-box;
@@ -76,7 +76,7 @@ main {
   max-width: 65em;
 }
 
-/* GRID */
+/* grid */
 
 .row {
   margin: 0;
@@ -231,6 +231,8 @@ main {
   width: calc(100%/7);
 }
 
+/* session entries */
+
 .dis-session-info {
   font-size: 82.5%;
   white-space: nowrap;
@@ -242,22 +244,24 @@ main {
   list-style-type: none
 }
 
+.ul-show-sessions:first-child {
+  margin-top: 20%;
+}
+
 .li-show-sessions {
   border-radius: 5px;
   padding-left: 10px;
   padding-right: 10px;
 }
 
-.ul-show-sessions:first-child {
-  margin-top: 20%;
+/* popover */
+
+.popover-main {
+  max-width: 50em
 }
 
 .session-name {
   font-size:20px;
-}
-
-.popover-main {
-  max-width: 50em
 }
 
 .session-description {
@@ -278,6 +282,27 @@ main {
   padding-right: 2px;
 }
 
+.session-location {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.session-volunteer {
+  margin-top: 10px;
+}
+
+.location-icon {
+  display: inline-block;
+  margin-left: -5px
+}
+
+.location-text {
+  display: inline-block;
+  margin-top: 2px
+}
+
+/* calendar key and filters area */
+
 .filters {
   border-bottom: 1px solid var(--border-color);
   margin-top: 25px;
@@ -285,8 +310,10 @@ main {
   padding-right: 25px;
 }
 
+/* calendar key */
+
 .bullet-list {
-  margin-left: -17px;
+  margin-left: -8px;
 }
 
 .bullet-text {
@@ -317,10 +344,9 @@ main {
   color: #62666b !important
 }
 
-/* dropdown */
+/* calendar filters (dropdown) */
 
 .dropdown-list {
-  /* max-width: 35%; */
   padding:5px;
   margin-top: 2px;
   border-radius: 5px;
@@ -334,7 +360,7 @@ main {
 }
 
 .dropdown-name {
-  margin-right:10px;
+  margin-right:7px;
   color: black;
   display: inline-block  
 }
@@ -345,24 +371,16 @@ main {
   justify-content: flex-end 
 }
 
-.session-location {
-  margin-top: 5px;
-  margin-bottom: 5px;
+.volunteer-filter {
+  padding-left: 15px;
+  padding-top: 6px;
 }
 
-.session-volunteer {
-  margin-top: 10px;
+.user-filter {
+  padding-top: 4px;
 }
 
-.location-icon {
-  display: inline-block;
-  margin-left: -5px
-}
-
-.location-text {
-  display: inline-block;
-  margin-top: 2px
-}
+/* admin search field */
 
 .search-field {
   padding:5px;
@@ -371,6 +389,8 @@ main {
   border:1px solid gray;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
+
+/* admin user booking */
 
 .admin-user-booking-buttons {
   margin-top: 5px;
@@ -402,6 +422,8 @@ main {
   padding: -15px
 }
 
+/* admin user search */
+
 .user-search-form {
   margin-top: 5px;
   justify-content: right;
@@ -409,12 +431,13 @@ main {
   align-items: center;
 }
 
-.user-submit{
-  margin-right: 5px;
-  margin-left: 5px
-}
 .user-search-form-label {
   color: black;
   margin-right: 5px;
   text-align: center
+}
+
+.user-submit{
+  margin-right: 5px;
+  margin-left: 5px
 }

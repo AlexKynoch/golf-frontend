@@ -8,6 +8,7 @@ import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import "./Calendar.css";
 
 function AdminCalendar() {
   const [currentMonth, cCurrentMonth] = useState(new Date())
@@ -111,8 +112,7 @@ function AdminCalendar() {
   // renders calendar key and filters
   const renderFilters = () => {
     return (
-      <Container className = 'filters'>
-        <Row >
+        <Row className = 'filters'>
           <Col className = 'bullet-list'>
             <ul className = 'filter-list-bullet'>
               <li className = 'bullet-green'><span className = 'bullet-text'>Booked sessions for the selected user</span></li>
@@ -137,7 +137,6 @@ function AdminCalendar() {
             </Row>
           </Col>
         </Row>
-      </Container>
     )
   }
 

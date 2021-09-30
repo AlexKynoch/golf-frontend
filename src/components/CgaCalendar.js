@@ -7,6 +7,7 @@ import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import "./Calendar.css";
 
 function CgaCalendar() {
   const [currentMonth, cCurrentMonth] = useState(new Date())
@@ -120,8 +121,7 @@ function CgaCalendar() {
   // renders calendar key and filters
   const renderFilters = () => {
     return (
-      <Container className = 'filters'>
-        <Row>
+        <Row className = 'filters'>
           <Col className = 'bullet-list'>
             <ul className = 'filter-list-bullet'>
               <li className = 'bullet-green bullet-blue'><span className = 'bullet-text'> Available to book</span></li>
@@ -141,7 +141,6 @@ function CgaCalendar() {
             </div>
           </Col>
         </Row>
-      </Container>
     )
   }
 

@@ -19,10 +19,22 @@ export class ApiClient {
     }
 
     getSessions() {
-        return this.apiCall("get", url);
+        return this.apiCall("get", url + 'sessions');
     }
 
-    addSession(date, volunteer) {
-        return this.apiCall("post", url, { date, volunteer });
+    getUsers() {
+        return this.apiCall("get", url + 'user');
+    }
+
+    removeSession(id) {
+        return this.apiCall('delete', `${url}session/${id}`)
+    }
+    
+    addSessionUser(id, sessionUsers) {
+        return this.apiCall('put', `${url}session/${id}`, { sessionUsers })
+    }
+
+    removeSessionUser(id, sessionUsers) {
+        return this.apiCall('put', `${url}session/${id}`, { sessionUsers })
     }
 }

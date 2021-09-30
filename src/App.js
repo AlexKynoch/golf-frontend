@@ -1,26 +1,27 @@
-import React from "react";
-
+import React, { useState, useEffect } from "react";
+import { ApiClient } from "./apiClient"
 import UserCalendar from "./components/UserCalendar";
 import VolunteerCalendar from "./components/VolunteerCalendar";
 import AdminCalendar from "./components/AdminCalendar";
 import CgaCalendar from "./components/CgaCalendar";
+// import "./App.css";
 
-import "./App.css";
 
-class App extends React.Component {
+function App() {
+  const client = new ApiClient()
+  
+
  
-  render() {
     return (
       <div className="App"> 
         <main>
-          <UserCalendar/>
-          <VolunteerCalendar/>
-          <CgaCalendar/>
-          <AdminCalendar/>
+          <UserCalendar client={client}/>
+          <VolunteerCalendar client={client}/>
+          <AdminCalendar client={client}/>
+          <CgaCalendar client={client}/>
         </main>
       </div>
-    );
-  }
+    )  
 }
 
 export default App;

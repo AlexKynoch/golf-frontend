@@ -6,6 +6,7 @@ import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import "./Calendar.css"
 
 function VolunteerCalendar() {
   const [currentMonth, cCurrentMonth] = useState(new Date())
@@ -95,24 +96,20 @@ function VolunteerCalendar() {
   const renderFilters = () => {
     return (
       <Row className = 'filters'>
-        <Col className = 'bullet-list'>
-          <ul className = 'filter-list-bullet'>
-            <li className = 'bullet-green'><span className = 'bullet-text'>Sessions you are assigned to</span></li>
-            <li className = 'bullet-green bullet-blue'><span className = 'bullet-text'>Sessions you are not assigned to</span></li>
-          </ul>
-        </Col>
-        <Col>
-          <div>
-            <div className = 'dropdown-container'>
-              <div className = 'dropdown-name'>Filter calendar by your booked sessions or sessions still available to book:</div>
-              <select className = 'dropdown-list' onChange = {(e) => cSort(e.target.value)} value={sort}>
-                <option value = {'showAll'}>Show All</option>
-                <option value = {'assigned'}>Your assigned sessions</option>
-              </select>
-            </div>
-          </div>
-        </Col>
-      </Row>
+      <Col className = 'bullet-list'>
+        <ul className = 'filter-list-bullet'>
+          <li className = 'bullet-green'><span className = 'bullet-text'>Sessions you are assigned to</span></li>
+          <li className = 'bullet-green bullet-blue'><span className = 'bullet-text'> Sessions you are not assigned to</span></li>
+        </ul>
+      </Col>
+      <Col md = {4} className = 'dropdown-name volunteer-filter'>Filter calendar by your assigned sessions:</Col>
+      <Col md = {2}> 
+        <select className = 'dropdown-list' onChange={(e) => cSort(e.target.value)} value={sort}>
+          <option value={'showAll'}>Show All</option>
+          <option value={'assigned'}>Assigned sessions</option>
+        </select> 
+      </Col>
+    </Row>
     )
   }
 

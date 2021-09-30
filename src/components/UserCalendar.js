@@ -7,8 +7,9 @@ import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import "./Calendar.css"
 
-function UserCalendar() {
+function UserCalendar(props) {
   const [currentMonth, cCurrentMonth] = useState(new Date())
   const [userBooking, cUserBooking] = useState(false)
   const [currentDate, cCurrentDate] = useState(new Date())
@@ -86,6 +87,31 @@ function UserCalendar() {
   id:'3a'
   },])
 
+  const [allSessions, cAllSessions] = useState([])
+  const [allUsers, cAllUsers] = useState([])
+  const [allVolunteers, cAllVolunteers] = useState([])
+  const [allMembers, cAllMembers] = useState([])
+
+  const refreshList = () => {
+    props.client.getSessions().then((response) => cAllSessions(response.data))
+    props.client.getUsers().then((response) => cAllUsers(response.data))
+    separateByRole()
+  }
+
+  const separateByRole = () => {
+    allUsers.forEach((user) => {
+      if (user.role === 'user') {
+        allMembers.push(user)
+      } else if (user.role === 'volunteer') {
+        allVolunteers.push(user)
+      }
+    })
+  }
+
+  useEffect(() => {
+    refreshList();
+  }, [])
+
   // renders calendar header
   const renderHeader = () => {
     const dateFormat = 'MMMM yyyy'
@@ -117,7 +143,7 @@ function UserCalendar() {
             <li className = 'bullet-green bullet-blue'><span className = 'bullet-text'> Sessions available to book</span></li>
           </ul>
         </Col>
-        <Col md = {5} className = 'dropdown-name'>Filter calendar by your booked sessions or sessions still available to book:</Col>
+        <Col md = {5} className = 'dropdown-name user-filter'>Filter calendar by your booked sessions or sessions still available to book:</Col>
         <Col md = {2}> 
           <select className = 'dropdown-list' onChange={(e) => cSort(e.target.value)} value={sort}>
             <option className = 'dropdown-option' value={'showAll'}>Show All</option>
@@ -195,6 +221,15 @@ function UserCalendar() {
     }) 
   }
 
+  // const showSessions = (day) => {
+  //   return allSessions.map((session, i) => {
+  //     const sessionDate = new Date(session.date)
+  //     if (sessionDate.getTime() === day.getTime()) {
+  //         return displaySessions(session, i)
+  //     } 
+  //   }) 
+  // }
+
   // builds invidual session entries in calendar 
   const sessionEntry = (session, i) => {
     return (
@@ -209,6 +244,19 @@ function UserCalendar() {
     )
   }
 
+  // const sessionEntry = (session, i) => {
+  //   return (
+  //     <OverlayTrigger key = {i} trigger = 'click' placement = 'bottom' overlay = {popoverClick(session)} rootClose>
+  //       <li className = 'dis-session-info li-show-sessions' 
+  //       style={{ backgroundColor : session.sessionUsers.includes(users[0].id) ? '#5Cb85C': session.sessionUsers.length === session.userLimit ? 'White' : '#0D6EFD', 
+  //       color : session.sessionUsers.length === session.userLimit ? 'rgb(170, 163, 163)' : 'White'}} 
+  //       >
+  //         {session.sessionTimeStart}{' '}{displaySessionDescription(session.userLimit).name}
+  //       </li>
+  //     </OverlayTrigger>
+  //   )
+  // }
+
   // gets information for that particular session
   const displaySessions = (session, i) => {
     if (sort === 'booked' && session.users.includes(users[0].id)) {
@@ -219,6 +267,16 @@ function UserCalendar() {
       return sessionEntry(session,i)
     }
   }
+
+  // const displaySessions = (session, i) => {
+  //   if (sort === 'booked' && session.sessionUsers.includes(users[0].id)) {
+  //     return sessionEntry(session,i)
+  //   } else if (sort === 'available' && !session.sessionUsers.includes(users[0].id) && session.sessionUsers.length < session.userLimit) {
+  //     return sessionEntry(session,i) 
+  //   } else if (sort === 'showAll') {
+  //     return sessionEntry(session,i)
+  //   }
+  // }
 
   // switches calendar to next month
   const nextMonth = () => {
@@ -277,6 +335,16 @@ function UserCalendar() {
     }
   }
 
+  // const showBookingButton = (session) => {
+  //   if (session.sessionUsers.includes(users[0].id)) {
+  //     return <Button className = 'booking-btn btn-danger' onClick = {(e) => cancelBookingHandler(e, session)}>Cancel booking</Button>
+  //   } if (!session.sessionUsers.includes(users[0].id) && session.sessionUsers.length === session.userLimit) {
+  //     return <Button className = 'booking-btn btn-secondary'>Fully booked</Button>
+  //   } else {
+  //     return <Button className = 'booking-btn' onClick = {(e) => bookingHandler(e, session)}>Book session</Button>
+  //   }
+  // }
+
   const findVolunteerName = (session) => {
     return volunteers.map((volunteer) => {
       if (session.users.includes(users[0].id) && volunteer.firstName === session.volunteer){
@@ -285,6 +353,14 @@ function UserCalendar() {
     )
   }
 
+  // const findVolunteerName = (session) => {
+  //   return allVolunteers.map((volunteer) => {
+  //     if (session.sessionUsers.includes(users[0].id) && volunteer._id === session.volunteer){
+  //       return 'Session volunteer: ' + volunteer.nameFirst + ' ' + volunteer.nameLast
+  //     }}
+  //   )
+  // }
+
   const findVolunteerEmail = (session) => {
     return volunteers.map((volunteer) => {
       if (session.users.includes(users[0].id) && volunteer.firstName === session.volunteer){
@@ -292,6 +368,14 @@ function UserCalendar() {
       }}
     )
   }
+
+  // const findVolunteerEmail = (session) => {
+  //   return allVolunteers.map((volunteer) => {
+  //     if (session.sessionUsers.includes(users[0].id) && volunteer._id === session.volunteer){
+  //       return 'Volunteer contact: ' + volunteer.email
+  //     }}
+  //   )
+  // }
 
   // session calendar popover
   const popoverClick = (session) => (
@@ -331,6 +415,43 @@ function UserCalendar() {
       </Card>
     </Popover>
   )
+  // const popoverClick = (session) => (
+  //   <Popover className = 'popover-main' id='popover-trigger-click' title='Popover bottom'>
+  //     <Card className = 'popover-card'>
+  //       <Card.Body className = 'popover-body'>
+  //         <Row className = 'session-name'>
+  //           {displaySessionDescription(session.limit).name}
+  //         </Row>
+  //         <Row>
+  //           {session.date}{' '}{session.sessionTimeStart}{'-'}{session.sessionTimeFinish}
+  //         </Row>
+  //         <Row>
+  //           <Col className = 'location-icon' xs='auto'>
+  //             <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-geo-alt-fill' viewBox='0 0 16 16'>
+  //             <path d='M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z'/>
+  //             </svg>  
+  //           </Col> 
+  //           <Col className = 'location-text'>{session.sessionLocation}</Col>
+  //         </Row>
+  //         <Row className = 'session-description'>
+  //           {displaySessionDescription(session.userLimit).description}
+  //         </Row>
+  //         <Row>
+  //           {displaySessionDescription(session.userLimit).cost}
+  //         </Row>
+  //         <Row className = 'session-volunteer'>
+  //           {findVolunteerName(session)}
+  //         </Row>
+  //         <Row>
+  //           {findVolunteerEmail(session)}
+  //         </Row>
+  //         <Row className = 'booking-btn-row'>
+  //           {showBookingButton(session)}
+  //         </Row>
+  //       </Card.Body>
+  //     </Card>
+  //   </Popover>
+  // )
 
   useEffect(() => {
     renderHeader()
