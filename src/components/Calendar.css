@@ -112,7 +112,6 @@ main {
   text-align: right;
 }
 
-
 /* Calendar */
 
 .calendar {
@@ -250,7 +249,7 @@ main {
 
 .li-show-sessions {
   border-radius: 5px;
-  padding-left: 10px;
+  padding-left: 12px;
   padding-right: 10px;
 }
 
@@ -377,7 +376,7 @@ main {
 }
 
 .user-filter {
-  padding-top: 4px;
+  /* padding-top: 4px; */
 }
 
 /* admin search field */
@@ -441,3 +440,21 @@ main {
   margin-right: 5px;
   margin-left: 5px
 }
+
+@media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+  .user-filter {
+    margin-left: 9px;
+    margin-bottom: 3px;
+  }
+
+  .user-filter-dropdown {
+    margin-left: 8px;
+  }
+
+  /* .calendar .body .cell {
+    height: 3em;
+    
+  } */
+}
+

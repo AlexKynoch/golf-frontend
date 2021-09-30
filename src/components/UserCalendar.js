@@ -143,8 +143,8 @@ function UserCalendar(props) {
             <li className = 'bullet-green bullet-blue'><span className = 'bullet-text'> Sessions available to book</span></li>
           </ul>
         </Col>
-        <Col md = {5} className = 'dropdown-name user-filter'>Filter calendar by your booked sessions or sessions still available to book:</Col>
-        <Col md = {2}> 
+        <Col lg = {5} md = {4} className = 'dropdown-name user-filter'>Filter calendar by your booked sessions or sessions still available to book:</Col>
+        <Col lg = {2} md = {3} className = 'user-filter-dropdown'> 
           <select className = 'dropdown-list' onChange={(e) => cSort(e.target.value)} value={sort}>
             <option className = 'dropdown-option' value={'showAll'}>Show All</option>
             <option className = 'dropdown-option' value={'booked'}>Booked Sessions</option>
@@ -155,19 +155,30 @@ function UserCalendar(props) {
     )
   }
 
+  const buildDayName = (day, i) => {
+    return (<div className='col col-center' key={i}>
+    {day}
+  </div>)
+  }
+
+  useEffect(() => {
+    renderHeader()
+    renderDays()
+    renderCells()
+  }, [window.innerWidth])
+
   // renders calendar days
   const renderDays = () => {
-    const dateFormat = 'iiii'
-    const days = []
-    let startDate = dateFns.startOfWeek(currentMonth)
+    const shortDays = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
+    const longDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    let days
 
-    for (let i = 0; i < 7; i++) {
-      days.push(
-        <div className='col col-center' key={i}>
-          {dateFns.format(dateFns.addDays(startDate, i), dateFormat)}
-        </div>
-      )
+    if (window.innerWidth < 768) {
+      days = shortDays.map((day, i) => buildDayName(day, i))
+    } else {
+      days =  longDays.map((day, i) => buildDayName(day, i))
     }
+
     return <div className='days row'>{days}</div>
   }
 
@@ -175,7 +186,7 @@ function UserCalendar(props) {
   const renderCells = () => {
     const monthStart = dateFns.startOfMonth(currentMonth)
     const monthEnd = dateFns.endOfMonth(monthStart)
-    const startDate = dateFns.startOfWeek(monthStart)
+    const startDate = dateFns.startOfWeek(monthStart, { weekStartsOn: 1 })
     const endDate = dateFns.endOfWeek(monthEnd)
     const dateFormat = 'd'
     const rows = []
