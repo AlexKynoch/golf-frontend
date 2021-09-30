@@ -37,10 +37,14 @@ function App() {
     <div className="App">
 
       <NavBar />
-      <Profile />
+      <div className="row">
+        <div className="row">
+          <div className="column"><Profile /></div>
+          <div className="column"><PPVolunteer /></div>
+        </div>
+      </div>
 
 
-      
 
       {/* <table>
         <thead>
@@ -54,7 +58,6 @@ function App() {
 
 
 
-      <PPVolunteer />
 
 
     </div>

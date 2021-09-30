@@ -1,8 +1,8 @@
 .App {
   text-align: center;
   background-color: #ccdddd;
-  height: 100vh;
-  width: 100vw;
+  height: fit-content;
+  flex-direction: column;
 }
 
 .App-logo {
@@ -42,4 +42,12 @@
 
 #myProfile.card {
   border-radius: 10px;
+}
+
+.row {
+  display: flex;
+}
+
+.column {
+  flex: 50%;
 }

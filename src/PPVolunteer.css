@@ -27,6 +27,7 @@
 }
 .card-body {
   background-color: white;
+  border-style: none;
 }
 
 .btn-primary {
