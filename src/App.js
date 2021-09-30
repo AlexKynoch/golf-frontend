@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react"
 import { ApiClient } from "./apiClient"
 import './App.css'
+
 import NavBar from "./NavBar"
+
+import PPVolunteer from "./PPVolunteer"
+
+
 
 function App() {
   const [sessions, cSessions] = useState([]);
@@ -29,7 +34,9 @@ function App() {
 
   return (
     <div className="App">
+
       <NavBar />
+
       {/* <table>
         <thead>
           <tr>
@@ -39,6 +46,10 @@ function App() {
         </thead>
         <tbody>{makeSessionTable()}</tbody>
       </table> */}
+
+
+      <PPVolunteer />
+
 
     </div>
   );
