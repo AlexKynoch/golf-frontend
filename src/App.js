@@ -3,6 +3,7 @@ import { ApiClient } from "./apiClient"
 import './App.css'
 
 import NavBar from "./NavBar"
+import Profile from "./Profile"
 
 import PPVolunteer from "./PPVolunteer"
 
@@ -36,6 +37,10 @@ function App() {
     <div className="App">
 
       <NavBar />
+      <Profile />
+
+
+      
 
       {/* <table>
         <thead>
@@ -46,6 +51,7 @@ function App() {
         </thead>
         <tbody>{makeSessionTable()}</tbody>
       </table> */}
+
 
 
       <PPVolunteer />

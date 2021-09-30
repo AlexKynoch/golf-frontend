@@ -14,7 +14,7 @@ const NavBar = () => {
   return (
     <>
 
-      <Navbar>
+      <Navbar className="navbar">
         <Container>
 
           <Navbar.Brand href="/">
