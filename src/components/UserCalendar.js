@@ -106,7 +106,6 @@ function UserCalendar(props) {
     props.client.removeSessionUser(id, user)
   }
 
-
   // separate volunteers from service users
   const separateByRole = () => {
     allUsers.forEach((user) => {
@@ -227,17 +226,8 @@ function UserCalendar(props) {
   }
 
   // puts sessions into the corrent calendar cell
-  const showSessions = (day) => {
-    return sessions.map((session, i) => {
-      const sessionDate = new Date(session.date)
-      if (sessionDate.getTime() === day.getTime()) {
-          return displaySessions(session, i)
-      } 
-    }) 
-  }
-
   // const showSessions = (day) => {
-  //   return allSessions.map((session, i) => {
+  //   return sessions.map((session, i) => {
   //     const sessionDate = new Date(session.date)
   //     if (sessionDate.getTime() === day.getTime()) {
   //         return displaySessions(session, i)
@@ -245,53 +235,62 @@ function UserCalendar(props) {
   //   }) 
   // }
 
-  // builds invidual session entries in calendar 
-  const sessionEntry = (session, i) => {
-    return (
-      <OverlayTrigger key = {i} trigger = 'click' placement = 'bottom' overlay = {popoverClick(session)} rootClose>
-        <li className = 'dis-session-info li-show-sessions' 
-        style={{ backgroundColor : session.users.includes(users[0].id) ? '#5Cb85C': session.users.length === session.limit ? 'White' : '#0D6EFD', 
-        color : session.users.length === session.limit ? 'rgb(170, 163, 163)' : 'White'}} 
-        >
-          {session.timeStart}{' '}{displaySessionDescription(session.limit).name}
-        </li>
-      </OverlayTrigger>
-    )
+  const showSessions = (day) => {
+    return allSessions.map((session, i) => {
+      const sessionDate = new Date(session.date)
+      if (sessionDate.getTime() === day.getTime()) {
+          return displaySessions(session, i)
+      } 
+    }) 
   }
 
+  // builds invidual session entries in calendar 
   // const sessionEntry = (session, i) => {
   //   return (
   //     <OverlayTrigger key = {i} trigger = 'click' placement = 'bottom' overlay = {popoverClick(session)} rootClose>
   //       <li className = 'dis-session-info li-show-sessions' 
-  //       style={{ backgroundColor : session.sessionUsers.includes(users[0].id) ? '#5Cb85C': session.sessionUsers.length === session.userLimit ? 'White' : '#0D6EFD', 
-  //       color : session.sessionUsers.length === session.userLimit ? 'rgb(170, 163, 163)' : 'White'}} 
+  //       style={{ backgroundColor : session.users.includes(users[0].id) ? '#5Cb85C': session.users.length === session.limit ? 'White' : '#0D6EFD', 
+  //       color : session.users.length === session.limit ? 'rgb(170, 163, 163)' : 'White'}} 
   //       >
-  //         {session.sessionTimeStart}{' '}{displaySessionDescription(session.userLimit).name}
+  //         {session.timeStart}{' '}{displaySessionDescription(session.limit).name}
   //       </li>
   //     </OverlayTrigger>
   //   )
   // }
 
-  // gets information for that particular session
-  const displaySessions = (session, i) => {
-    if (sort === 'booked' && session.users.includes(users[0].id)) {
-      return sessionEntry(session,i)
-    } else if (sort === 'available' && !session.users.includes(users[0].id) && session.users.length < session.limit) {
-      return sessionEntry(session,i) 
-    } else if (sort === 'showAll') {
-      return sessionEntry(session,i)
-    }
+  const sessionEntry = (session, i) => {
+    return (
+      <OverlayTrigger key = {i} trigger = 'click' placement = 'bottom' overlay = {popoverClick(session)} rootClose>
+        <li className = 'dis-session-info li-show-sessions' 
+        style={{ backgroundColor : session.sessionUsers.includes(users[0].id) ? '#5Cb85C': session.sessionUsers.length === session.userLimit ? 'White' : '#0D6EFD', 
+        color : session.sessionUsers.length === session.userLimit ? 'rgb(170, 163, 163)' : 'White'}} 
+        >
+          {session.sessionTimeStart}{' '}{displaySessionDescription(session.userLimit).name}
+        </li>
+      </OverlayTrigger>
+    )
   }
 
+  // gets information for that particular session
   // const displaySessions = (session, i) => {
-  //   if (sort === 'booked' && session.sessionUsers.includes(users[0].id)) {
+  //   if (sort === 'booked' && session.users.includes(users[0].id)) {
   //     return sessionEntry(session,i)
-  //   } else if (sort === 'available' && !session.sessionUsers.includes(users[0].id) && session.sessionUsers.length < session.userLimit) {
+  //   } else if (sort === 'available' && !session.users.includes(users[0].id) && session.users.length < session.limit) {
   //     return sessionEntry(session,i) 
   //   } else if (sort === 'showAll') {
   //     return sessionEntry(session,i)
   //   }
   // }
+
+  const displaySessions = (session, i) => {
+    if (sort === 'booked' && session.sessionUsers.includes(users[0].id)) {
+      return sessionEntry(session,i)
+    } else if (sort === 'available' && !session.sessionUsers.includes(users[0].id) && session.sessionUsers.length < session.userLimit) {
+      return sessionEntry(session,i) 
+    } else if (sort === 'showAll') {
+      return sessionEntry(session,i)
+    }
+  }
 
   // switches calendar to next month
   const nextMonth = () => {
@@ -318,118 +317,101 @@ function UserCalendar(props) {
   }
 
   // books user into a session
+  // const bookingHandler = (e, ses) => {
+  //   e.preventDefault()
+  //   sessions.forEach((session, index) => {
+  //     if (session.id === ses.id) {
+  //       sessions[index].users.push(users[0].id)
+  //     }
+  //   })
+  //   cUserBooking(!userBooking) 
+  // }
+
   const bookingHandler = (e, ses) => {
     e.preventDefault()
-    sessions.forEach((session, index) => {
+    allSessions.forEach((session, index) => {
       if (session.id === ses.id) {
-        sessions[index].users.push(users[0].id)
+        addUser(ses.id, users[0].id)
       }
     })
     cUserBooking(!userBooking) 
   }
 
   // cancels users session booking
+  // const cancelBookingHandler = (e, ses) => {
+  //   e.preventDefault()
+  //   sessions.forEach((session, index) => {
+  //     if (session.id === ses.id) {
+  //       sessions[index].users = sessions[index].users.filter((i) => i !== users[0].id)
+  //     }
+  //   })
+  //   cUserBooking(!userBooking) 
+  // }
+
   const cancelBookingHandler = (e, ses) => {
     e.preventDefault()
-    sessions.forEach((session, index) => {
+    allSessions.forEach((session, index) => {
       if (session.id === ses.id) {
-        sessions[index].users = sessions[index].users.filter((i) => i !== users[0].id)
+        removeUser(ses.id, users[0].id)
       }
     })
     cUserBooking(!userBooking) 
   }
 
   // displays either book session, cancel booking or fully booked button depending on the user
-  const showBookingButton = (session) => {
-    if (session.users.includes(users[0].id)) {
-      return <Button className = 'booking-btn btn-danger' onClick = {(e) => cancelBookingHandler(e, session)}>Cancel booking</Button>
-    } if (!session.users.includes(users[0].id) && session.users.length === session.limit) {
-      return <Button className = 'booking-btn btn-secondary'>Fully booked</Button>
-    } else {
-      return <Button className = 'booking-btn' onClick = {(e) => bookingHandler(e, session)}>Book session</Button>
-    }
-  }
-
   // const showBookingButton = (session) => {
-  //   if (session.sessionUsers.includes(users[0].id)) {
+  //   if (session.users.includes(users[0].id)) {
   //     return <Button className = 'booking-btn btn-danger' onClick = {(e) => cancelBookingHandler(e, session)}>Cancel booking</Button>
-  //   } if (!session.sessionUsers.includes(users[0].id) && session.sessionUsers.length === session.userLimit) {
+  //   } if (!session.users.includes(users[0].id) && session.users.length === session.limit) {
   //     return <Button className = 'booking-btn btn-secondary'>Fully booked</Button>
   //   } else {
   //     return <Button className = 'booking-btn' onClick = {(e) => bookingHandler(e, session)}>Book session</Button>
   //   }
   // }
 
-  const findVolunteerName = (session) => {
-    return volunteers.map((volunteer) => {
-      if (session.users.includes(users[0].id) && volunteer.firstName === session.volunteer){
-        return 'Session volunteer: ' + volunteer.firstName
-      }}
-    )
+  const showBookingButton = (session) => {
+    if (session.sessionUsers.includes(users[0].id)) {
+      return <Button className = 'booking-btn btn-danger' onClick = {(e) => cancelBookingHandler(e, session)}>Cancel booking</Button>
+    } if (!session.sessionUsers.includes(users[0].id) && session.sessionUsers.length === session.userLimit) {
+      return <Button className = 'booking-btn btn-secondary'>Fully booked</Button>
+    } else {
+      return <Button className = 'booking-btn' onClick = {(e) => bookingHandler(e, session)}>Book session</Button>
+    }
   }
 
   // const findVolunteerName = (session) => {
-  //   return allVolunteers.map((volunteer) => {
-  //     if (session.sessionUsers.includes(users[0].id) && volunteer._id === session.volunteer){
-  //       return 'Session volunteer: ' + volunteer.nameFirst + ' ' + volunteer.nameLast
+  //   return volunteers.map((volunteer) => {
+  //     if (session.users.includes(users[0].id) && volunteer.firstName === session.volunteer){
+  //       return 'Session volunteer: ' + volunteer.firstName
   //     }}
   //   )
   // }
 
-  const findVolunteerEmail = (session) => {
-    return volunteers.map((volunteer) => {
-      if (session.users.includes(users[0].id) && volunteer.firstName === session.volunteer){
-        return 'Volunteer contact: ' + volunteer.email
+  const findVolunteerName = (session) => {
+    return allVolunteers.map((volunteer) => {
+      if (session.sessionUsers.includes(users[0].id) && volunteer._id === session.volunteer){
+        return 'Session volunteer: ' + volunteer.nameFirst + ' ' + volunteer.nameLast
       }}
     )
   }
 
   // const findVolunteerEmail = (session) => {
-  //   return allVolunteers.map((volunteer) => {
-  //     if (session.sessionUsers.includes(users[0].id) && volunteer._id === session.volunteer){
+  //   return volunteers.map((volunteer) => {
+  //     if (session.users.includes(users[0].id) && volunteer.firstName === session.volunteer){
   //       return 'Volunteer contact: ' + volunteer.email
   //     }}
   //   )
   // }
 
+  const findVolunteerEmail = (session) => {
+    return allVolunteers.map((volunteer) => {
+      if (session.sessionUsers.includes(users[0].id) && volunteer._id === session.volunteer){
+        return 'Volunteer contact: ' + volunteer.email
+      }}
+    )
+  }
+
   // session calendar popover
-  const popoverClick = (session) => (
-    <Popover className = 'popover-main' id='popover-trigger-click' title='Popover bottom'>
-      <Card className = 'popover-card'>
-        <Card.Body className = 'popover-body'>
-          <Row className = 'session-name'>
-            {displaySessionDescription(session.limit).name}
-          </Row>
-          <Row>
-            {session.date}{' '}{session.timeStart}{'-'}{session.timeEnd}
-          </Row>
-          <Row>
-            <Col className = 'location-icon' xs='auto'>
-              <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-geo-alt-fill' viewBox='0 0 16 16'>
-              <path d='M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z'/>
-              </svg>  
-            </Col> 
-            <Col className = 'location-text'>{session.location}</Col>
-          </Row>
-          <Row className = 'session-description'>
-            {displaySessionDescription(session.limit).description}
-          </Row>
-          <Row>
-            {displaySessionDescription(session.limit).cost}
-          </Row>
-          <Row className = 'session-volunteer'>
-            {findVolunteerName(session)}
-          </Row>
-          <Row>
-            {findVolunteerEmail(session)}
-          </Row>
-          <Row className = 'booking-btn-row'>
-            {showBookingButton(session)}
-          </Row>
-        </Card.Body>
-      </Card>
-    </Popover>
-  )
   // const popoverClick = (session) => (
   //   <Popover className = 'popover-main' id='popover-trigger-click' title='Popover bottom'>
   //     <Card className = 'popover-card'>
@@ -438,7 +420,7 @@ function UserCalendar(props) {
   //           {displaySessionDescription(session.limit).name}
   //         </Row>
   //         <Row>
-  //           {session.date}{' '}{session.sessionTimeStart}{'-'}{session.sessionTimeFinish}
+  //           {session.date}{' '}{session.timeStart}{'-'}{session.timeEnd}
   //         </Row>
   //         <Row>
   //           <Col className = 'location-icon' xs='auto'>
@@ -446,13 +428,13 @@ function UserCalendar(props) {
   //             <path d='M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z'/>
   //             </svg>  
   //           </Col> 
-  //           <Col className = 'location-text'>{session.sessionLocation}</Col>
+  //           <Col className = 'location-text'>{session.location}</Col>
   //         </Row>
   //         <Row className = 'session-description'>
-  //           {displaySessionDescription(session.userLimit).description}
+  //           {displaySessionDescription(session.limit).description}
   //         </Row>
   //         <Row>
-  //           {displaySessionDescription(session.userLimit).cost}
+  //           {displaySessionDescription(session.limit).cost}
   //         </Row>
   //         <Row className = 'session-volunteer'>
   //           {findVolunteerName(session)}
@@ -467,6 +449,43 @@ function UserCalendar(props) {
   //     </Card>
   //   </Popover>
   // )
+  const popoverClick = (session) => (
+    <Popover className = 'popover-main' id='popover-trigger-click' title='Popover bottom'>
+      <Card className = 'popover-card'>
+        <Card.Body className = 'popover-body'>
+          <Row className = 'session-name'>
+            {displaySessionDescription(session.userLimit).name}
+          </Row>
+          <Row>
+            {session.date}{' '}{session.sessionTimeStart}{'-'}{session.sessionTimeFinish}
+          </Row>
+          <Row>
+            <Col className = 'location-icon' xs='auto'>
+              <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-geo-alt-fill' viewBox='0 0 16 16'>
+              <path d='M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z'/>
+              </svg>  
+            </Col> 
+            <Col className = 'location-text'>{session.sessionLocation}</Col>
+          </Row>
+          <Row className = 'session-description'>
+            {displaySessionDescription(session.userLimit).description}
+          </Row>
+          <Row>
+            {displaySessionDescription(session.userLimit).cost}
+          </Row>
+          <Row className = 'session-volunteer'>
+            {findVolunteerName(session)}
+          </Row>
+          <Row>
+            {findVolunteerEmail(session)}
+          </Row>
+          <Row className = 'booking-btn-row'>
+            {showBookingButton(session)}
+          </Row>
+        </Card.Body>
+      </Card>
+    </Popover>
+  )
 
   useEffect(() => {
     renderHeader()
