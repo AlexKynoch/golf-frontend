@@ -9,7 +9,6 @@ export class ApiClient {
             url,
             data,
         }).catch((error) => {
-            console.log(error)
             if (error.response.status === 403) {
                 return Promise.reject()
             } else {
@@ -18,8 +17,8 @@ export class ApiClient {
         });
     }
 
-    getSessions() {
-        return this.apiCall("get", url + 'sessions');
+    async getSessions() {
+        return await this.apiCall("get", url + 'sessions');
     }
 
     getUsers() {

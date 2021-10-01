@@ -11,7 +11,6 @@ import "./Calendar.css"
 
 function UserCalendar(props) {
   const [currentMonth, cCurrentMonth] = useState(new Date())
-  const [userBooking, cUserBooking] = useState(false)
   const [currentDate, cCurrentDate] = useState(new Date())
   const [sort, cSort] = useState('showAll')
   const [sessionInfo, cSessionInfo] = useState([
@@ -26,100 +25,51 @@ function UserCalendar(props) {
     {name: 'Group Session',
     description:'At present we’re limited to the “rule of six”. The sessions are perfect for people who enjoy socialising, being part of a team and group coaching.',
     cost: '£10 per hour'
-    }
-  ])
-  const [volunteers, cVolunteers] = useState([
-    {id: '1',
-    userName: 'Thomasn1',
-    location: 'Sheffield',
-    role: 'volunteer',
-    firstName: 'Thomas',
-    email: 'tom@gmail.com'
     },
-    {id: '2',
-    userName: 'Jenny12m',
-    location: 'Sheffield',
-    role: 'volunteer',
-    firstName: 'Jenny',
-    email: 'jenny@gmail.com'
+    {name: 'No session info to show',
+    description:'No session with such user limit',
+    cost: 'No session info to show'
     }
   ])
-  const [users, cUsers] = useState([
+  const [usersOld, cusersOld] = useState([
     {id: '1',
     userName: 'Pauln1',
     location: 'Sheffield',
     role: 'user',
     firstName: 'Paul'
-    },
-    {id: '2',
-    userName: 'Jenny12m',
-    location: 'Sheffield',
-    role: 'user',
-    firstName: 'Jenny'
     }
   ])
-  const [sessions, cSessions] = useState([
-  { volunteer: 'Thomas',
-    users: ['3'],
-    location: 'Sheffield',
-    date: '7 September 2021',
-    timeStart: '14:00',
-    timeEnd: '15:00',
-    limit: 1,
-    id:'1a'
-  },
-  { volunteer: 'Jenny',
-    users: ['1'],
-    location: 'Sheffield',
-    date: '6 September 2021',
-    timeStart: '16:00',
-    timeEnd: '17:00',
-    limit: 2,
-    id:'2a'
-  },
-  {volunteer: 'Jenny',
-  users: [],
-  location: 'Sheffield',
-  date: '17 September 2021',
-  timeStart: '13:00',
-  timeEnd: '14:00',
-  limit: 5,
-  id:'3a'
-  },])
-
-  const [allSessions, cAllSessions] = useState([])
-  const [allUsers, cAllUsers] = useState([])
-  const [allVolunteers, cAllVolunteers] = useState([])
-  const [allMembers, cAllMembers] = useState([])
+ 
+  const [sessions, cSessions] = useState([])
+  const [users, cUsers] = useState([])
 
   const refreshList = () => {
-    props.client.getSessions().then((response) => cAllSessions(response.data))
-    props.client.getUsers().then((response) => cAllUsers(response.data))
-    separateByRole()
+    props.client.getSessions().then((response) => cSessions(response.data))
+    props.client.getUsers().then((response) => cUsers(response.data))
   }
 
-  const addUser = (id, user) => {
-    props.client.addSessionUser(id, user)
-  }
-
-  const removeUser = (id, user) => {
-    props.client.removeSessionUser(id, user)
-  }
-
-  // separate volunteers from service users
-  const separateByRole = () => {
-    allUsers.forEach((user) => {
-      if (user.role === 'user') {
-        allMembers.push(user)
-      } else if (user.role === 'volunteer') {
-        allVolunteers.push(user)
+  const addUser = async (id, user) => {
+    const res = await props.client.addSessionUser(id, user)
+    const updated = sessions.map((session) => {
+      if(session._id === id){
+        session.sessionUsers = res.data.body.sessionUsers
       }
+      return session
     })
+    cSessions(updated)
+  }
+  
+  const removeUser = async (id, user) => {
+    const res = await props.client.removeSessionUser(id, user)
+    const updated = sessions.map((session) => {
+      if(session._id === id){
+        session.sessionUsers = res.data.body.sessionUsers
+      }
+      return session
+    })
+    cSessions(updated)
   }
 
-  useEffect(() => {
-    refreshList();
-  }, [])
 
   // renders calendar header
   const renderHeader = () => {
@@ -225,45 +175,22 @@ function UserCalendar(props) {
     return <div className='body'>{rows}</div>
   }
 
-  // puts sessions into the corrent calendar cell
-  // const showSessions = (day) => {
-  //   return sessions.map((session, i) => {
-  //     const sessionDate = new Date(session.date)
-  //     if (sessionDate.getTime() === day.getTime()) {
-  //         return displaySessions(session, i)
-  //     } 
-  //   }) 
-  // }
-
   const showSessions = (day) => {
-    return allSessions.map((session, i) => {
+    return sessions.map((session, i) => {
       const sessionDate = new Date(session.date)
       if (sessionDate.getTime() === day.getTime()) {
+        // console.log(new Date(session.date + ' ' + session.sessionTimeStart))
           return displaySessions(session, i)
       } 
     }) 
   }
 
-  // builds invidual session entries in calendar 
-  // const sessionEntry = (session, i) => {
-  //   return (
-  //     <OverlayTrigger key = {i} trigger = 'click' placement = 'bottom' overlay = {popoverClick(session)} rootClose>
-  //       <li className = 'dis-session-info li-show-sessions' 
-  //       style={{ backgroundColor : session.users.includes(users[0].id) ? '#5Cb85C': session.users.length === session.limit ? 'White' : '#0D6EFD', 
-  //       color : session.users.length === session.limit ? 'rgb(170, 163, 163)' : 'White'}} 
-  //       >
-  //         {session.timeStart}{' '}{displaySessionDescription(session.limit).name}
-  //       </li>
-  //     </OverlayTrigger>
-  //   )
-  // }
-
   const sessionEntry = (session, i) => {
     return (
       <OverlayTrigger key = {i} trigger = 'click' placement = 'bottom' overlay = {popoverClick(session)} rootClose>
         <li className = 'dis-session-info li-show-sessions' 
-        style={{ backgroundColor : session.sessionUsers.includes(users[0].id) ? '#5Cb85C': session.sessionUsers.length === session.userLimit ? 'White' : '#0D6EFD', 
-        color : session.sessionUsers.length === session.userLimit ? 'rgb(170, 163, 163)' : 'White'}} 
+        style={{ backgroundColor : session.sessionUsers.includes(usersOld[0].id) ? '#5Cb85C': session.sessionUsers.length === session.userLimit ? 'White' : '#0D6EFD', 
+        color : session.sessionUsers.includes(usersOld[0].id) ? 'White' : session.sessionUsers.length === session.userLimit ? 'rgb(170, 163, 163)' : 'White'}} 
         >
           {session.sessionTimeStart}{' '}{displaySessionDescription(session.userLimit).name}
         </li>
@@ -271,21 +198,10 @@ function UserCalendar(props) {
     )
   }
 
-  // gets information for that particular session
-  // const displaySessions = (session, i) => {
-  //   if (sort === 'booked' && session.users.includes(users[0].id)) {
-  //     return sessionEntry(session,i)
-  //   } else if (sort === 'available' && !session.users.includes(users[0].id) && session.users.length < session.limit) {
-  //     return sessionEntry(session,i) 
-  //   } else if (sort === 'showAll') {
-  //     return sessionEntry(session,i)
-  //   }
-  // }
-
   const displaySessions = (session, i) => {
-    if (sort === 'booked' && session.sessionUsers.includes(users[0].id)) {
+    if (sort === 'booked' && session.sessionUsers.includes(usersOld[0].id)) {
       return sessionEntry(session,i)
-    } else if (sort === 'available' && !session.sessionUsers.includes(users[0].id) && session.sessionUsers.length < session.userLimit) {
+    } else if (sort === 'available' && !session.sessionUsers.includes(usersOld[0].id) && session.sessionUsers.length < session.userLimit) {
       return sessionEntry(session,i) 
     } else if (sort === 'showAll') {
       return sessionEntry(session,i)
@@ -312,143 +228,54 @@ function UserCalendar(props) {
       case 5:
         return sessionInfo[2]
       default:
-        break
+        return sessionInfo[3]
     }
   }
 
-  // books user into a session
-  // const bookingHandler = (e, ses) => {
-  //   e.preventDefault()
-  //   sessions.forEach((session, index) => {
-  //     if (session.id === ses.id) {
-  //       sessions[index].users.push(users[0].id)
-  //     }
-  //   })
-  //   cUserBooking(!userBooking) 
-  // }
-
-  const bookingHandler = (e, ses) => {
+  const bookingHandler = async (e, ses) => {
     e.preventDefault()
-    allSessions.forEach((session, index) => {
-      if (session.id === ses.id) {
-        addUser(ses.id, users[0].id)
+    sessions.forEach(async (session) => {
+      if (session._id === ses._id) {
+        addUser(ses._id, usersOld[0].id)
       }
     })
-    cUserBooking(!userBooking) 
   }
-
-  // cancels users session booking
-  // const cancelBookingHandler = (e, ses) => {
-  //   e.preventDefault()
-  //   sessions.forEach((session, index) => {
-  //     if (session.id === ses.id) {
-  //       sessions[index].users = sessions[index].users.filter((i) => i !== users[0].id)
-  //     }
-  //   })
-  //   cUserBooking(!userBooking) 
-  // }
-
-  const cancelBookingHandler = (e, ses) => {
+  
+  const cancelBookingHandler = async (e, ses) => {
     e.preventDefault()
-    allSessions.forEach((session, index) => {
-      if (session.id === ses.id) {
-        removeUser(ses.id, users[0].id)
+    sessions.forEach(async (session) => {
+      if (session._id === ses._id) {
+        removeUser(ses._id, usersOld[0].id)
       }
     })
-    cUserBooking(!userBooking) 
   }
-
-  // displays either book session, cancel booking or fully booked button depending on the user
-  // const showBookingButton = (session) => {
-  //   if (session.users.includes(users[0].id)) {
-  //     return <Button className = 'booking-btn btn-danger' onClick = {(e) => cancelBookingHandler(e, session)}>Cancel booking</Button>
-  //   } if (!session.users.includes(users[0].id) && session.users.length === session.limit) {
-  //     return <Button className = 'booking-btn btn-secondary'>Fully booked</Button>
-  //   } else {
-  //     return <Button className = 'booking-btn' onClick = {(e) => bookingHandler(e, session)}>Book session</Button>
-  //   }
-  // }
 
   const showBookingButton = (session) => {
-    if (session.sessionUsers.includes(users[0].id)) {
+    if (session.sessionUsers.includes(usersOld[0].id)) {
       return <Button className = 'booking-btn btn-danger' onClick = {(e) => cancelBookingHandler(e, session)}>Cancel booking</Button>
-    } if (!session.sessionUsers.includes(users[0].id) && session.sessionUsers.length === session.userLimit) {
+    } if (!session.sessionUsers.includes(usersOld[0].id) && session.sessionUsers.length === session.userLimit) {
       return <Button className = 'booking-btn btn-secondary'>Fully booked</Button>
     } else {
       return <Button className = 'booking-btn' onClick = {(e) => bookingHandler(e, session)}>Book session</Button>
     }
   }
 
-  // const findVolunteerName = (session) => {
-  //   return volunteers.map((volunteer) => {
-  //     if (session.users.includes(users[0].id) && volunteer.firstName === session.volunteer){
-  //       return 'Session volunteer: ' + volunteer.firstName
-  //     }}
-  //   )
-  // }
-
   const findVolunteerName = (session) => {
-    return allVolunteers.map((volunteer) => {
-      if (session.sessionUsers.includes(users[0].id) && volunteer._id === session.volunteer){
+    return users.map((volunteer) => {
+      if (session.sessionUsers.includes(usersOld[0].id) && volunteer._id === session.volunteer){
         return 'Session volunteer: ' + volunteer.nameFirst + ' ' + volunteer.nameLast
       }}
     )
   }
 
-  // const findVolunteerEmail = (session) => {
-  //   return volunteers.map((volunteer) => {
-  //     if (session.users.includes(users[0].id) && volunteer.firstName === session.volunteer){
-  //       return 'Volunteer contact: ' + volunteer.email
-  //     }}
-  //   )
-  // }
-
   const findVolunteerEmail = (session) => {
-    return allVolunteers.map((volunteer) => {
-      if (session.sessionUsers.includes(users[0].id) && volunteer._id === session.volunteer){
+    return users.map((volunteer) => {
+      if (session.sessionUsers.includes(usersOld[0].id) && volunteer._id === session.volunteer){
         return 'Volunteer contact: ' + volunteer.email
       }}
     )
   }
 
-  // session calendar popover
-  // const popoverClick = (session) => (
-  //   <Popover className = 'popover-main' id='popover-trigger-click' title='Popover bottom'>
-  //     <Card className = 'popover-card'>
-  //       <Card.Body className = 'popover-body'>
-  //         <Row className = 'session-name'>
-  //           {displaySessionDescription(session.limit).name}
-  //         </Row>
-  //         <Row>
-  //           {session.date}{' '}{session.timeStart}{'-'}{session.timeEnd}
-  //         </Row>
-  //         <Row>
-  //           <Col className = 'location-icon' xs='auto'>
-  //             <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-geo-alt-fill' viewBox='0 0 16 16'>
-  //             <path d='M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z'/>
-  //             </svg>  
-  //           </Col> 
-  //           <Col className = 'location-text'>{session.location}</Col>
-  //         </Row>
-  //         <Row className = 'session-description'>
-  //           {displaySessionDescription(session.limit).description}
-  //         </Row>
-  //         <Row>
-  //           {displaySessionDescription(session.limit).cost}
-  //         </Row>
-  //         <Row className = 'session-volunteer'>
-  //           {findVolunteerName(session)}
-  //         </Row>
-  //         <Row>
-  //           {findVolunteerEmail(session)}
-  //         </Row>
-  //         <Row className = 'booking-btn-row'>
-  //           {showBookingButton(session)}
-  //         </Row>
-  //       </Card.Body>
-  //     </Card>
-  //   </Popover>
-  // )
   const popoverClick = (session) => (
     <Popover className = 'popover-main' id='popover-trigger-click' title='Popover bottom'>
       <Card className = 'popover-card'>
@@ -461,7 +288,7 @@ function UserCalendar(props) {
           </Row>
           <Row>
             <Col className = 'location-icon' xs='auto'>
-              <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-geo-alt-fill' viewBox='0 0 16 16'>
+              <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' className='bi bi-geo-alt-fill' viewBox='0 0 16 16'>
               <path d='M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z'/>
               </svg>  
             </Col> 
@@ -488,10 +315,8 @@ function UserCalendar(props) {
   )
 
   useEffect(() => {
-    renderHeader()
-    renderDays()
-    renderCells()
-  }, [userBooking])
+    refreshList();
+  }, [])
 
   return (
     <div className = 'calendar'>
@@ -504,3 +329,10 @@ function UserCalendar(props) {
 }
 
 export default UserCalendar
+
+// on load, session were stored into state
+// click button, button only removed from the database and nothing changed in state
+
+// addUser, called a refresh function which made another request for the current database
+// addUser, manually filtered out the data that we removed => react rerendring anyways
+// server sends back the updated data

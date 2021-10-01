@@ -64,7 +64,7 @@ function AdminCalendar() {
   { volunteer: 'Thomas',
     users: ['Helen'],
     location: 'Sheffield',
-    date: '7 September 2021',
+    date: '7 October 2021',
     timeStart: '14:00',
     timeEnd: '15:00',
     limit: 1,
@@ -73,8 +73,8 @@ function AdminCalendar() {
   { volunteer: 'Jenny',
     users: ['Jack'],
     location: 'Sheffield',
-    date: '6 September 2021',
-    timeStart: '16:00',
+    date: '7 October 2021',
+    timeStart: '13:00',
     timeEnd: '17:00',
     limit: 2,
     id:'2a'
@@ -82,7 +82,7 @@ function AdminCalendar() {
   {volunteer: 'Jenny',
   users: ['Helen', 'Steve'],
   location: 'Sheffield',
-  date: '17 September 2021',
+  date: '17 October 2021',
   timeStart: '13:00',
   timeEnd: '14:00',
   limit: 5,
@@ -417,7 +417,7 @@ function AdminCalendar() {
           </Row>
           <Row>
             <Col className = 'location-icon' xs='auto'>
-              <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-geo-alt-fill' viewBox='0 0 16 16'>
+              <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' className='bi bi-geo-alt-fill' viewBox='0 0 16 16'>
               <path d='M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z'/>
               </svg>  
             </Col> 
@@ -452,11 +452,11 @@ function AdminCalendar() {
     </Popover>
   )
 
-  useEffect(() => {
-    renderHeader()
-    renderDays()
-    renderCells()
-  }, [userBooking])
+  // useEffect(() => {
+  //   renderHeader()
+  //   renderDays()
+  //   renderCells()
+  // }, [userBooking])
 
   return (
     <div className='calendar'>

@@ -444,12 +444,20 @@ main {
 @media only screen and (max-width: 768px) {
   /* For mobile phones: */
   .user-filter {
-    margin-left: 9px;
+    margin-left: 15px;
     margin-bottom: 3px;
   }
 
   .user-filter-dropdown {
-    margin-left: 8px;
+    margin-left: 15px;
+  }
+
+  .bullet-list {
+    margin: -15px 0px -10px -17px
+  }
+
+  .calendar .header {
+    padding: 0.8em
   }
 
   /* .calendar .body .cell {
