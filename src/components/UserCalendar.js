@@ -8,6 +8,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import "./Calendar.css"
+import sortBy from 'lodash/sortBy'
 
 function UserCalendar(props) {
   const [currentMonth, cCurrentMonth] = useState(new Date())
@@ -179,7 +180,7 @@ function UserCalendar(props) {
     return sessions.map((session, i) => {
       const sessionDate = new Date(session.date)
       if (sessionDate.getTime() === day.getTime()) {
-        // console.log(new Date(session.date + ' ' + session.sessionTimeStart))
+        console.log(new Date(session.date + ' ' + session.sessionTimeStart))
           return displaySessions(session, i)
       } 
     }) 

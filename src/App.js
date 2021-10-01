@@ -12,12 +12,12 @@ function App() {
       <div className="App"> 
         <main>
           <UserCalendar client = {client} />
-          <VolunteerCalendar client={client}/>
+          {/* <VolunteerCalendar client={client}/>
           <AdminCalendar client={client}/>
-          <CgaCalendar client={client}/>
+          <CgaCalendar client={client}/> */}
         </main>
       </div>
     )  
 }
 
-export default App;
+export default App
