@@ -15,7 +15,7 @@ const NavBar = () => {
     <>
 
       <Navbar className="navbar">
-        <Container>
+        <Container className="navbarContentContainer">
 
           <Navbar.Brand href="/">
             <img src={navImg}></img>

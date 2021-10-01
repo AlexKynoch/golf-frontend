@@ -21,3 +21,6 @@ img {
   display: flex;
   justify-content: flex-start;
 }
+.navbarContentContainer {
+  background-color: transparent;
+}

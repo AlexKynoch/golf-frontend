@@ -37,12 +37,11 @@ function App() {
     <div className="App">
 
       <NavBar />
-      <div className="row">
-        <div className="row">
-          <div className="column"><Profile /></div>
-          <div className="column"><PPVolunteer /></div>
-        </div>
+      <div className="row volunteerDashboardRow">
+        <div className="col volunteerDashboardCol"><Profile /></div>
+        <div className="col volunteerDashboardCol"><PPVolunteer /></div>
       </div>
+
 
 
 
