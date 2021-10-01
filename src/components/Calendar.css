@@ -161,7 +161,7 @@ main {
 
 .calendar .body .cell {
   position: relative;
-  height: 6em;
+  min-height: 6em;
   border-right: 1px solid var(--border-color);
   overflow: hidden;
   cursor: pointer;
@@ -375,10 +375,6 @@ main {
   padding-top: 6px;
 }
 
-.user-filter {
-  /* padding-top: 4px; */
-}
-
 /* admin search field */
 
 .search-field {
@@ -460,9 +456,12 @@ main {
     padding: 0.8em
   }
 
-  /* .calendar .body .cell {
-    height: 3em;
-    
-  } */
+  .ul-show-sessions {
+    padding-top: 15px
+  }
+
+  .calendar .body .cell {
+    min-height: 3em;  
+  }
 }
 

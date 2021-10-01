@@ -8,12 +8,13 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import "./Calendar.css"
-import sortBy from 'lodash/sortBy'
 
 function UserCalendar(props) {
   const [currentMonth, cCurrentMonth] = useState(new Date())
   const [currentDate, cCurrentDate] = useState(new Date())
   const [sort, cSort] = useState('showAll')
+  const [sessions, cSessions] = useState([])
+  const [users, cUsers] = useState([])
   const [sessionInfo, cSessionInfo] = useState([
     {name: 'One-to-One Coaching',
     description:'These person-centred sessions are delivered by one of our trained team at a local golf club. The service provides an enjoyable & rewarding day for the golfer PLUS a deserved respite break for carers. No golfing experience is necessary.',
@@ -41,13 +42,14 @@ function UserCalendar(props) {
     }
   ])
  
-  const [sessions, cSessions] = useState([])
-  const [users, cUsers] = useState([])
+  // gets all the sessions and users from the database
 
   const refreshList = () => {
     props.client.getSessions().then((response) => cSessions(response.data))
     props.client.getUsers().then((response) => cUsers(response.data))
   }
+
+  // adds user to session users (booking)
 
   const addUser = async (id, user) => {
     const res = await props.client.addSessionUser(id, user)
@@ -60,6 +62,8 @@ function UserCalendar(props) {
     cSessions(updated)
   }
   
+  // removes user from session users (booking cancellation)
+
   const removeUser = async (id, user) => {
     const res = await props.client.removeSessionUser(id, user)
     const updated = sessions.map((session) => {
@@ -71,11 +75,10 @@ function UserCalendar(props) {
     cSessions(updated)
   }
 
-
   // renders calendar header
+
   const renderHeader = () => {
     const dateFormat = 'MMMM yyyy'
-
     return (
       <div className = 'header row flex-middle'>
         <div className = 'col col-start'>
@@ -94,6 +97,7 @@ function UserCalendar(props) {
   }
 
   // renders calendar key and filters
+
   const renderFilters = () => {
     return (
       <Row className = 'filters'>
@@ -115,24 +119,26 @@ function UserCalendar(props) {
     )
   }
 
+  // displays names of days in calendar
+
   const buildDayName = (day, i) => {
-    return (<div className='col col-center' key={i}>
-    {day}
-  </div>)
+    return (
+      <div className='col col-center' key={i}>
+        {day}
+      </div>)
   }
 
   // renders calendar days
+
   const renderDays = () => {
     const shortDays = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
     const longDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
     let days
-
     if (window.innerWidth < 768) {
       days = shortDays.map((day, i) => buildDayName(day, i))
     } else {
       days =  longDays.map((day, i) => buildDayName(day, i))
     }
-
     return <div className='days row'>{days}</div>
   }
 
@@ -152,7 +158,7 @@ function UserCalendar(props) {
       for (let i = 0; i < 7; i++) {
         formattedDate = dateFns.format(day, dateFormat)
         days.push(
-          <div
+          <div 
             className={`col cell ${
               !dateFns.isSameMonth(day, monthStart)
                 ? 'disabled'
@@ -176,16 +182,33 @@ function UserCalendar(props) {
     return <div className='body'>{rows}</div>
   }
 
+  // shows sessions in the calendar cell for that specific day
+
   const showSessions = (day) => {
-    return sessions.map((session, i) => {
+    let sessionsArray = []
+    let finalSessionsArray = []
+
+    let sessionsToDisplay =  sessions.map((session, i) => {
       const sessionDate = new Date(session.date)
       if (sessionDate.getTime() === day.getTime()) {
-        console.log(new Date(session.date + ' ' + session.sessionTimeStart))
           return displaySessions(session, i)
       } 
-    }) 
+    })
+
+    for (let i = 0; i < sessionsToDisplay.length; i++) {
+      if (sessionsToDisplay[i] !== undefined) {
+        sessionsArray.push(sessionsToDisplay[i])
+      }
+    }
+
+    let sortedArray = sessionsArray.sort((a, b) => a[1] - b[1])
+    for (let i = 0; i < sortedArray.length; i++) {
+      finalSessionsArray.push(sortedArray[i][0])
+    }
+    return finalSessionsArray
   }
 
+  // session HTML to display in calendar cell
   const sessionEntry = (session, i) => {
     return (
       <OverlayTrigger key = {i} trigger = 'click' placement = 'bottom' overlay = {popoverClick(session)} rootClose>
@@ -199,13 +222,15 @@ function UserCalendar(props) {
     )
   }
 
+  // displays the session based on filter, user's booking and session user limit
   const displaySessions = (session, i) => {
+    let sessionDateTime = new Date(session.date + ' ' + session.sessionTimeStart)
     if (sort === 'booked' && session.sessionUsers.includes(usersOld[0].id)) {
-      return sessionEntry(session,i)
+      return [sessionEntry(session,i), sessionDateTime]
     } else if (sort === 'available' && !session.sessionUsers.includes(usersOld[0].id) && session.sessionUsers.length < session.userLimit) {
-      return sessionEntry(session,i) 
+      return [sessionEntry(session,i), sessionDateTime]
     } else if (sort === 'showAll') {
-      return sessionEntry(session,i)
+      return [sessionEntry(session,i), sessionDateTime]
     }
   }
 
