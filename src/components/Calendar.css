@@ -300,6 +300,20 @@ main {
   margin-top: 2px
 }
 
+.members-attending {
+  margin-top: 10px
+}
+
+.cga-contact-list {
+  list-style-type:none;
+  margin-top: 5px;
+  margin-left: -2px
+}
+
+.cga-contact {
+  margin-top: 10px
+}
+
 /* calendar key and filters area */
 
 .filters {
@@ -432,7 +446,7 @@ main {
   text-align: center
 }
 
-.user-submit{
+.user-submit {
   margin-right: 5px;
   margin-left: 5px
 }

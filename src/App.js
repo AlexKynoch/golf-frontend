@@ -11,9 +11,10 @@ function App() {
     return (
       <div className="App"> 
         <main>
-          <UserCalendar client = {client} />
+          <VolunteerCalendar client = {client} />
+          {/* <UserCalendar client = {client} /> */}
           {/* <VolunteerCalendar client={client}/>
-          <AdminCalendar client={client}/>
+          // <AdminCalendar client={client}/>
           <CgaCalendar client={client}/> */}
         </main>
       </div>

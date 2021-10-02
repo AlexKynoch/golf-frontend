@@ -209,6 +209,7 @@ function UserCalendar(props) {
   }
 
   // session HTML to display in calendar cell
+
   const sessionEntry = (session, i) => {
     return (
       <OverlayTrigger key = {i} trigger = 'click' placement = 'bottom' overlay = {popoverClick(session)} rootClose>
@@ -223,8 +224,9 @@ function UserCalendar(props) {
   }
 
   // displays the session based on filter, user's booking and session user limit
+
   const displaySessions = (session, i) => {
-    let sessionDateTime = new Date(session.date + ' ' + session.sessionTimeStart)
+    const sessionDateTime = new Date(session.date + ' ' + session.sessionTimeStart)
     if (sort === 'booked' && session.sessionUsers.includes(usersOld[0].id)) {
       return [sessionEntry(session,i), sessionDateTime]
     } else if (sort === 'available' && !session.sessionUsers.includes(usersOld[0].id) && session.sessionUsers.length < session.userLimit) {
@@ -235,16 +237,19 @@ function UserCalendar(props) {
   }
 
   // switches calendar to next month
+
   const nextMonth = () => {
     cCurrentMonth(dateFns.addMonths(currentMonth, 1))
   };
 
   // switches calendar to previous month
+
   const prevMonth = () => {
     cCurrentMonth(dateFns.subMonths(currentMonth, 1))
   };
 
   // displays correct session details based on the user limit
+
   const displaySessionDescription = (limit) => {
     switch(limit) {
       case 1:
@@ -355,10 +360,3 @@ function UserCalendar(props) {
 }
 
 export default UserCalendar
-
-// on load, session were stored into state
-// click button, button only removed from the database and nothing changed in state
-
-// addUser, called a refresh function which made another request for the current database
-// addUser, manually filtered out the data that we removed => react rerendring anyways
-// server sends back the updated data
