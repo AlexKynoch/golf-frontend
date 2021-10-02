@@ -1,18 +1,20 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import * as dateFns from 'date-fns'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Popover from 'react-bootstrap/Popover'
-import Container from 'react-bootstrap/Container'
 import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import "./Calendar.css";
+import "./Calendar.css"
 
-function CgaCalendar() {
+function CgaCalendar(props) {
   const [currentMonth, cCurrentMonth] = useState(new Date())
   const [currentDate, cCurrentDate] = useState(new Date())
   const [location, cLocation] = useState('showAll')
+  const [locations, cLocations] = useState([])
+  const [sessions, cSessions] = useState([])
+  const [users, cUsers] = useState([])
   const [sessionInfo, cSessionInfo] = useState([
     {name: 'One-to-One Coaching',
     description:'These person-centred sessions are delivered by one of our trained team at a local golf club. The service provides an enjoyable & rewarding day for the golfer PLUS a deserved respite break for carers. No golfing experience is necessary.',
@@ -25,78 +27,29 @@ function CgaCalendar() {
     {name: 'Group Session',
     description:'At present we’re limited to the “rule of six”. The sessions are perfect for people who enjoy socialising, being part of a team and group coaching.',
     cost: '£10 per hour'
-    }
-  ])
-  const [volunteers, cVolunteers] = useState([
-    {id: '1',
-    userName: 'Thomasn1',
-    location: 'Sheffield',
-    role: 'volunteer',
-    firstName: 'Thomas',
-    email: 'tom@gmail.com'
     },
-    {id: '2',
-    userName: 'Jenny12m',
-    location: 'Sheffield',
-    role: 'volunteer',
-    firstName: 'Jenny',
-    email: 'jenny@gmail.com'
+    {name: 'No session info to show',
+    description:'No session with such user limit',
+    cost: 'No session info to show'
     }
   ])
-  const [users, cUsers] = useState([
-    {id: '1',
-    userName: 'Pauln1',
-    location: 'Sheffield',
-    role: 'user',
-    firstName: 'Paul'
-    },
-    {id: '2',
-    userName: 'Jenny12m',
-    location: 'Sheffield',
-    role: 'user',
-    firstName: 'Jenny'
-    }
-  ])
-  const [sessions, cSessions] = useState([
-  { volunteer: 'Thomas',
-    users: ['Helen'],
-    location: 'Manchester',
-    date: '7 September 2021',
-    timeStart: '14:00',
-    timeEnd: '15:00',
-    limit: 1,
-    id:'1a'
-  },
-  { volunteer: 'Jenny',
-    users: ['Jack'],
-    location: 'Leeds',
-    date: '6 September 2021',
-    timeStart: '16:00',
-    timeEnd: '17:00',
-    limit: 2,
-    id:'2a'
-  },
-  {volunteer: 'Jenny',
-  users: ['Helen', 'Steve'],
-  location: 'Sheffield',
-  date: '17 September 2021',
-  timeStart: '13:00',
-  timeEnd: '14:00',
-  limit: 5,
-  id:'3a'
-  },])
+ 
+  // gets all the sessions, users and locations from the database
 
-  // get all unique session locations
-  const sessionLocations = () => {
-    let locations = []
-    sessions.forEach(session => {
-        if (!locations.includes(session.location)) {
-            locations.push(session.location)
-        }
-    })
-    return locations
+  const refreshList = () => {
+    props.client.getSessions().then((response) => cSessions(response.data))
+    props.client.getUsers().then((response) => cUsers(response.data))
+    props.client.getLocations().then((response) => cLocations(response.data))
   }
+  // get all unique session locations
 
+  const sessionLocations = () => {
+    let loc = []
+    locations.forEach((location) => {
+      loc.push(location.locationName)
+    })
+    return loc
+  }
 
   // renders calendar header
   const renderHeader = () => {
@@ -128,43 +81,47 @@ function CgaCalendar() {
               <li className = 'bullet-green bullet-gray'><span className = 'bullet-text'> Fully booked</span></li>
             </ul>
           </Col>
-          <Col>
-            <div>
-              <div className = 'dropdown-container'>
-                <div className = 'dropdown-name'>Filter calendar by location:</div> 
-                  <select className = 'dropdown-list' onChange = {(e) => cLocation(e.target.value)} value = {location}>
-                      <option value = {'showAll'}>Show All</option>
-                      {sessionLocations().map((location) => (
-                      <option value = {location}>{location}</option>))}
-                  </select>
-              </div>
-            </div>
-          </Col>
+          <Col lg = {3} md = {4} className = 'dropdown-name cga-filter text-lg-end'>Filter calendar by location:</Col>
+          <Col lg = {2} md = {3} className = 'user-filter-dropdown text-lg-end'>
+            <select className = 'dropdown-list' onChange = {(e) => cLocation(e.target.value)} value = {location}>
+                  <option value = {'showAll'}>Show All</option>
+                  {sessionLocations().map((location) => (
+                  <option value = {location}>{location}</option>))}
+              </select>
+          </Col>          
         </Row>
     )
   }
 
-  // renders calendar days
-  const renderDays = () => {
-    const dateFormat = 'iiii'
-    const days = []
-    let startDate = dateFns.startOfWeek(currentMonth);
+   // displays names of days in calendar
 
-    for (let i = 0; i < 7; i++) {
-      days.push(
-        <div className = 'col col-center' key={i}>
-          {dateFns.format(dateFns.addDays(startDate, i), dateFormat)}
-        </div>
-      )
+   const buildDayName = (day, i) => {
+    return (
+      <div className='col col-center' key={i}>
+        {day}
+      </div>)
+  }
+
+  // renders calendar days
+
+  const renderDays = () => {
+    const shortDays = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
+    const longDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    let days
+    if (window.innerWidth < 768) {
+      days = shortDays.map((day, i) => buildDayName(day, i))
+    } else {
+      days =  longDays.map((day, i) => buildDayName(day, i))
     }
-    return <div className = 'days row'>{days}</div>;
+    return <div className='days row'>{days}</div>
   }
 
   // renders calendar cells
+
   const renderCells = () => {
     const monthStart = dateFns.startOfMonth(currentMonth)
     const monthEnd = dateFns.endOfMonth(monthStart)
-    const startDate = dateFns.startOfWeek(monthStart)
+    const startDate = dateFns.startOfWeek(monthStart, { weekStartsOn: 1 })
     const endDate = dateFns.endOfWeek(monthEnd)
     const dateFormat = 'd'
     const rows = []
@@ -200,7 +157,8 @@ function CgaCalendar() {
     return <div className = 'body'>{rows}</div>;
   }
 
-  // puts sessions into the corrent calendar cell
+  // shows sessions in the calendar cell for that specific day
+
   const showSessions = (day) => {
     return sessions.map((session, i) => {
       const sessionDate = new Date(session.date)
@@ -210,23 +168,25 @@ function CgaCalendar() {
     }) 
   }
 
-  // builds invidual session entries in calendar 
+  // session HTML to display in calendar cell 
+
   const sessionEntry = (session, i) => {
     return (
       <OverlayTrigger key = {i} trigger='click' placement='bottom' overlay={popoverClick(session)} rootClose>
         <li className = 'dis-session-info li-show-sessions' 
-        style={{ backgroundColor : session.users.length < session.limit ? '#0D6EFD' : '#62666b', 
+        style={{ backgroundColor : session.sessionUsers.length < session.userLimit ? '#0D6EFD' : '#62666b', 
         color : 'White'}} 
         >
-          {session.timeStart}{' '}{displaySessionDescription(session.limit).name}
+          {session.sessionTimeStart}{' '}{displaySessionDescription(session.userLimit).name}
         </li>
       </OverlayTrigger>
     )
   }
 
-  // gets information for that particular session
+  // displays the session based on filter
+
   const displaySessions = (session, i) => {  
-    if (location === session.location ) {
+    if (location === session.sessionLocation ) {
       return sessionEntry(session,i) 
     } else if (location === 'showAll') {
       return sessionEntry(session,i) 
@@ -234,16 +194,19 @@ function CgaCalendar() {
   }
 
   // switches calendar to next month
+
   const nextMonth = () => {
     cCurrentMonth(dateFns.addMonths(currentMonth, 1))
   }
 
   // switches calendar to previous month
+
   const prevMonth = () => {
     cCurrentMonth(dateFns.subMonths(currentMonth, 1))
   }
 
   // displays correct session details based on the user limit
+
   const displaySessionDescription = (limit) => {
     switch(limit) {
       case 1:
@@ -253,36 +216,47 @@ function CgaCalendar() {
       case 5:
         return sessionInfo[2]
       default:
-        break
+        return sessionInfo[3]
     }
   }
 
   const findVolunteerName = (session) => {
-    return volunteers.map((volunteer) => {
-      if (volunteer.firstName === session.volunteer){
-        return 'Session volunteer: ' + volunteer.firstName 
+    return users.map((volunteer) => {
+      if (volunteer._id === session.volunteer){
+        return 'Session volunteer: ' + volunteer.nameFirst + ' ' + volunteer.nameLast
       }}
     )
   }
 
   const findVolunteerEmail = (session) => {
-    return volunteers.map((volunteer) => {
-      if (volunteer.firstName === session.volunteer){
+    return users.map((volunteer) => {
+      if (volunteer._id === session.volunteer){
         return 'Volunteer contact: ' + volunteer.email
       }}
     )
   }
 
+  const displayMemberNames = (session) => {
+    let members = []
+    users.map((user) => {
+      if (session.sessionUsers.includes(user._id)) {
+        members.push(user.nameFirst + ' ' + user.nameLast + ' ')
+      }
+    })
+    return members.join(', ')
+  }
+
   // session calendar popover
+
   const popoverClick = (session) => (
     <Popover className = 'popover-main' id = 'popover-trigger-click' title = 'Popover bottom'>
       <Card className = 'popover-card'>
         <Card.Body className = 'popover-body'>
           <Row className = 'session-name'>
-            {displaySessionDescription(session.limit).name}
+            {displaySessionDescription(session.userLimit).name}
           </Row>
           <Row>
-            {session.date}{' '}{session.timeStart}{'-'}{session.timeEnd}
+            {session.date}{' '}{session.sessionTimeStart}{'-'}{session.sessionTimeFinish}
           </Row>
           <Row>
             <Col className = 'location-icon' xs='auto'>
@@ -290,19 +264,19 @@ function CgaCalendar() {
               <path d='M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z'/>
               </svg>  
             </Col> 
-            <Col className = 'location-text'>{session.location}</Col>
+            <Col className = 'location-text'>{session.sessionLocation}</Col>
           </Row>
           <Row className = 'session-description'>
-            {displaySessionDescription(session.limit).description}
+            {displaySessionDescription(session.userLimit).description}
           </Row>
           <Row>
-            {displaySessionDescription(session.limit).cost}
+            {displaySessionDescription(session.userLimit).cost}
+          </Row>
+          <Row className = 'members-attending'>
+            {'Members attending: '}{displayMemberNames(session)}
           </Row>
           <Row>
-            {'Members attending: '}{session.users.join(', ')}
-          </Row>
-          <Row>
-            {'Available places: '}{session.limit - session.users.length}
+            {'Available places: '}{session.userLimit - session.sessionUsers.length}
           </Row>
           <Row className = 'session-volunteer'>
             {findVolunteerName(session)}
@@ -314,6 +288,10 @@ function CgaCalendar() {
       </Card>
     </Popover>
   )
+
+  useEffect(() => {
+    refreshList();
+  }, [])
 
   return (
     <div className='calendar'>

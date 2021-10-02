@@ -389,6 +389,11 @@ main {
   padding-top: 6px;
 }
 
+.cga-filter {
+  padding-left: 15px;
+  padding-top: 6px;
+}
+
 /* admin search field */
 
 .search-field {
@@ -459,7 +464,7 @@ main {
   }
 
   .user-filter-dropdown {
-    margin-left: 15px;
+    margin-left: 13px;
   }
 
   .bullet-list {

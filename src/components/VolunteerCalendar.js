@@ -26,6 +26,10 @@ function VolunteerCalendar(props) {
     {name: 'Group Session',
     description:'At present we’re limited to the “rule of six”. The sessions are perfect for people who enjoy socialising, being part of a team and group coaching.',
     cost: '£10 per hour'
+    },
+    {name: 'No session info to show',
+    description:'No session with such user limit',
+    cost: 'No session info to show'
     }
   ])
  
@@ -215,7 +219,7 @@ function VolunteerCalendar(props) {
       case 5:
         return sessionInfo[2]
       default:
-        break
+        return sessionInfo[3]
     }
   }
 

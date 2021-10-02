@@ -17,12 +17,12 @@ export class ApiClient {
         });
     }
 
-    async getSessions() {
-        return await this.apiCall("get", url + 'sessions');
+    getSessions() {
+        return this.apiCall("get", url + 'sessions')
     }
 
     getUsers() {
-        return this.apiCall("get", url + 'user');
+        return this.apiCall("get", url + 'user')
     }
 
     removeSession(id) {
@@ -35,5 +35,9 @@ export class ApiClient {
 
     removeSessionUser(id, sessionUser) {
         return this.apiCall('put', `${url}sessionDelUser/${id}`, { user: sessionUser})
+    }
+
+    getLocations() {
+        return this.apiCall("get", url + 'location')
     }
 }
