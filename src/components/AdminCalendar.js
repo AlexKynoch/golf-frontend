@@ -10,11 +10,13 @@ import Col from 'react-bootstrap/Col'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import "./Calendar.css";
 
-function AdminCalendar() {
+function AdminCalendar(props) {
   const [currentMonth, cCurrentMonth] = useState(new Date())
   const [userBooking, cUserBooking] = useState(false)
   const [currentDate, cCurrentDate] = useState(new Date())
   const [currentUser, cCurrentUser] = useState(undefined)
+  const [sessions, cSessions] = useState([])
+  const [users, cUsers] = useState([])
   const [sort, cSort] = useState('showAll')
   const [sessionInfo, cSessionInfo] = useState([
     {name: 'One-to-One Coaching',
@@ -28,68 +30,56 @@ function AdminCalendar() {
     {name: 'Group Session',
     description:'At present we’re limited to the “rule of six”. The sessions are perfect for people who enjoy socialising, being part of a team and group coaching.',
     cost: '£10 per hour'
-    }
-  ])
-  const [volunteers, cVolunteers] = useState([
-    {id: '1',
-    userName: 'Thomasn1',
-    location: 'Sheffield',
-    role: 'volunteer',
-    firstName: 'Thomas',
-    email: 'tom@gmail.com'
     },
-    {id: '2',
-    userName: 'Jenny12m',
-    location: 'Sheffield',
-    role: 'volunteer',
-    firstName: 'Jenny',
-    email: 'jenny@gmail.com'
+    {name: 'No session info to show',
+    description:'No session with such user limit',
+    cost: 'No session info to show'
     }
   ])
-  const [users, cUsers] = useState([
+  const [usersOld, cUsersOld] = useState([
     {id: '1',
     userName: 'Pauln1',
     location: 'Sheffield',
     role: 'user',
     firstName: 'Paul'
-    },
-    {id: '2',
-    userName: 'Jenny12m',
-    location: 'Sheffield',
-    role: 'user',
-    firstName: 'Jenny'
     }
   ])
-  const [sessions, cSessions] = useState([
-  { volunteer: 'Thomas',
-    users: ['Helen'],
-    location: 'Sheffield',
-    date: '7 October 2021',
-    timeStart: '14:00',
-    timeEnd: '15:00',
-    limit: 1,
-    id:'1a'
-  },
-  { volunteer: 'Jenny',
-    users: ['Jack'],
-    location: 'Sheffield',
-    date: '7 October 2021',
-    timeStart: '13:00',
-    timeEnd: '17:00',
-    limit: 2,
-    id:'2a'
-  },
-  {volunteer: 'Jenny',
-  users: ['Helen', 'Steve'],
-  location: 'Sheffield',
-  date: '17 October 2021',
-  timeStart: '13:00',
-  timeEnd: '14:00',
-  limit: 5,
-  id:'3a'
-},])
 
+  // gets all the sessions and users from the database
+
+  const refreshList = () => {
+    props.client.getSessions().then((response) => cSessions(response.data))
+    props.client.getUsers().then((response) => cUsers(response.data))
+  }
+
+  // adds user to session users (booking)
+
+  const addUser = async (id, user) => {
+    const res = await props.client.addSessionUser(id, user)
+    const updated = sessions.map((session) => {
+      if(session._id === id){
+        session.sessionUsers = res.data.body.sessionUsers
+      }
+      return session
+    })
+    cSessions(updated)
+  }
+  
+  // removes user from session users (booking cancellation)
+
+  const removeUser = async (id, user) => {
+    const res = await props.client.removeSessionUser(id, user)
+    const updated = sessions.map((session) => {
+      if(session._id === id){
+        session.sessionUsers = res.data.body.sessionUsers
+      }
+      return session
+    })
+    cSessions(updated)
+  }
+  
   // renders calendar header
+
   const renderHeader = () => {
     const dateFormat = 'MMMM yyyy'
     return (
@@ -110,6 +100,7 @@ function AdminCalendar() {
   }
 
   // renders calendar key and filters
+
   const renderFilters = () => {
     return (
         <Row className = 'filters'>
@@ -140,23 +131,26 @@ function AdminCalendar() {
     )
   }
 
-  const showAll = () => {
-      cCurrentUser(undefined)
-      document.getElementById('addUserSearchForm').reset()
-    }
+  
+  // displays names of days in calendar
+
+  const buildDayName = (day, i) => {
+    return (
+      <div className='col col-center' key={i}>
+        {day}
+      </div>)
+  }
 
   // renders calendar days
-  const renderDays = () => {
-    const dateFormat = 'iiii'
-    const days = []
-    let startDate = dateFns.startOfWeek(currentMonth)
 
-    for (let i = 0; i < 7; i++) {
-      days.push(
-        <div className = 'col col-center' key = {i}>
-          {dateFns.format(dateFns.addDays(startDate, i), dateFormat)}
-        </div>
-      )
+  const renderDays = () => {
+    const shortDays = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
+    const longDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    let days
+    if (window.innerWidth < 768) {
+      days = shortDays.map((day, i) => buildDayName(day, i))
+    } else {
+      days =  longDays.map((day, i) => buildDayName(day, i))
     }
     return <div className='days row'>{days}</div>
   }
@@ -165,7 +159,7 @@ function AdminCalendar() {
   const renderCells = () => {
     const monthStart = dateFns.startOfMonth(currentMonth)
     const monthEnd = dateFns.endOfMonth(monthStart)
-    const startDate = dateFns.startOfWeek(monthStart)
+    const startDate = dateFns.startOfWeek(monthStart, { weekStartsOn: 1 })
     const endDate = dateFns.endOfWeek(monthEnd)
     const dateFormat = 'd'
     const rows = []
@@ -201,50 +195,72 @@ function AdminCalendar() {
     return <div className='body'>{rows}</div>
   }
 
-  // puts sessions into the corrent calendar cell
+  // shows sessions in the calendar cell for that specific day
+
   const showSessions = (day) => {
-    return sessions.map((session, i) => {
+    let sessionsArray = []
+    let finalSessionsArray = []
+
+    let sessionsToDisplay =  sessions.map((session, i) => {
       const sessionDate = new Date(session.date)
-      if (sessionDate.getTime() === day.getTime()){
+      if (sessionDate.getTime() === day.getTime()) {
           return displaySessions(session, i)
       } 
-    }) 
+    })
+
+    for (let i = 0; i < sessionsToDisplay.length; i++) {
+      if (sessionsToDisplay[i] !== undefined) {
+        sessionsArray.push(sessionsToDisplay[i])
+      }
+    }
+
+    let sortedArray = sessionsArray.sort((a, b) => a[1] - b[1])
+    for (let i = 0; i < sortedArray.length; i++) {
+      finalSessionsArray.push(sortedArray[i][0])
+    }
+    return finalSessionsArray
   }
 
-  // builds invidual session entries in calendar 
+  // session HTML to display in calendar cell
+
   const sessionEntry = (session, i) => {
     return (
       <OverlayTrigger key = {i} trigger='click' placement='bottom' overlay={popoverClick(session)} rootClose>
         <li className = 'dis-session-info li-show-sessions' 
-        style={{ backgroundColor : currentUser !== undefined && session.users.includes(currentUser)? 'Green' : session.users.length < session.limit ? '#0D6EFD' : '#62666b', 
+        style={{ backgroundColor : currentUser !== undefined && session.sessionUsers.includes(currentUser)? 'Green' : session.sessionUsers.length < session.userLimit ? '#0D6EFD' : '#62666b', 
         color : 'White'}} 
         >
-          {session.timeStart}{' '}{displaySessionDescription(session.limit).name}
+          {session.sessionTimeStart}{' '}{displaySessionDescription(session.userLimit).name}
         </li>
       </OverlayTrigger>
     )
   }
 
   // gets information for that particular session
-  const displaySessions = (session, i) => {  
-    if (sort === 'available'  && session.users.length < session.limit && !session.users.includes(currentUser)) {
-      return sessionEntry(session,i) 
+
+  const displaySessions = (session, i) => {
+    const sessionDateTime = new Date(session.date + ' ' + session.sessionTimeStart)  
+    if (sort === 'available'  && session.sessionUsers.length < session.userLimit && !session.sessionUsers.includes(currentUser)) {
+      return [sessionEntry(session,i), sessionDateTime] 
     } else if (sort === 'showAll') {
-      return sessionEntry(session,i)
+      return [sessionEntry(session,i), sessionDateTime]
     }
   }
 
   // switches calendar to next month
+
   const nextMonth = () => {
     cCurrentMonth(dateFns.addMonths(currentMonth, 1))
   }
 
   // switches calendar to previous month
+
   const prevMonth = () => {
     cCurrentMonth(dateFns.subMonths(currentMonth, 1))
   }
 
   // displays correct session details based on the user limit
+
   const displaySessionDescription = (limit) => {
     switch(limit) {
       case 1:
@@ -254,39 +270,40 @@ function AdminCalendar() {
       case 5:
         return sessionInfo[2]
       default:
-        break
+        return sessionInfo[3]
     }
   }
 
   // books user into a session
+
   const bookingHandler = (e, ses) => {
     e.preventDefault()
     if (currentUser) {
-    sessions.forEach((session, index) => {
-      if (session.id === ses.id && currentUser !== undefined) {
-        sessions[index].users.push(currentUser)
+    sessions.forEach((session) => {
+      if (session._id === ses._id && currentUser !== undefined) {
+        addUser(ses._id, currentUser)
       }
     })
-    cUserBooking(!userBooking) 
   }
   }
 
   // cancels booking for the selected user
+
   const cancelBookingHandler = (e, ses) => {
     e.preventDefault()
-    sessions.forEach((session, index) => {
+    sessions.forEach((session) => {
       if (session.id === ses.id) {
-        sessions[index].users = sessions[index].users.filter((i) => i !== currentUser)
+        removeUser(ses._id, currentUser)
       }
     })
-    cUserBooking(!userBooking) 
   }
 
   // displays either book session, cancel booking or fully booked button depending on the user
+
   const showBookingButton = (session) => {
-    if (session.users.includes(currentUser)) {
+    if (session.sessionUsers.includes(currentUser)) {
       return <Button className = 'booking-btn btn-danger' onClick = {(e) => cancelBookingHandler(e, session)}>Cancel booking</Button>
-    } if (!session.users.includes(users[0].id) && session.users.length === session.limit && !session.users.includes(currentUser)) {
+    } if (!session.sessionUsers.includes(currentUser) && session.sessionUsers.length === session.userLimit) {
       return <Button className = 'booking-btn btn-secondary'>Fully booked</Button>
     } else {
       return <Button className = 'booking-btn' onClick = {(e) => bookingHandler(e, session)}>Book session</Button>
@@ -294,47 +311,22 @@ function AdminCalendar() {
   }
 
   const findVolunteerName = (session) => {
-    return volunteers.map((volunteer) => {
-      if (volunteer.firstName === session.volunteer){
-        return 'Session volunteer: ' + volunteer.firstName 
+    return users.map((volunteer) => {
+      if (volunteer._id === session.volunteer){
+        return 'Session volunteer: ' + volunteer.nameFirst + ' ' + volunteer.nameLast
       }}
     )
   }
 
   const findVolunteerEmail = (session) => {
-    return volunteers.map((volunteer) => {
-      if (volunteer.firstName === session.volunteer){
+    return users.map((volunteer) => {
+      if (volunteer._id === session.volunteer){
         return 'Volunteer contact: ' + volunteer.email
       }}
     )
   }
 
-  const userSubmitHandler = (e) => {
-      e.preventDefault();
-      cCurrentUser(e.target.user.value)
-  }
-
-  const adminUserBookingHandler = (e, ses) => {
-      e.preventDefault()
-      sessions.forEach((session, index) => {
-        if (session.id === ses.id) {
-          sessions[index].users.push(e.target.user.value)
-        }
-      })
-      cUserBooking(!userBooking)
-      document.getElementById('adminUserBookingForm').reset()
-  }
-
-  const adminUserCancelHandler = (e, ses) => {
-      e.preventDefault()
-      sessions.forEach((session, index) => {
-        if (session.id === ses.id) {
-          sessions[index].users = sessions[index].users.filter((i) => i !== e.target.user.value)
-        }
-      })
-      cUserBooking(!userBooking)
-      document.getElementById('adminUserCancelForm').reset()
-  }
+  // displays search bar to search sessions for a specified user
 
   const renderSearchBar = () => {
     return ( 
@@ -354,6 +346,22 @@ function AdminCalendar() {
     )
   }
 
+  // searches for all the sessions for a specified user
+
+  const userSubmitHandler = (e) => {
+    e.preventDefault();
+    cCurrentUser(e.target.user.value)
+  }
+
+  // show all sessions
+
+  const showAll = () => {
+    cCurrentUser(undefined)
+    document.getElementById('addUserSearchForm').reset()
+  }
+
+  // books session for a user inside popover
+
   const adminUserBooking = (session) => {
     return (
     <form className = 'user-book-form' onSubmit = {(e) => adminUserBookingHandler(e, session)} id = 'adminUserBookingForm'>
@@ -369,6 +377,20 @@ function AdminCalendar() {
       <Button className = 'booking-submit' type = 'submit'>Book</Button> 
   </form>)
   }
+
+  // adds user to session users inside popover
+
+  const adminUserBookingHandler = (e, ses) => {
+    e.preventDefault()
+    sessions.forEach((session, index) => {
+      if (session._id === ses._id) {
+        addUser(ses._id, e.target.user.value)
+      }
+    })
+    document.getElementById('adminUserBookingForm').reset()
+}
+
+  // cancels session for a user inside popover
 
   const adminUserCancelBooking = (session) => {
     return (
@@ -386,8 +408,22 @@ function AdminCalendar() {
       </form>)
   }
 
+  // cancels user session booking inside popover
+
+  const adminUserCancelHandler = (e, ses) => {
+    e.preventDefault()
+    sessions.forEach((session) => {
+      if (session._id === ses._id) {
+        removeUser(ses._id, e.target.user.value)
+      }
+    })
+    document.getElementById('adminUserCancelForm').reset()
+  }
+
+  // displays user booking input fields inside popover
+
   const showBookingInput = (session) => {
-    if (session.users.length === session.limit) {
+    if (session.sessionUsers.length === session.userLimit) {
       return (
         <div>
           <Button className = 'btn-secondary'>Fully booked</Button>
@@ -404,16 +440,27 @@ function AdminCalendar() {
     }
   }
 
+  const displayMemberNames = (session) => {
+    let members = []
+    users.map((user) => {
+      if (session.sessionUsers.includes(user._id)) {
+        members.push(user.nameFirst + ' ' + user.nameLast + ' ')
+      }
+    })
+    return members.join(', ')
+  }
+
   // session calendar popover
+
   const popoverClick = (session) => (
     <Popover className = 'popover-main' id = 'popover-trigger-click' title = 'Popover bottom'>
       <Card className = 'popover-card'>
         <Card.Body className = 'popover-body'>
           <Row className = 'session-name'>
-            {displaySessionDescription(session.limit).name}
+            {displaySessionDescription(session.userLimit).name}
           </Row>
           <Row>
-            {session.date}{' '}{session.timeStart}{'-'}{session.timeEnd}
+            {session.date}{' '}{session.sessionTimeStart}{'-'}{session.sessionTimeFinish}
           </Row>
           <Row>
             <Col className = 'location-icon' xs='auto'>
@@ -421,19 +468,19 @@ function AdminCalendar() {
               <path d='M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z'/>
               </svg>  
             </Col> 
-            <Col className = 'location-text'>{session.location}</Col>
+            <Col className = 'location-text'>{session.sessionLocation}</Col>
           </Row>
           <Row className = 'session-description'>
-            {displaySessionDescription(session.limit).description}
+            {displaySessionDescription(session.userLimit).description}
           </Row>
           <Row>
-            {displaySessionDescription(session.limit).cost}
+            {displaySessionDescription(session.userLimit).cost}
           </Row>
           <Row>
-            {'Members attending: '}{session.users.join(', ')}
+            {'Members attending: '}{session.sessionUsers.join(', ')}
           </Row>
           <Row>
-            {'Available places: '}{session.limit - session.users.length}
+            {'Available places: '}{session.userLimit - session.sessionUsers.length}
           </Row>
           <Row className = 'session-volunteer'>
             {findVolunteerName(session)}
@@ -452,11 +499,9 @@ function AdminCalendar() {
     </Popover>
   )
 
-  // useEffect(() => {
-  //   renderHeader()
-  //   renderDays()
-  //   renderCells()
-  // }, [userBooking])
+  useEffect(() => {
+    refreshList();
+  }, [])
 
   return (
     <div className='calendar'>
