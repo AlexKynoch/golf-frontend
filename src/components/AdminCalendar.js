@@ -3,12 +3,13 @@ import * as dateFns from 'date-fns'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Popover from 'react-bootstrap/Popover'
 import Button from 'react-bootstrap/Button'
-import Container from 'react-bootstrap/Container'
 import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import "./Calendar.css";
+import Autocomplete from "./AutoComplete";
+import "./autoComplete.css";
 
 function AdminCalendar(props) {
   const [currentMonth, cCurrentMonth] = useState(new Date())
@@ -44,6 +45,8 @@ function AdminCalendar(props) {
     firstName: 'Paul'
     }
   ])
+  const [userSearchList, cUserSearchList] = useState([])
+  const [input, setInput] = useState('');
 
   // gets all the sessions and users from the database
 
@@ -52,6 +55,19 @@ function AdminCalendar(props) {
     props.client.getUsers().then((response) => cUsers(response.data))
   }
 
+  // make an array of session users and their usernames
+
+  const userList = () => {
+    let userArray = []
+    users.map((user) => {
+      if (user.role === 'user'){
+      userArray.push(user.nameFirst + ' ' + user.nameLast + ' - ' + user.userName)
+      }
+      console.log(userArray)
+    return userArray
+  })}
+
+  
   // adds user to session users (booking)
 
   const addUser = async (id, user) => {
@@ -327,19 +343,15 @@ function AdminCalendar(props) {
   }
 
   // displays search bar to search sessions for a specified user
-
+  
   const renderSearchBar = () => {
+    let suggestions =['Rebecca Surname - Becka456', 'Alice Surname - Alice123', 'Tim Forest - Timmy456']
     return ( 
-            <form className = 'user-search-form' onSubmit = {(e) => userSubmitHandler(e)} id = 'addUserSearchForm'>
+            <form className = 'user-search-form' onSubmit = {(e) => userSubmitHandler(e, suggestions)} id = 'addUserSearchForm'>
                 <label className = 'user-search-form-label' for='userform'>Search sessions by user: </label>
-                <input 
-                  className = 'search-field' 
-                  type = 'text' 
-                  name = 'user' 
-                  placeholder = 'Search by user...' 
-                  autoComplete = 'off'
-                  id = 'userform'
-                />
+                 <Autocomplete input = {input} setInput = {setInput}
+                      suggestions = {suggestions}
+                  />
                 <Button className = 'user-submit' type = 'submit'>Search</Button> 
                 <Button className = 'show-all' onClick = {() => showAll()}>Show All</Button>
             </form>
@@ -348,16 +360,25 @@ function AdminCalendar(props) {
 
   // searches for all the sessions for a specified user
 
-  const userSubmitHandler = (e) => {
-    e.preventDefault();
-    cCurrentUser(e.target.user.value)
+  const userSubmitHandler = (e, suggestions) => {
+    e.preventDefault()
+    if (suggestions.includes(e.target.user.value)) {
+      let userName = e.target.user.value.split('- ')
+      users.forEach((user) => {
+        if(userName[1] === user.userName) {
+          cCurrentUser(user._id)
+        }
+      })
+    } else {
+      cCurrentUser(undefined)
+    }     
   }
 
   // show all sessions
 
   const showAll = () => {
     cCurrentUser(undefined)
-    document.getElementById('addUserSearchForm').reset()
+    setInput('')
   }
 
   // books session for a user inside popover
@@ -477,7 +498,7 @@ function AdminCalendar(props) {
             {displaySessionDescription(session.userLimit).cost}
           </Row>
           <Row>
-            {'Members attending: '}{session.sessionUsers.join(', ')}
+            {'Members attending: '}{displayMemberNames(session)}
           </Row>
           <Row>
             {'Available places: '}{session.userLimit - session.sessionUsers.length}
