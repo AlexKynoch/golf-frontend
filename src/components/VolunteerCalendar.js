@@ -280,11 +280,13 @@ function VolunteerCalendar(props) {
   }, [])
 
   return (
+    <div className = 'calendar-main'>
     <div className='calendar'>
       {renderHeader()}
       {renderFilters()}
       {renderDays()}
       {renderCells()}
+    </div>
     </div>
   );
 }

@@ -263,6 +263,8 @@ function UserCalendar(props) {
     }
   }
 
+  // books user into a session
+
   const bookingHandler = async (e, ses) => {
     e.preventDefault()
     sessions.forEach(async (session) => {
@@ -271,6 +273,8 @@ function UserCalendar(props) {
       }
     })
   }
+
+  // cancels booking for the user
   
   const cancelBookingHandler = async (e, ses) => {
     e.preventDefault()
@@ -280,6 +284,8 @@ function UserCalendar(props) {
       }
     })
   }
+
+  // displays either book session, cancel booking or fully booked button depending on the user
 
   const showBookingButton = (session) => {
     if (session.sessionUsers.includes(usersOld[0].id)) {
