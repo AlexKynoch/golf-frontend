@@ -45,8 +45,8 @@ function AdminCalendar(props) {
     firstName: 'Paul'
     }
   ])
-  const [userSearchList, cUserSearchList] = useState([])
-  const [input, setInput] = useState('');
+
+  const [autoCompleteInput, cAutoCompleteInput] = useState('');
 
   // gets all the sessions and users from the database
 
@@ -55,7 +55,7 @@ function AdminCalendar(props) {
     props.client.getUsers().then((response) => cUsers(response.data))
   }
 
-  // make an array of session users and their usernames
+  // make an array of all database users and their usernames
 
   const userList = () => {
     let userArray = []
@@ -63,11 +63,12 @@ function AdminCalendar(props) {
       if (user.role === 'user'){
       userArray.push(user.nameFirst + ' ' + user.nameLast + ' - ' + user.userName)
       }
-      console.log(userArray)
+    })
     return userArray
-  })}
+  }
 
   
+
   // adds user to session users (booking)
 
   const addUser = async (id, user) => {
@@ -345,11 +346,11 @@ function AdminCalendar(props) {
   // displays search bar to search sessions for a specified user
   
   const renderSearchBar = () => {
-    let suggestions =['Rebecca Surname - Becka456', 'Alice Surname - Alice123', 'Tim Forest - Timmy456']
+    let suggestions = userList()
     return ( 
             <form className = 'user-search-form' onSubmit = {(e) => userSubmitHandler(e, suggestions)} id = 'addUserSearchForm'>
                 <label className = 'user-search-form-label' for='userform'>Search sessions by user: </label>
-                 <Autocomplete input = {input} setInput = {setInput}
+                 <Autocomplete input = {autoCompleteInput} setInput = {cAutoCompleteInput}
                       suggestions = {suggestions}
                   />
                 <Button className = 'user-submit' type = 'submit'>Search</Button> 
@@ -358,6 +359,7 @@ function AdminCalendar(props) {
     )
   }
 
+  
   // searches for all the sessions for a specified user
 
   const userSubmitHandler = (e, suggestions) => {
@@ -378,7 +380,7 @@ function AdminCalendar(props) {
 
   const showAll = () => {
     cCurrentUser(undefined)
-    setInput('')
+    cAutoCompleteInput('')
   }
 
   // books session for a user inside popover
@@ -411,34 +413,60 @@ function AdminCalendar(props) {
     document.getElementById('adminUserBookingForm').reset()
 }
 
+// make an array of all the users booked into the session
+  
+const sessionBookedUsers = (session) => {
+  let userArray = []
+  let finalArray = []
+  sessions.forEach((ses) => {
+    if (ses._id === session._id) {
+      userArray.push(ses.sessionUsers)
+    }
+  })
+
+  for (let i = 0; i < userArray[0].length; i++) {
+    users.forEach((user) => {
+      if (user._id === userArray[0][i]) {
+        finalArray.push(user.nameFirst + ' ' + user.nameLast + ' - ' + user.userName)
+      }
+    })
+  }
+  return finalArray
+}
+
   // cancels session for a user inside popover
 
   const adminUserCancelBooking = (session) => {
+    let suggestions = sessionBookedUsers(session)
     return (
-      <form className = 'user-book-form' onSubmit = {(e) => adminUserCancelHandler(e, session)} id = 'adminUserCancelForm'>
+      <form className = 'user-book-form' onSubmit = {(e) => adminUserCancelHandler(e, session, suggestions)} id = 'adminUserCancelForm'>
         <label className = 'user-book-form-label' for='userform'>Cancel booking for a user: </label>
-        <input 
-          className = 'book-field test2' 
-          type = 'text' 
-          name = 'user' 
-          placeholder = 'Select user...' 
-          autoComplete = 'off'
-          id = 'userform'
-        />
+        <Autocomplete input = {autoCompleteInput} setInput = {cAutoCompleteInput}
+                      suggestions = {suggestions}
+                  />
         <Button className = 'btn-danger booking-submit' type = 'submit'>Cancel booking</Button> 
       </form>)
   }
 
   // cancels user session booking inside popover
-
-  const adminUserCancelHandler = (e, ses) => {
+ 
+  const adminUserCancelHandler = (e, ses, suggestions) => {
     e.preventDefault()
-    sessions.forEach((session) => {
-      if (session._id === ses._id) {
-        removeUser(ses._id, e.target.user.value)
-      }
-    })
-    document.getElementById('adminUserCancelForm').reset()
+    if (suggestions.includes(e.target.user.value)) {
+      let userName = e.target.user.value.split('- ')
+      let userId
+      users.forEach((user) => {
+        if(userName[1] === user.userName) {
+          userId = user._id
+        }
+      })
+      sessions.forEach((session) => {
+        if (session._id === ses._id) {
+          removeUser(ses._id, userId)
+        }
+      })
+    } 
+    cAutoCompleteInput('')
   }
 
   // displays user booking input fields inside popover
