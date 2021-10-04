@@ -9,7 +9,6 @@ export class ApiClient {
             url,
             data,
         }).catch((error) => {
-            console.log(error)
             if (error.response.status === 403) {
                 return Promise.reject()
             } else {
@@ -19,26 +18,26 @@ export class ApiClient {
     }
 
     getSessions() {
-        return this.apiCall("get", url);
+        return this.apiCall("get", url + 'sessions')
     }
 
-    addSession(date, volunteer) {
-        return this.apiCall("post", url, { date, volunteer });
+    getUsers() {
+        return this.apiCall("get", url + 'user')
     }
 
-    addUser(userName, password) {
-    return this.apiCall('post', url + 'user', {userName, password})
+    removeSession(id) {
+        return this.apiCall('delete', `${url}session/${id}`)
+    }
+    
+    addSessionUser(id, sessionUser) {
+        return this.apiCall('put', `${url}sessionUser/${id}`, { user: sessionUser } )
     }
 
-  async login(userName, password) {
-    return await axios({
-      method: 'POST',
-      url: `${url}auth`,
-      data: {
-        userName,
-        password,
-      }
-    })
-  }    
+    removeSessionUser(id, sessionUser) {
+        return this.apiCall('put', `${url}sessionDelUser/${id}`, { user: sessionUser})
+    }
 
+    getLocations() {
+        return this.apiCall("get", url + 'location')
+    }
 }

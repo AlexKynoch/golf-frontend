@@ -4,7 +4,7 @@
   padding: 0;
 }
 
-.container {
+.profile-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -13,18 +13,19 @@
   padding: 2rem;
 }
 
-.card {
-  border: none;
-}
-
-.card-title {
-  margin-bottom: 1.5rem;
-}
-
-.card-body {
-  margin: 20px;
+.profile-card {
   border: 0.15rem solid rgb(6, 101, 50);
+}
+
+.profile-card-title {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.profile-card-body {
+  margin: 20px;
   border-radius: 10px;
+  margin: 0;
 }
 
 .btn {
@@ -69,7 +70,7 @@
   border: 0.1rem solid rgb(204, 221, 221);
 }
 
-.dropdown {
+.profile-dropdown {
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
@@ -79,9 +80,7 @@
   width: 90%;
   margin-left: 5%;
 }
-.card-body {
-  margin: 0;
-}
+
 .col-form-label {
   display: flex;
   justify-content: flex-start;

@@ -1,18 +1,10 @@
-/* .navbar-brand {
-    display: flex;
-    align-items: center;
-  }
-  .navbar-brand>img {
-    padding: 7px 14px;
-  } */
-
 .navbar {
   background-color: white;
   width: 100%;
 }
+
 .custom-nav-item {
   white-space: nowrap;
-
   height: 10%;
 }
 
@@ -21,6 +13,7 @@ img {
   display: flex;
   justify-content: flex-start;
 }
+
 .navbarContentContainer {
   background-color: transparent;
 }

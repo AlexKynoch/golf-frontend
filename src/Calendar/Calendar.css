@@ -1,0 +1,491 @@
+/* Font imports */
+
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,700);
+@import url(https://fonts.googleapis.com/icon?family=Material+Icons);
+
+.icon {
+  font-family: 'Material Icons', serif;
+  font-style: normal;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'liga';
+}
+
+
+/* Variables */
+
+:root {
+  --main-color: #1a8fff;
+  --text-color: #777;
+  --text-color-light: #ccc;
+  --border-color: #eee;
+  --bg-color: #f9f9f9;
+  --neutral-color: #fff;
+}
+
+
+/* General */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+    font-family: 'Open Sans', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    font-size: 1em;
+    font-weight: 300;
+    line-height: 1.5;
+    color: var(--text-color);
+    background: var(--bg-color);
+    position: relative;
+}
+
+header {
+  display: block;
+  width: 100%;
+  padding: 1.75em 0;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--neutral-color);
+}
+
+header #logo {
+  font-size: 175%;
+  text-align: center;
+  color: var(--main-color);
+  line-height: 1;
+}
+
+header #logo .icon {
+  padding-right: .25em;
+}
+
+.calendar-main {
+  display: block;
+  margin: 0 auto;
+  margin-top: 2em;
+  max-width: 65em;
+  margin-bottom: -60px
+}
+
+/* grid */
+
+.row {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%
+}
+
+.row-middle {
+  align-items: center;
+}
+
+.col {
+  flex-grow: 1;
+  flex-basis: 0;
+  max-width: 100%;
+}
+
+.col-start {
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.col-center {
+  justify-content: center;
+  text-align: center;
+}
+
+.col-end {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+/* Calendar */
+
+.calendar {
+  display: block;
+  position: relative;
+  width: 100%;
+  background: var(--neutral-color);
+  border: 1px solid var(--border-color);
+  margin-bottom:100px;
+  border-radius: 5px
+}
+
+.calendar .header {
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 115%;
+  padding: 1.5em 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.calendar .header .icon {
+  cursor: pointer;
+  transition: .15s ease-out;
+}
+
+.calendar .header .icon:hover {
+  transform: scale(1.75);
+  transition: .25s ease-out;
+  color: var(--main-color);
+}
+
+.calendar .header .icon:first-of-type {
+  margin-left: 1em;
+}
+
+.calendar .header .icon:last-of-type {
+  margin-right: 1em;
+}
+
+.calendar .days {
+  text-transform: uppercase;
+  font-weight: 400;
+  color: var(--text-color-light);
+  font-size: 70%;
+  padding: .75em 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.calendar .body .cell {
+  position: relative;
+  min-height: 6em;
+  border-right: 1px solid var(--border-color);
+  overflow: hidden;
+  cursor: pointer;
+  background: var(--neutral-color);
+  transition: 0.25s ease-out;
+}
+
+.calendar .body .cell:hover {
+  background: var(--bg-color);
+  transition: 0.5s ease-out;
+}
+
+.calendar .body .selected {
+  border-left: 10px solid transparent;
+  border-image: linear-gradient(45deg, rgb(6, 101, 50) 0%,rgb(50, 168, 105) 40%);
+  border-image-slice: 1;
+}
+
+.calendar .body .row {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.calendar .body .row:last-child {
+  border-bottom: none;
+}
+
+.calendar .body .cell:last-child {
+  border-right: none;
+}
+
+.calendar .body .cell .number {
+  position: absolute;
+  font-size: 82.5%;
+  line-height: 1;
+  top: .75em;
+  right: .75em;
+  font-weight: 700;
+}
+
+.calendar .body .disabled {
+  color: var(--text-color-light);
+  pointer-events: none;
+}
+
+.calendar .body .cell .bg {
+  font-weight: 700;
+  line-height: 1;
+  color: var(--main-color);
+  opacity: 0;
+  font-size: 8em;
+  position: absolute;
+  top: -.2em;
+  right: -.05em;
+  transition: .25s ease-out;
+  letter-spacing: -.07em;
+}
+
+.calendar .body .cell:hover .bg, .calendar .body .selected .bg  {
+  opacity: 0.05;
+  transition: .5s ease-in;
+}
+
+.calendar .body .col {
+  flex-grow: 0;
+  flex-basis: calc(100%/7);
+  width: calc(100%/7);
+}
+
+/* session entries */
+
+.dis-session-info {
+  font-size: 82.5%;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.ul-show-sessions {
+  padding-left:0px !important;
+  list-style-type: none
+}
+
+.ul-show-sessions:first-child {
+  margin-top: 20%;
+}
+
+.li-show-sessions {
+  border-radius: 5px;
+  padding-left: 12px;
+  padding-right: 10px;
+}
+
+/* popover */
+
+.popover-main {
+  max-width: 50em
+}
+
+.popover-card{
+  border: 0.15rem solid rgb(6, 101, 50)
+}
+
+.session-name {
+  font-size:20px;
+}
+
+.session-description {
+  margin-top:10px;
+  margin-bottom:10px;
+}
+
+.booking-btn-row {
+  width:22% !important;
+}
+
+.booking-btn {
+  margin-top:10px
+}
+
+.row>* {
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+.session-location {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.session-volunteer {
+  margin-top: 10px;
+}
+
+.location-icon {
+  display: inline-block;
+  margin-left: -5px
+}
+
+.location-text {
+  display: inline-block;
+  margin-top: 2px
+}
+
+.members-attending {
+  margin-top: 10px
+}
+
+.cga-contact-list {
+  list-style-type:none;
+  margin-top: 5px;
+  margin-left: -2px
+}
+
+.cga-contact {
+  margin-top: 10px
+}
+
+/* calendar key and filters area */
+
+.filters {
+  border-bottom: 1px solid var(--border-color);
+  margin-top: 25px;
+  padding-bottom: 12px;
+  padding-right: 25px;
+}
+
+/* calendar key */
+
+.bullet-list {
+  margin-left: -8px;
+}
+
+.bullet-text {
+  font-size: 16px;
+  color: black;
+}
+
+.filter-list-bullet .bullet-green {
+  list-style: none;
+  position: relative;
+  padding: 3px 0 2px 25px;
+}
+
+.filter-list-bullet .bullet-green::before {
+  content: '■';
+  color:#5cb85c;
+  position: absolute;
+  font-size: 26pt;
+  top: -16px;
+  left: 0;
+}
+
+.bullet-blue::before {
+  color: #0D6EFD !important
+}
+
+.bullet-gray::before {
+  color: #62666b !important
+}
+
+/* calendar filters (dropdown) */
+
+.dropdown-list {
+  padding:5px;
+  margin-top: 2px;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  display: inline-block
+}
+
+.dropdown-list:focus {
+  outline: none !important;
+  border-color: gray;
+}
+
+.dropdown-name {
+  margin-right:7px;
+  color: black;
+  display: inline-block  
+}
+
+.dropdown-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end 
+}
+
+.volunteer-filter {
+  padding-left: 15px;
+  padding-top: 6px;
+}
+
+.cga-filter {
+  padding-left: 15px;
+  padding-top: 6px;
+}
+
+/* admin search field */
+
+.search-field {
+  padding:5px;
+  border-radius: 5px;
+  outline: none !important;
+  border:1px solid gray;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+/* admin user booking */
+
+.admin-user-booking-buttons {
+  margin-top: 5px;
+  margin-left: -2.5px;
+  justify-content: right;
+  display: flex;
+  align-items: center;
+}
+
+.user-book-form {
+  margin-bottom: 5px;
+}
+
+.user-book-form-label {
+  margin-right: 5px;
+}
+
+.book-field {
+  padding:5px;
+  border-radius: 5px;
+  outline: none !important;
+  border:1px solid gray;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+.booking-submit {
+  margin-right: 5px;
+  margin-left: 5px;
+  padding: -15px
+}
+
+/* admin user search */
+
+.user-search-form {
+  margin-top: 5px;
+  justify-content: right;
+  display: flex;
+  align-items: center;
+}
+
+.user-search-form-label {
+  color: black;
+  margin-right: 5px;
+  text-align: center
+}
+
+.user-submit {
+  margin-right: 5px;
+  margin-left: 5px
+}
+
+@media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+  .user-filter {
+    margin-left: 15px;
+    margin-bottom: 3px;
+  }
+
+  .user-filter-dropdown {
+    margin-left: 13px;
+  }
+
+  .bullet-list {
+    margin: -15px 0px -10px -17px
+  }
+
+  .calendar .header {
+    padding: 0.8em
+  }
+
+  .ul-show-sessions {
+    padding-top: 15px
+  }
+
+  .calendar .body .cell {
+    min-height: 3em;  
+  }
+}

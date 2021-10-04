@@ -6,7 +6,6 @@ import Card from 'react-bootstrap/Card'
 import "bootstrap/dist/css/bootstrap.min.css";
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-
 import "./PPVolunteer.css"
 
 function PPVolunteer() {
@@ -59,10 +58,10 @@ function PPVolunteer() {
     }
     return (
         <>
-            <div className="Container row">
-                <Card id="myProfile" style={{ width: '15rem' }}>
-                    <Card.Body>
-                        <Card.Title>My Available Days</Card.Title>
+            <div className="volunteer-container row">
+                <Card id="myProfile" className="volunteer-card" style={{ width: '15rem' }}>
+                    <Card.Body className="volunteer-card-body">
+                        <Card.Title className="volunteer-card-title">My Available Days</Card.Title>
                         <Card.Subtitle className="mb-2 text-muted"></Card.Subtitle>
                         <br />
                         <ButtonGroup vertical className="d-flex flex-column">
@@ -81,7 +80,7 @@ function PPVolunteer() {
                         </ButtonGroup>
 
                         <div className="btn-container justify-content-end">
-                            <Button onClick={() => handleSubmit()} variant="light">Update</Button>
+                            <Button className = 'volunteer-btn' onClick={() => handleSubmit()} variant="light">Update</Button>
                             <ToastContainer position='bottom-center' />
                         </div>
                     </Card.Body>

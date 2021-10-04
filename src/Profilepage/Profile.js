@@ -1,4 +1,3 @@
-
 // import Navbar from 'react-bootstrap/Navbar'
 import Card from 'react-bootstrap/Card'
 import Form from 'react-bootstrap/Form'
@@ -10,7 +9,6 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { Dropdown } from 'react-bootstrap';
 import DropdownButton from 'react-bootstrap/DropdownButton';
-
 
 function Profile() {
 
@@ -60,10 +58,10 @@ function Profile() {
     }
 
     return (
-        <div className="container" >
-            <Card id="myProfile" style={{ width: '30rem' }}>
-                <Card.Body>
-                    <Card.Title>My Profile</Card.Title>
+        <div className="profile-container" >
+            <Card id="myProfile" className="profile-card" style={{ width: '30rem' }}>
+                <Card.Body className="profile-card-body">
+                    <Card.Title className="profile-card-title">My Profile</Card.Title>
                     <Card.Subtitle className="mb-2 text-muted"></Card.Subtitle>
 
                     <form className="cardFormContainer">
@@ -117,7 +115,7 @@ function Profile() {
 
 
 
-                        <Dropdown className="form-group row" >
+                        <Dropdown className="form-group row profile-drowdown" >
                             <label
                                 form="inputLocation3"
                                 className="col-form-label col-sm-3">

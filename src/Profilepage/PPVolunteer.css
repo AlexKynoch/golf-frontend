@@ -10,22 +10,25 @@
   justify-content: center;
   align-items: start;
 }
-.Container {
+
+.volunteer-container {
   display: block;
   max-width: 80rem;
   margin: 0 auto;
   padding: 2rem;
 }
 
-.card {
+.volunteer-card {
   border: 0.15rem solid rgb(6, 101, 50);
-  border-radius: 10px;
 }
 
-.card-title {
+.volunteer-card-title {
   background-color: white;
+  text-align: center;
+  padding-bottom: 14px
 }
-.card-body {
+
+.volunteer-card-body {
   background-color: white;
   border-style: none;
 }
@@ -49,4 +52,8 @@
 
 .btn-light {
   background-color: rgb(204, 221, 221);
+}
+
+.volunteer-btn {
+  margin-top: 5px
 }
