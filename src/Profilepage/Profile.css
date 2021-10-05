@@ -30,7 +30,6 @@
 
 .btn {
   background-color: rgb(204, 221, 221) !important;
-
   color: black;
   border: 1px solid rgb(6, 101, 50) !important;
 }
@@ -57,7 +56,6 @@
 
 .btn-container {
   display: flex;
-
   border: none !important;
 }
 

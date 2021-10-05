@@ -1,7 +1,6 @@
 import Card from 'react-bootstrap/Card'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
-import './Cga.css'
 import React, { useState, useEffect } from "react"
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -24,7 +23,6 @@ function CreateSession(props) {
     const sessionVolunteers = () => {
         let volunteerArray = []
         volunteers.forEach((volunteer) => {
-            console.log(volunteer.location)
             if (volunteer.location === location) {
                 volunteerArray.push(volunteer)
             }

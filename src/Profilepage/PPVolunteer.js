@@ -29,6 +29,7 @@ function PPVolunteer() {
 
     const handleSubmit = () => {
         console.log("your choices have been saved")
+        console.log(checked)
         showSuccess();
     }
 
@@ -55,7 +56,6 @@ function PPVolunteer() {
             // newState.push(parseInt(e.target.value))/ const filteredNewState = newState.filter(newState.includes() => e.target.value)
             return newState
         })
-        console.log(checked)
     }
     return (
         <>

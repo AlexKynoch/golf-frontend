@@ -16,6 +16,7 @@ import VolunteerCalendar from "./Calendar/VolunteerCalendar"
 import CgaCalendar from "./Calendar/CgaCalendar"
 import VolunteerProfile from "./Profilepage/VolunteerProfile"
 import CgaCreateSessionMain from "./CgaDashboard/CgaCreateSessionMain"
+import ViewUsers from "./CgaDashboard/CgaViewUsers"
 
 function App() {
   const client = new ApiClient()
@@ -36,7 +37,7 @@ function App() {
             <CgaCreateSessionMain client = {client}/>
           </Route>
           <Route path = '/view-users'>
-            <VolunteerProfile />
+            <ViewUsers client = {client} />
           </Route>
           <Route exact path = '/'>
             <VolunteerCalendar client = {client} />

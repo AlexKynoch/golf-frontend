@@ -1,59 +1,59 @@
 import Card from 'react-bootstrap/Card'
 import Col from 'react-bootstrap/Col'
 import Table from 'react-bootstrap/Table'
-import './Cga.css'
 import React, { useState, useEffect } from "react"
 
 function VolunteerAvailability(props) {
     const [volunteers, cVolunteers] = useState([])
+    const [location, cLocation] = useState('Leeds')
 
     const refreshList = () => {
         props.client.getUserByRole('volunteer').then((response) => cVolunteers(response.data))
-        console.log(volunteers)
     }
 
     const sessionVolunteers = () => {
         let volunteerArray = []
         volunteers.forEach((volunteer) => {
-            volunteerArray.push(volunteer.nameFirst + ' ' + volunteer.nameLast)
+            if (volunteer.location === location) {
+                volunteerArray.push(volunteer)
+            }
         })
         return volunteerArray
     }
 
-
+    const availability = [0, 2, 4, 5]
     useEffect(() => {
     refreshList();
     }, [])
 
-
+    
     // builds volunteer availabilit table
 
     const buildrows = () => {
-        if (volunteers.length > 0) {
-            return volunteers.map((current) => {
+        if (sessionVolunteers().length > 0) {
+            return sessionVolunteers().map((current) => {
                 return <tr key={current._id}>
                 <td>{current.nameFirst + ' ' + current.nameLast}</td>
                 <td>{current.userName}</td>
-                <td><input type="checkbox" name="mon" />&nbsp;</td>
-                <td><input type="checkbox" name="tue" />&nbsp;</td>
-                <td><input type="checkbox" name="wed" />&nbsp;</td>
-                <td><input type="checkbox" name="thu" />&nbsp;</td>
-                <td><input type="checkbox" name="fri" />&nbsp;</td>
-                <td><input type="checkbox" name="sat" />&nbsp;</td>
-                <td><input type="checkbox" name="sun" />&nbsp;</td>
+                <td><input type="checkbox" id="mon" />&nbsp;</td>
+                <td><input type="checkbox" id="tue" />&nbsp;</td>
+                <td><input type="checkbox" id="wed" />&nbsp;</td>
+                <td><input type="checkbox" id="thu" />&nbsp;</td>
+                <td><input type="checkbox" id="fri" />&nbsp;</td>
+                <td><input type="checkbox" id="sat" />&nbsp;</td>
+                <td><input type="checkbox" nid="sun" />&nbsp;</td>
                 </tr>
             })
         } else {
             return (
-            <tr className = 'no-events-to-show'>
+            <tr className = 'no-volunteers-to-show'>
                 <td colSpan = '5'>{'No volunteers to show'}</td>
             </tr>
             )
         }
     }
-
+   
     return (
-        
             <Card id="myProfile" className="profile-card volunteer-availability-card" >
                 <Card.Body className="profile-card-body">
                 <Card.Title className="profile-card-title">Volunteer Availability</Card.Title>
@@ -74,8 +74,7 @@ function VolunteerAvailability(props) {
                     <tbody>{buildrows()}</tbody>
                     </Table>    
                 </Card.Body>
-            </Card>
-       
+            </Card>  
     )
 }
 
