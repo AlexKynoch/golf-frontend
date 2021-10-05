@@ -82,6 +82,6 @@
 }
 
 .col-form-label {
-  display: flex;
-  justify-content: flex-start;
+  /* display: flex;
+  justify-content: flex-start; */
 }

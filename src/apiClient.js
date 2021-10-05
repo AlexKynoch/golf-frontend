@@ -40,4 +40,8 @@ export class ApiClient {
     getLocations() {
         return this.apiCall("get", url + 'location')
     }
+
+    getUserByRole(role) {
+        return this.apiCall("get", `${url}userrole/${role}`)
+    }
 }

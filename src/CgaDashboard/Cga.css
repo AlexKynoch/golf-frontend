@@ -1,0 +1,117 @@
+.cga-session-card {
+    width: 30rem !important
+}
+
+.input-form-label {
+    display: inline-block;
+	vertical-align: middle;
+}
+
+.required-asterisk {
+    color: red
+}
+
+/* .form-group {
+    display: flex;
+    flex-direction: row;
+   
+} */
+
+
+/* .form-control {
+    display: inline-block
+}
+
+.col-form-label {
+    display: inline-block
+    
+} */
+
+/* *{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+  
+.profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.profile-card {
+    border: 0.15rem solid rgb(6, 101, 50);
+}
+
+.profile-card-title {
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.profile-card-body {
+    margin: 20px;
+    border-radius: 10px;
+    margin: 0;
+}
+
+.btn {
+    background-color: rgb(204, 221, 221) !important;
+    color: black;
+    border: 1px solid rgb(6, 101, 50) !important;
+}
+
+.btn-primary {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    background-color: rgb(204, 221, 221) !important;
+    border-radius: 5px;
+}
+
+.show > .btn-primary.dropdown-toggle {
+    color: black;
+    background-color: rgb(6, 101, 50) !important;
+    color: white;
+}
+.dropdownButton:visited {
+    background-color: rgb(204, 221, 221) !important;
+}
+
+.btn:hover {
+    background-color: rgb(6, 101, 50) !important;
+    color: white;
+}
+
+.btn-container {
+    display: flex;
+
+    border: none !important;
+}
+
+#volunteer {
+    display: none;
+}
+
+.form-control {
+    margin: 0.25rem;
+    border: 0.1rem solid rgb(204, 221, 221);
+}
+
+.profile-dropdown {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.cardFormContainer {
+    width: 90%;
+    margin-left: 5%;
+}
+
+.col-form-label {
+    display: flex;
+    justify-content: flex-start;
+} */
