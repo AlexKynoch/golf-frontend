@@ -7,12 +7,12 @@ import './Cga.css'
 
 function CgaCreateSessionMain(props) {
     return (
-      <Container>
+      <Container fluid>
         <Row className = 'cga-content-container'>
-          <Col>
+          <Col md={6}>
             <CreateSession client = {props.client}/>
             </Col>
-            <Col>
+            <Col md={6}>
             <VolunteerAvailability client = {props.client} />
             </Col>
         </Row>

@@ -45,7 +45,8 @@ export class ApiClient {
         return this.apiCall("get", `${url}userrole/${role}`)
     }
 
-    addSession() {
-        return this.apiCall("post", url + 'session')
+    addSession(date, volunteer, sessionLocation, sessionTimeStart, sessionTimeFinish, userLimit, details) {
+        return this.apiCall("post", url + 'session', { date: date, volunteer: volunteer, sessionUsers: [],  sessionLocation: sessionLocation, 
+            sessionTimeStart: sessionTimeStart, sessionTimeFinish: sessionTimeFinish, userLimit: userLimit, details: details })
     }
 }

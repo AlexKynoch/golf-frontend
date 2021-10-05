@@ -4,7 +4,6 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import NavBar from "./NavBar"
 import './App.css'
 import Footer from "./Footer"
-import Navbar from 'react-bootstrap/Navbar'
 import Container from 'react-bootstrap/Container'
 
 import {
@@ -16,10 +15,7 @@ import {
 import VolunteerCalendar from "./Calendar/VolunteerCalendar"
 import CgaCalendar from "./Calendar/CgaCalendar"
 import VolunteerProfile from "./Profilepage/VolunteerProfile"
-import CreateSession from "./CgaDashboard/CgaCreateSession"
 import CgaCreateSessionMain from "./CgaDashboard/CgaCreateSessionMain"
-
-
 
 function App() {
   const client = new ApiClient()

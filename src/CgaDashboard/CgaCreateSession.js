@@ -10,73 +10,63 @@ import 'react-toastify/dist/ReactToastify.css'
 function CreateSession(props) {
     const [sessions, cSessions] = useState([])
     const [volunteers, cVolunteers] = useState([])
-    const [location, cLocation] = useState('Abbeydale Golf Club - Sheffield')
-
+    const [location, cLocation] = useState('Leeds')
+    const [disabled, cDisabled] = useState(false)
+    // Abbeydale Golf Club - Sheffield
     const refreshList = () => {
         props.client.getSessions().then((response) => cSessions(response.data))
         props.client.getUserByRole('volunteer').then((response) => cVolunteers(response.data))
     }
 
+
+    // return all registered volunteer names
+
     const sessionVolunteers = () => {
         let volunteerArray = []
         volunteers.forEach((volunteer) => {
-            volunteerArray.push(volunteer.nameFirst + ' ' + volunteer.nameLast)
+            console.log(volunteer.location)
+            if (volunteer.location === location) {
+                volunteerArray.push(volunteer)
+            }
         })
         return volunteerArray
     }
 
+    // display message after new session submission
 
     const showSuccess = () => {
         toast.success("New session has been created")
     }
 
+    // gets dropdown list value
+
+    const getItemValue = (q) => {
+        const e = document.getElementById(q)
+        return e.options[e.selectedIndex].value
+    }
+
     const submitHandler = (e) => {
         e.preventDefault()
-        // cDisabled(true)
+        cDisabled(true)
+        
+        props.client.addSession(
+            e.target.inputDate.value,
+            getItemValue('inputVolunteer'),
+            e.target.inputLocation.value,
+            e.target.inputStartTime.value,
+            e.target.inputFinishTime.value,
+            getItemValue('inputUserLimit'),
+            e.target.inputAdditionalDetails.value   
+            )
+        .then(() => {
         showSuccess()
-        let result = [
-                e.target.inputDate.value,
-                e.target.inputStartTime.value,
-                e.target.inputFinishTime.value,
-                e.target.inputLocation.value,
-                e.target.inputVolunteer.value,
-                e.target.inputUserLimit.value,
-                e.target.inputUserLimit.value,
-                e.target.inputAdditionalDetails.value
-        ]
-        console.log(result)
-        // let result
-        // if (props.currentEvent) {
-        //   result = props.client.updateEvent(
-        //     props.currentEvent._id,
-        //     e.target.eventName.value,
-        //     e.target.location.value,
-        //     e.target.information.value,
-        //     e.target.date.value
-        //   )
-        // } else {
-        //   result = props.client.addEvent(e.target.eventName.value, e.target.location.value, e.target.information.value, e.target.date.value)
-        // }
-        // result
-        //   .then(() => {
-        //     cDisabled(false)
-        //     setStartDate(new Date())
-        //     document.getElementById('addForm').reset()
-    
-        //     if (!props.currentName && !props.currentLocation) {
-        //       props.refreshList()
-        //     } else if (props.currentLocation) {
-        //       props.getByLocation(props.currentLocation)
-        //       props.cCurrentEvent(undefined)
-        //     } else {
-        //       props.getByName(props.currentName)
-        //       props.cCurrentEvent(undefined)
-        //     }
-        //   })
-        //   .catch(() => {
-        //     alert('an error occured, please try again')
-        //     cDisabled(false)
-        //   })
+        cDisabled(false)
+        document.getElementById('sessionForm').reset()
+        })
+        .catch(() => {
+        alert('an error occured, please try again')
+        cDisabled(false)
+        })
       }
 
       useEffect(() => {
@@ -87,7 +77,7 @@ function CreateSession(props) {
             <Card id="myProfile" className="profile-card cga-session-card" >
                 <Card.Body className="profile-card-body">
                 <Card.Title className="profile-card-title">Add new session</Card.Title>
-                    <form className="cardFormContainer" onSubmit={(e) => submitHandler(e)}>
+                    <form className="cardFormContainer" id = 'sessionForm' onSubmit={(e) => submitHandler(e)}>
                         <div className="form-group row">
                             <div className="col-form-label col-sm-4">
                                 <label className="input-form-label" form="inputDate" >Date<span className = 'required-asterisk'>*</span></label> 
@@ -126,6 +116,7 @@ function CreateSession(props) {
                             </div>
                             <div className="col-sm-8">                           
                             <select className="form-control" id="inputUserLimit">
+                                <option disabled selected value>-- select an option --</option>
                                 <option value = '1' >1</option>
                                 <option value = '2' >2</option>
                                 <option value = '3' >5</option>
@@ -137,9 +128,10 @@ function CreateSession(props) {
                                 <label className="input-form-label" form="inputVolunteer" >Volunteer<span className = 'required-asterisk'>*</span></label> 
                             </div>
                             <div className="col-sm-8">                           
-                            <select size='1' className="form-control" id="inputUserLimit">
+                            <select size='1' className="form-control" id="inputVolunteer">
+                                <option disabled selected value>-- select an option --</option>
                                 {sessionVolunteers().map((volunteer) => (
-                                <option value = {volunteer}>{volunteer}</option>))}
+                                <option value = {volunteer._id}>{volunteer.nameFirst + ' ' + volunteer.nameLast}</option>))}
                             </select> 
                             </div>
                         </div>
@@ -148,7 +140,7 @@ function CreateSession(props) {
                                 <label className="inputAdditionalDetails" form="inputUserLimit">Additional details</label> 
                             </div>
                             <div className="col-sm-8">                           
-                                <input className="form-control" type="text"  id="inputAdditionalDetails" name="inputAdditionalDetails" placeholder="Additional details"></input> 
+                                <input className="form-control" type="text"  id="inputAdditionalDetails" name="inputAdditionalDetails" placeholder="Additional details" autocomplete="off"></input> 
                             </div>
                         </div>
                         <div className="btn-container justify-content-end">

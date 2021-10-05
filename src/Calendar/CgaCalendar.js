@@ -160,15 +160,30 @@ function CgaCalendar(props) {
   // shows sessions in the calendar cell for that specific day
 
   const showSessions = (day) => {
-    return sessions.map((session, i) => {
+    let sessionsArray = []
+    let finalSessionsArray = []
+
+    let sessionsToDisplay =  sessions.map((session, i) => {
       const sessionDate = new Date(session.date)
-      if (sessionDate.getTime() === day.getTime()){
+      if (sessionDate.getTime() === day.getTime()) {
           return displaySessions(session, i)
       } 
-    }) 
+    })
+
+    for (let i = 0; i < sessionsToDisplay.length; i++) {
+      if (sessionsToDisplay[i] !== undefined) {
+        sessionsArray.push(sessionsToDisplay[i])
+      }
+    }
+
+    let sortedArray = sessionsArray.sort((a, b) => a[1] - b[1])
+    for (let i = 0; i < sortedArray.length; i++) {
+      finalSessionsArray.push(sortedArray[i][0])
+    }
+    return finalSessionsArray
   }
 
-  // session HTML to display in calendar cell 
+  // session HTML to display in calendar cell
 
   const sessionEntry = (session, i) => {
     return (
@@ -185,14 +200,14 @@ function CgaCalendar(props) {
 
   // displays the session based on filter
 
-  const displaySessions = (session, i) => {  
+  const displaySessions = (session, i) => { 
+    const sessionDateTime = new Date(session.date + ' ' + session.sessionTimeStart) 
     if (location === session.sessionLocation ) {
-      return sessionEntry(session,i) 
+      return [sessionEntry(session,i), sessionDateTime] 
     } else if (location === 'showAll') {
-      return sessionEntry(session,i) 
+      return [sessionEntry(session,i), sessionDateTime] 
     } 
   }
-
   // switches calendar to next month
 
   const nextMonth = () => {

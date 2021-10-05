@@ -9,6 +9,7 @@ function VolunteerAvailability(props) {
 
     const refreshList = () => {
         props.client.getUserByRole('volunteer').then((response) => cVolunteers(response.data))
+        console.log(volunteers)
     }
 
     const sessionVolunteers = () => {
@@ -31,15 +32,15 @@ function VolunteerAvailability(props) {
         if (volunteers.length > 0) {
             return volunteers.map((current) => {
                 return <tr key={current._id}>
-                <td>{current.nameFirst}</td>
+                <td>{current.nameFirst + ' ' + current.nameLast}</td>
                 <td>{current.userName}</td>
-                <td>1</td>
-                <td>2</td>
-                <td>3</td>
-                <td>4</td>
-                <td>5</td>
-                <td>6</td>
-                <td>7</td>
+                <td><input type="checkbox" name="mon" />&nbsp;</td>
+                <td><input type="checkbox" name="tue" />&nbsp;</td>
+                <td><input type="checkbox" name="wed" />&nbsp;</td>
+                <td><input type="checkbox" name="thu" />&nbsp;</td>
+                <td><input type="checkbox" name="fri" />&nbsp;</td>
+                <td><input type="checkbox" name="sat" />&nbsp;</td>
+                <td><input type="checkbox" name="sun" />&nbsp;</td>
                 </tr>
             })
         } else {

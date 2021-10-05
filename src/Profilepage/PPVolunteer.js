@@ -55,6 +55,7 @@ function PPVolunteer() {
             // newState.push(parseInt(e.target.value))/ const filteredNewState = newState.filter(newState.includes() => e.target.value)
             return newState
         })
+        console.log(checked)
     }
     return (
         <>
