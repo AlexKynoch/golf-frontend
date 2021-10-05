@@ -43,7 +43,7 @@ function ViewUsers(props) {
     const dropDown = () => {
         return (
           <div>
-            <div className = 'dropdown-container'>
+            <div className = 'dropdown-container cga-dropdown-container'>
                 <div className = 'dropdown-name'>Sort by role:</div>
                     <select className = 'dropdown-list' onChange={(e) => cSort(e.target.value)} value={sort}>
                         <option value = {'all'}>All</option>

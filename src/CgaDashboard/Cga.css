@@ -28,3 +28,7 @@ td input[type="checkbox"] {
 .create-session {
     padding-bottom: 10px;
 }
+
+.cga-dropdown-container {
+    margin-bottom: 15px 
+  }

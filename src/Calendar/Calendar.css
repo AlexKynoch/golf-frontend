@@ -70,6 +70,8 @@ header #logo .icon {
 }
 
 .calendar-main {
+  border: 0.15rem solid rgb(6, 101, 50);
+  border-radius: 5px;
   display: block;
   margin: 0 auto;
   /* margin-top: 10%; */
@@ -275,7 +277,7 @@ header #logo .icon {
 }
 
 .popover-card{
-  border: 0.15rem solid rgb(6, 101, 50)
+  /* border: 0.15rem solid rgb(6, 101, 50) */
 }
 
 .session-name {
