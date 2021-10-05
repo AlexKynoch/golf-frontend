@@ -2,6 +2,10 @@
     width: 30rem !important
 }
 
+.volunteer-availability-card {
+    width: 40rem !important;
+}
+
 .input-form-label {
     display: inline-block;
 	vertical-align: middle;
@@ -9,6 +13,10 @@
 
 .required-asterisk {
     color: red
+}
+
+.cga-content-container {
+    flex-wrap: nowrap
 }
 
 /* .form-group {

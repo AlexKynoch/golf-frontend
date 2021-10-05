@@ -14,6 +14,7 @@ import VolunteerCalendar from "./Calendar/VolunteerCalendar"
 import CgaCalendar from "./Calendar/CgaCalendar"
 import VolunteerProfile from "./Profilepage/VolunteerProfile"
 import CreateSession from "./CgaDashboard/CgaCreateSession"
+import CgaCreateSessionMain from "./CgaDashboard/CgaCreateSessionMain"
 
 function NavBar(props) {
 
@@ -22,7 +23,6 @@ function NavBar(props) {
   }
   return (
     <>
-    <Router>
       <Navbar className="navbar">
         <Container className="navbarContentContainer">
           <Navbar.Brand href="/">
@@ -51,24 +51,7 @@ function NavBar(props) {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      <Container>
-        <Switch>
-          <Route path = '/dashboard'>
-            <CgaCalendar client = {props.client} />
-          </Route>
-          <Route path = '/create-session'>
-            <CreateSession client = {props.client}/>
-          </Route>
-          <Route path = '/view-users'>
-            <VolunteerProfile />
-          </Route>
-          <Route exact path = '/'>
-            <VolunteerCalendar client = {props.client} />
-          </Route>
-          <Route path = '/'>Error: 404 not found</Route>
-        </Switch>
-      </Container>
-    </Router>
+
     </>
   );
 };

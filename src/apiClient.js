@@ -44,4 +44,8 @@ export class ApiClient {
     getUserByRole(role) {
         return this.apiCall("get", `${url}userrole/${role}`)
     }
+
+    addSession() {
+        return this.apiCall("post", url + 'session')
+    }
 }

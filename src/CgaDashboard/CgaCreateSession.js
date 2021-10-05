@@ -83,7 +83,7 @@ function CreateSession(props) {
         refreshList();
       }, [])
     return (
-    <Col className="profile-container" >
+  
             <Card id="myProfile" className="profile-card cga-session-card" >
                 <Card.Body className="profile-card-body">
                 <Card.Title className="profile-card-title">Add new session</Card.Title>
@@ -138,8 +138,8 @@ function CreateSession(props) {
                             </div>
                             <div className="col-sm-8">                           
                             <select size='1' className="form-control" id="inputUserLimit">
-                            {sessionVolunteers().map((volunteer) => (
-                  <option value = {volunteer}>{volunteer}</option>))}
+                                {sessionVolunteers().map((volunteer) => (
+                                <option value = {volunteer}>{volunteer}</option>))}
                             </select> 
                             </div>
                         </div>
@@ -158,7 +158,7 @@ function CreateSession(props) {
                     </form>
                 </Card.Body>
             </Card>
-        </Col >
+  
     )
 }
 
