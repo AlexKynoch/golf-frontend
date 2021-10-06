@@ -49,4 +49,8 @@ export class ApiClient {
         return this.apiCall("post", url + 'session', { date: date, volunteer: volunteer, sessionUsers: [],  sessionLocation: sessionLocation, 
             sessionTimeStart: sessionTimeStart, sessionTimeFinish: sessionTimeFinish, userLimit: userLimit, details: details })
     }
+
+    updateUser(id, data) {
+        return this.apiCall("put", `${url}user/${id}`, data)
+    }
 }

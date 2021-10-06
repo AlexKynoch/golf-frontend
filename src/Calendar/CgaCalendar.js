@@ -309,14 +309,14 @@ function CgaCalendar(props) {
   }, [])
 
   return (
-    <div className = 'calendar-main'>
-      <div className = 'calendar'>
-      {renderHeader()}
-      {renderFilters()}
-      {renderDays()}
-      {renderCells()}
+      <div className = 'calendar-main calendar-main-cga'>
+        <div className = 'calendar'>
+        {renderHeader()}
+        {renderFilters()}
+        {renderDays()}
+        {renderCells()}
+        </div>
       </div>
-    </div>
   )
 }
 

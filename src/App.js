@@ -5,16 +5,13 @@ import NavBar from "./NavBar"
 import './App.css'
 import Footer from "./Footer"
 import Container from 'react-bootstrap/Container'
-
 import {
   HashRouter as Router,
   Switch,
-  Route,
-  Link
-} from 'react-router-dom';
+  Route
+} from 'react-router-dom'
 import VolunteerCalendar from "./Calendar/VolunteerCalendar"
-import CgaCalendar from "./Calendar/CgaCalendar"
-import VolunteerProfile from "./Profilepage/VolunteerProfile"
+import CgaDashboard from "./CgaDashboard"
 import CgaCreateSessionMain from "./CgaDashboard/CgaCreateSessionMain"
 import ViewUsers from "./CgaDashboard/CgaViewUsers"
 
@@ -31,7 +28,7 @@ function App() {
       <Container>
         <Switch>
           <Route path = '/dashboard'>
-            <CgaCalendar client = {client} />
+            <CgaDashboard client = {client} />
           </Route>
           <Route path = '/create-session'>
             <CgaCreateSessionMain client = {client}/>

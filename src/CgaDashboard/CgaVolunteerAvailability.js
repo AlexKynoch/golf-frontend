@@ -27,7 +27,7 @@ function VolunteerAvailability(props) {
     }, [])
 
     
-    // builds volunteer availabilit table
+    // builds volunteer availability table
 
     const buildrows = () => {
         if (sessionVolunteers().length > 0) {

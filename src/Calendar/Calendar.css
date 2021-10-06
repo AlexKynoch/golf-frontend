@@ -87,6 +87,10 @@ header #logo .icon {
   /* margin-bottom: -60px */
 }
 
+.calendar-main-cga {
+  margin: 0px !important;
+}
+
 /* grid */
 
 .row {
