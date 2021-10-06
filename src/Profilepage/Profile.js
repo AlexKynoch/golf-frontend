@@ -36,8 +36,6 @@ function Profile() {
     )
 
 
-    console.log(users.location);
-
     const showSuccess = () => {
         toast.success("Your details have been updated");
     };
@@ -55,6 +53,7 @@ function Profile() {
     const handleSubmit = () => {
         console.log("submitting form data")
         showSuccess();
+
     }
 
     return (
