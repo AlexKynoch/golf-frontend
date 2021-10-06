@@ -85,3 +85,35 @@
   display: flex;
   justify-content: flex-start;
 }
+.volunteerDashboardColContainer {
+  justify-content: center;
+  align-items: center;
+}
+.volunteerDashboardContainer {
+  width: 100%;
+}
+.volunteerDashboardRow {
+  width: 100%;
+}
+.volunteerDashboardCol {
+  position: relative;
+  background-color: lightblue;
+  width: fit-content;
+}
+
+/* .volunteerDashboardCol {
+  position: relative;
+  background-color: lightblue;
+  width: fit-content;
+}
+.profile-container,
+.volunteer-container {
+  margin: 0;
+  height: 100%;
+  width: fit-content;
+}
+.volunteerDashboardRow,
+.volunteerDashboardContainer {
+  width: 100%;
+  flex-wrap: nowrap;
+} */

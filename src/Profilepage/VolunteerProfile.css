@@ -1,5 +1,5 @@
 .volunteerDashboardRow {
-    width: 100%;
+  width: 100%;
 }
 
 .volunteerDashboardCol {
@@ -7,4 +7,8 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
+}
+
+.pchangePassword-card-body {
+  background-color: hotpink;
 }

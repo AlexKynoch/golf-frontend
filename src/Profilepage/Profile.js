@@ -59,7 +59,7 @@ function Profile() {
 
     return (
         <div className="profile-container" >
-            <Card id="myProfile" className="profile-card" style={{ width: '30rem' }}>
+            <Card id="myProfile" className="profile-card" >
                 <Card.Body className="profile-card-body">
                     <Card.Title className="profile-card-title">My Profile</Card.Title>
                     <Card.Subtitle className="mb-2 text-muted"></Card.Subtitle>
