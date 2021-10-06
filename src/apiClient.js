@@ -56,11 +56,11 @@ export class ApiClient {
     }
 
     addSession(date, volunteer, sessionLocation, sessionTimeStart, sessionTimeFinish, userLimit, details) {
-        return this.apiCall("post", url + 'session', { date: date, volunteer: volunteer, sessionUsers: [],  sessionLocation: sessionLocation, 
-            sessionTimeStart: sessionTimeStart, sessionTimeFinish: sessionTimeFinish, userLimit: userLimit, details: details })
+        return this.apiCall("post", url + 'session', {
+            date: date, volunteer: volunteer, sessionUsers: [], sessionLocation: sessionLocation,
+            sessionTimeStart: sessionTimeStart, sessionTimeFinish: sessionTimeFinish, userLimit: userLimit, details: details
+        })
     }
 
-    updateUser(id, data) {
-        return this.apiCall("put", `${url}user/${id}`, data)
-    }
+
 }
