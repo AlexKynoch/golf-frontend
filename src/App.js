@@ -11,6 +11,7 @@ import {
   Route
 } from 'react-router-dom'
 import VolunteerCalendar from "./Calendar/VolunteerCalendar"
+import VolunteerProfile from "./Profilepage/VolunteerProfile"
 import CgaDashboard from "./CgaDashboard"
 import CgaCreateSessionMain from "./CgaDashboard/CgaCreateSessionMain"
 import ViewUsers from "./CgaDashboard/CgaViewUsers"
@@ -27,13 +28,19 @@ function App() {
       <div className="contentContainer">
       <Container>
         <Switch>
-          <Route path = '/dashboard'>
+          <Route path = '/volunteer/calendar'>
+            <VolunteerCalendar client = {client} />
+          </Route>
+          <Route path = '/volunteer/profile'>
+          <VolunteerProfile client = {client} />
+          </Route>
+          <Route path = '/cga/dashboard'>
             <CgaDashboard client = {client} />
           </Route>
-          <Route path = '/create-session'>
+          <Route path = '/cga/create-session'>
             <CgaCreateSessionMain client = {client}/>
           </Route>
-          <Route path = '/view-users'>
+          <Route path = '/cga/view-users'>
             <ViewUsers client = {client} />
           </Route>
           <Route exact path = '/'>

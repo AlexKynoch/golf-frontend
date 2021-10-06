@@ -35,14 +35,20 @@ function NavBar(props) {
               {/* <Nav.Item>
               <Nav.Link href="/home">Active</Nav.Link>
             </Nav.Item> */}
-            <Link className = 'custom-nav-item nav-link' to = '/dashboard'>
+            {/* <Link className = 'custom-nav-item nav-link' to = '/cga/dashboard'>
               Dashboard
             </Link>
-            <Link className = 'custom-nav-item nav-link' to = '/create-session'>
+            <Link className = 'custom-nav-item nav-link' to = '/cga/create-session'>
               Create session
             </Link>
-            <Link className = 'custom-nav-item nav-link' to = '/view-users'>
+            <Link className = 'custom-nav-item nav-link' to = '/cga/view-users'>
               View users
+            </Link> */}
+            <Link className = 'custom-nav-item nav-link' to = '/volunteer/calendar'>
+              Calendar
+            </Link>
+            <Link className = 'custom-nav-item nav-link' to = '/volunteer/profile'>
+              Profile
             </Link>
             <Link className = 'custom-nav-item nav-link' onClick={logout}>
               Log Out

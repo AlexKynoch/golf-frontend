@@ -38,7 +38,6 @@ function PPVolunteer(props) {
 
     const handleSubmit = () => {
         console.log("your choices have been saved")
-        console.log(checked)
         showSuccess();
         props.client.updateUser(userId, { availability: radios })
             .then((res) => {
