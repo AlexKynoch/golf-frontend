@@ -11,7 +11,10 @@ import {
   Link
 } from 'react-router-dom';
 import VolunteerCalendar from "./Calendar/VolunteerCalendar"
+import CgaCalendar from "./Calendar/CgaCalendar"
 import VolunteerProfile from "./Profilepage/VolunteerProfile"
+import CreateSession from "./CgaDashboard/CgaCreateSession"
+import CgaCreateSessionMain from "./CgaDashboard/CgaCreateSessionMain"
 
 function NavBar(props) {
 
@@ -20,7 +23,6 @@ function NavBar(props) {
   }
   return (
     <>
-    <Router>
       <Navbar className="navbar">
         <Container className="navbarContentContainer">
           <Navbar.Brand href="/">
@@ -33,11 +35,14 @@ function NavBar(props) {
               {/* <Nav.Item>
               <Nav.Link href="/home">Active</Nav.Link>
             </Nav.Item> */}
-            <Link className = 'custom-nav-item nav-link' to = '/calendar'>
-              Calendar
+            <Link className = 'custom-nav-item nav-link' to = '/dashboard'>
+              Dashboard
             </Link>
-            <Link className = 'custom-nav-item nav-link' to = '/profile'>
-              Profile
+            <Link className = 'custom-nav-item nav-link' to = '/create-session'>
+              Create session
+            </Link>
+            <Link className = 'custom-nav-item nav-link' to = '/view-users'>
+              View users
             </Link>
             <Link className = 'custom-nav-item nav-link' onClick={logout}>
               Log Out
@@ -46,21 +51,7 @@ function NavBar(props) {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      <Container>
-        <Switch>
-          <Route path = '/calendar'>
-            <VolunteerCalendar client = {props.client} />
-          </Route>
-          <Route path = '/profile'>
-            <VolunteerProfile />
-          </Route>
-          <Route exact path = '/'>
-            <VolunteerCalendar client = {props.client} />
-          </Route>
-          <Route path = '/'>Error: 404 not found</Route>
-        </Switch>
-      </Container>
-    </Router>
+
     </>
   );
 };
