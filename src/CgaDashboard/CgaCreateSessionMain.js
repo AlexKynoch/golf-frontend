@@ -6,6 +6,7 @@ import VolunteerAvailability from "./CgaVolunteerAvailability"
 import './Cga.css'
 
 function CgaCreateSessionMain(props) {
+  // document.getElementById("mon").checked = false
     return (
       <Container fluid>
         <Row > 
