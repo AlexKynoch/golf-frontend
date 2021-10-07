@@ -14,7 +14,9 @@ import VolunteerCalendar from "./Calendar/VolunteerCalendar"
 import CgaCalendar from "./Calendar/CgaCalendar"
 import CreateSession from "./CgaDashboard/CgaCreateSession"
 import CgaCreateSessionMain from "./CgaDashboard/CgaCreateSessionMain"
+
 function NavBar(props) {
+  console.log(props)
 
   function logout() {
     // console.log("im the logout function")
@@ -30,34 +32,44 @@ function NavBar(props) {
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="justify-content-end me-auto" activeKey="/home" style={{ width: "100%" }}>
               {/* <Nav className="justify-content-xl-evenly" activeKey="/home" style={{ width: "100%" }}> */}
-              {/* <Nav.Item>
-              <Nav.Link href="/home">Active</Nav.Link>
-            </Nav.Item> */}
               {/* <Link className = 'custom-nav-item nav-link' to = '/cga/dashboard'>
               Dashboard
-            </Link>
-            <Link className = 'custom-nav-item nav-link' to = '/cga/create-session'>
+              </Link>
+              <Link className = 'custom-nav-item nav-link' to = '/cga/create-session'>
               Create session
-            </Link>
-            <Link className = 'custom-nav-item nav-link' to = '/cga/view-users'>
+              </Link>
+              <Link className = 'custom-nav-item nav-link' to = '/cga/view-users'>
               View users
             </Link> */}
-              <Link className='custom-nav-item nav-link' to='/volunteer/calendar'>
-                Calendar
-              </Link>
+              <Nav.Item>
+                {props.links[0] ?
+                  "Log in as:" : null
+                }
+              </Nav.Item>
+              {props.links.slice(0).map((v, i) => {
+                console.log(v)
+                return (
+                  <Link key={i} className='custom-nav-item nav-link' to={v.url}>
+                    {v.name}
+                  </Link>
+                )
+              })}
+              {/* <Link className='custom-nav-item nav-link' to='/volunteer/calendar'>
+                    Calendar
+                  </Link>
               <Link className='custom-nav-item nav-link' to='/volunteer/profile'>
                 Profile
               </Link>
               <Link className='custom-nav-item nav-link' onClick={logout}>
                 Log Out
-              </Link>
+              </Link> */}
             </Nav>
           </Navbar.Collapse>
         </Container>
       </Navbar >
-
     </>
   );
 };
 
 export default NavBar;
+

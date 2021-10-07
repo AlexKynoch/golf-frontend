@@ -25,6 +25,7 @@ import ManagerPage from "./ManagerPage"
 function App() {
   const client = new ApiClient()
 
+
   return (
     <Router>
       <div className="App">
