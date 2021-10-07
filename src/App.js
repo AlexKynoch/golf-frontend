@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react"
 import { ApiClient } from "./apiClient"
-import './App.css'
 
+import "bootstrap/dist/css/bootstrap.min.css";
+import './App.css'
 import NavBar from "./NavBar"
 
 import PPVolunteer from "./PPVolunteer"
