@@ -33,8 +33,6 @@ export class ApiClient {
         return this.apiCall("put", url + `user/${id}`, dataObj)
     }
 
-
-
     removeSession(id) {
         return this.apiCall('delete', `${url}session/${id}`)
     }
@@ -60,7 +58,11 @@ export class ApiClient {
             sessionTimeStart: sessionTimeStart, sessionTimeFinish: sessionTimeFinish, userLimit: userLimit, details: details })
     }
 
-    updateUser(id, data) {
-        return this.apiCall("put", `${url}user/${id}`, data)
+    getLocationByCGA(activeCGA) {
+        return this.apiCall('get', `${url}locationcga/${activeCGA}`)
+    }
+
+    getUserByLocation(location) {
+        return this.apiCall('get', `${url}userlocation/${location}`)
     }
 }

@@ -10,11 +10,7 @@ import {
   Route,
   Link
 } from 'react-router-dom';
-import VolunteerCalendar from "./Calendar/VolunteerCalendar"
-import CgaCalendar from "./Calendar/CgaCalendar"
-import VolunteerProfile from "./Profilepage/VolunteerProfile"
-import CreateSession from "./CgaDashboard/CgaCreateSession"
-import CgaCreateSessionMain from "./CgaDashboard/CgaCreateSessionMain"
+
 
 function NavBar(props) {
 
@@ -35,7 +31,7 @@ function NavBar(props) {
               {/* <Nav.Item>
               <Nav.Link href="/home">Active</Nav.Link>
             </Nav.Item> */}
-            {/* <Link className = 'custom-nav-item nav-link' to = '/cga/dashboard'>
+            <Link className = 'custom-nav-item nav-link' to = '/cga/dashboard'>
               Dashboard
             </Link>
             <Link className = 'custom-nav-item nav-link' to = '/cga/create-session'>
@@ -43,13 +39,13 @@ function NavBar(props) {
             </Link>
             <Link className = 'custom-nav-item nav-link' to = '/cga/view-users'>
               View users
-            </Link> */}
-            <Link className = 'custom-nav-item nav-link' to = '/volunteer/calendar'>
+            </Link>
+            {/* <Link className = 'custom-nav-item nav-link' to = '/volunteer/calendar'>
               Calendar
             </Link>
             <Link className = 'custom-nav-item nav-link' to = '/volunteer/profile'>
               Profile
-            </Link>
+            </Link> */}
             <Link className = 'custom-nav-item nav-link' onClick={logout}>
               Log Out
             </Link>

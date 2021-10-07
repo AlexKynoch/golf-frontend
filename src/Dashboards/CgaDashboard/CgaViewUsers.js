@@ -5,10 +5,12 @@ import React, { useState, useEffect } from 'react'
 function ViewUsers(props) {
     const [users, cUsers] = useState([])
     const [sort, cSort] = useState('all')
-
+    
     const refreshList = () => {
-        props.client.getUsers().then((response) => cUsers(response.data))
+        props.client.getUserByLocation('Newcastle').then((response) => cUsers(response.data))
     }
+
+    // return an array of users and volunteers
 
     const usersVolunteers = () => {
         let array = []
@@ -20,6 +22,8 @@ function ViewUsers(props) {
         return array
     }
 
+    // if no additional user details in database, return empty string
+
     const detailsString = (user) => {
         if(user.details === 'String') {
             return ' '
@@ -28,17 +32,17 @@ function ViewUsers(props) {
         }
     }
 
-    const userToMember = (user) => {
+    // replace user with customer
+
+    const userToCustomer = (user) => {
         if(user.role === 'user') {
-            return 'member'
+            return 'customer'
         } else {
             return user.role
         }
     }
 
-    useEffect(() => {
-    refreshList();
-    }, [])
+    // filter table by user role
 
     const dropDown = () => {
         return (
@@ -47,7 +51,7 @@ function ViewUsers(props) {
                 <div className = 'dropdown-name'>Sort by role:</div>
                     <select className = 'dropdown-list' onChange={(e) => cSort(e.target.value)} value={sort}>
                         <option value = {'all'}>All</option>
-                        <option value = {'members'}>Members</option>
+                        <option value = {'customers'}>Customers</option>
                         <option value = {'volunteers'}>Volunteers</option>
                     </select>
             </div>
@@ -55,13 +59,15 @@ function ViewUsers(props) {
         )
     }
 
+    // build individual table row
+
     const singleRow = (current) => {
         return (
             <tr key={current._id}>
             <td>{current.nameFirst + ' ' + current.nameLast}</td>
             <td>{current.userName}</td>
             <td>{current.location}</td>
-            <td>{userToMember(current)}</td>
+            <td>{userToCustomer(current)}</td>
             <td>{current.email}</td>
             <td>{current.phone}</td>
             <td>{detailsString(current)}</td>
@@ -69,13 +75,15 @@ function ViewUsers(props) {
         )
     }
 
+    // build table depending on the applied filter
+
     const buildrows = () => {
         if (usersVolunteers().length > 0) {
             if (sort === 'all') {
                 return usersVolunteers().map((current) => {
                     return singleRow(current);
                 })
-            } else if (sort === 'members') {
+            } else if (sort === 'customers') {
                 return usersVolunteers().map((current) => {
                     if (current.role === 'user') {
                         return singleRow(current)
@@ -89,34 +97,38 @@ function ViewUsers(props) {
             }
         } else {
             return (
-                <tr className = 'no-events-to-show'>
-                    <td colSpan = '5'>{'No events to show'}</td>
+                <tr className = 'no-users-to-show'>
+                    <td colSpan = '5'>{'No users to show'}</td>
                 </tr>
             )
         }
     }
+
+    useEffect(() => {
+        refreshList();
+        }, [])
       
     return (
-            <Card id='myProfile' className='profile-card registered-users-table' >
-                <Card.Body className='profile-card-body'>
-                <Card.Title className='profile-card-title'>All registered users</Card.Title>
-                {dropDown()}
-                    <Table responsive className = 'event-table'>
-                    <thead>
-                        <tr>
-                        <th>Name</th>
-                        <th>Username</th>
-                        <th>Location</th>
-                        <th>Role</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-                        <th>Additional information</th>
-                        </tr>
-                    </thead>
-                    <tbody>{buildrows()}</tbody>
-                    </Table>    
-                </Card.Body>
-            </Card>
+        <Card id = 'myProfile' className = 'profile-card registered-users-table' >
+            <Card.Body className = 'profile-card-body'>
+            <Card.Title className = 'profile-card-title'>All registered users</Card.Title>
+            {dropDown()}
+                <Table responsive className = 'event-table'>
+                <thead>
+                    <tr>
+                    <th>Name</th>
+                    <th>Username</th>
+                    <th>Location</th>
+                    <th>Role</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Additional information</th>
+                    </tr>
+                </thead>
+                <tbody>{buildrows()}</tbody>
+                </Table>    
+            </Card.Body>
+        </Card>
     )
 }
 

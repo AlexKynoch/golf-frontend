@@ -53,7 +53,7 @@ td input[type="checkbox"] {
     font-size: 14px;
     line-height: 1.15;
     overflow: visible;
-    padding: 12px 16px;
+    padding: 8px 12px;
     position: relative;
     text-align: center;
     text-transform: none;
@@ -70,6 +70,11 @@ td input[type="checkbox"] {
 
 .notif-overlay {
     margin-left: 2.5em;
+    margin-bottom: 50px;
+}
+
+.notif-user-row {
+    vertical-align: middle;
 }
 
 .new-users {
@@ -79,4 +84,8 @@ td input[type="checkbox"] {
 
 .notification-card {
     margin-bottom: 20px;
+}
+
+.no-volunteers-to-show {
+    text-align: center; 
 }

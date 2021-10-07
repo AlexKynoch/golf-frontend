@@ -10,11 +10,11 @@ import {
   Switch,
   Route
 } from 'react-router-dom'
-import VolunteerCalendar from "./Calendar/VolunteerCalendar"
+import VolunteerCalendar from "./Dashboards/VolunteerDashboard/VolunteerCalendar"
 import VolunteerProfile from "./Profilepage/VolunteerProfile"
-import CgaDashboard from "./CgaDashboard"
-import CgaCreateSessionMain from "./CgaDashboard/CgaCreateSessionMain"
-import ViewUsers from "./CgaDashboard/CgaViewUsers"
+import CgaDashboard from "./Dashboards/CgaDashboard/CgaDashboard"
+import CgaCreateSessionMain from "./Dashboards/CgaDashboard/CgaCreateSessionMain"
+import ViewUsers from "./Dashboards/CgaDashboard/CgaViewUsers"
 
 function App() {
   const client = new ApiClient()

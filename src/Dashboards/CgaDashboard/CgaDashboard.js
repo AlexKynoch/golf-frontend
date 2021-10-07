@@ -1,9 +1,8 @@
-import CgaCalendar from "./Calendar/CgaCalendar"
-import CgaNotifications from "./CgaDashboard/CgaNotifications"
-import './Calendar/Calendar.css'
+import CgaCalendar from "./CgaCalendar"
+import CgaNotifications from "./CgaNotifications"
+import  "./../../CalendarComponents/Calendar.css"
 
 function CgaDashboard(props) {
-  // document.getElementById("mon").checked = false
     return (
       <div>
         <CgaNotifications client = {props.client}/>
