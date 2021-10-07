@@ -119,10 +119,10 @@ function Profile() {
                                 form="inputLocation3"
                                 className="col-form-label col-sm-3">
                                 <DropdownButton
-                                    className="dropdownButton"
-                                    title="Location"
+                                    className="dropdownButton col-sm-12"
+                                    title="Location."
                                     onSelect={(e) => handleDropdownChanger(e)}
-                                    style={{ backgroundColor: '#ccdddd' }}>
+                                    style={{ backgroundColor: '#ccdddd', border: "1px solid red" }}>
                                     <Dropdown.Item eventKey={users.location[0]}>{users.location[0]}</Dropdown.Item>
 
                                     <Dropdown.Item eventKey={users.location[1]} href="#">{users.location[1]}</Dropdown.Item>
