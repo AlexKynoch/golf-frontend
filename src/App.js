@@ -15,7 +15,12 @@ import VolunteerProfile from "./Profilepage/VolunteerProfile"
 import CgaDashboard from "./CgaDashboard"
 import CgaCreateSessionMain from "./CgaDashboard/CgaCreateSessionMain"
 import ViewUsers from "./CgaDashboard/CgaViewUsers"
-import PPUser from "./Profilepage/PPUser"
+import UserPage from "./Profilepage/UserPage"
+import LandingPage from "./LandingPage"
+import AdminPage from "./AdminPage"
+import LoginPage from "./LoginPage"
+import ManagerPage from "./ManagerPage"
+
 
 function App() {
   const client = new ApiClient()
@@ -23,9 +28,9 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <div className="navOffset">
+        {/* <div className="navOffset">
           <NavBar client={client} />
-        </div>
+        </div> */}
         <div className="contentContainer">
           <Container>
             <Switch>
@@ -44,8 +49,20 @@ function App() {
               <Route path='/cga/view-users'>
                 <ViewUsers client={client} />
               </Route>
-              <Route path='/pp/user'>
-                <ViewUsers client={client} />
+              <Route path='/userpage'>
+                <UserPage client={client} />
+              </Route>
+              <Route path='/landingpage'>
+                <LandingPage client={client} />
+              </Route>
+              <Route path='/adminpage'>
+                <AdminPage client={client} />
+              </Route>
+              <Route path='/loginpage'>
+                <LoginPage client={client} />
+              </Route>
+              <Route path='/managerpage'>
+                <ManagerPage client={client} />
               </Route>
 
 
