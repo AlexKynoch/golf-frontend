@@ -2,36 +2,35 @@ import React, { useState, useEffect } from 'react'
 import * as dateFns from 'date-fns'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Popover from 'react-bootstrap/Popover'
+import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import "./Calendar.css"
+import sessionInfo from "./../../CalendarComponents/sessionInfo"
+import NavBar from '../../NavBar'
 
-function VolunteerCalendar(props) {
+function UserCalendar(props) {
   const [currentMonth, cCurrentMonth] = useState(new Date())
   const [currentDate, cCurrentDate] = useState(new Date())
+  const [sort, cSort] = useState('showAll')
   const [sessions, cSessions] = useState([])
   const [users, cUsers] = useState([])
-  const [sort, cSort] = useState('showAll')
-  const [sessionInfo, cSessionInfo] = useState([
-    {name: 'One-to-One Coaching',
-    description:'These person-centred sessions are delivered by one of our trained team at a local golf club. The service provides an enjoyable & rewarding day for the golfer PLUS a deserved respite break for carers. No golfing experience is necessary.',
-    cost: '£20 per hour'
-    },
-    {name: 'The Perfect Three Ball',
-    description:'Two golfers enjoying golf & companionship with a member of our team at a local golf club. This service provides an enjoyable & rewarding day out, the chance to make new friends and a well deserved respite break for carers. No golfing experience is necessary.',
-    cost: '£15 per hour'
-    },
-    {name: 'Group Session',
-    description:'At present we’re limited to the “rule of six”. The sessions are perfect for people who enjoy socialising, being part of a team and group coaching.',
-    cost: '£10 per hour'
-    },
-    {name: 'No session info to show',
-    description:'No session with such user limit',
-    cost: 'No session info to show'
+  const [usersOld, cusersOld] = useState([
+    {id: '1',
+    userName: 'Pauln1',
+    location: 'Sheffield',
+    role: 'user',
+    firstName: 'Paul'
     }
   ])
- 
+  const links = [
+    false,
+    { name: "Calendar", url: "/customer/calendar" },
+    { name: "Profile", url: "/customer/profile" },
+    { name: "Log Out", url: "/home" },
+
+  ]
+
   // gets all the sessions and users from the database
 
   const refreshList = () => {
@@ -39,10 +38,36 @@ function VolunteerCalendar(props) {
     props.client.getUsers().then((response) => cUsers(response.data))
   }
 
+  // adds user to session users (booking)
+
+  const addUser = async (id, user) => {
+    const res = await props.client.addSessionUser(id, user)
+    const updated = sessions.map((session) => {
+      if(session._id === id){
+        session.sessionUsers = res.data.body.sessionUsers
+      }
+      return session
+    })
+    cSessions(updated)
+  }
+  
+  // removes user from session users (booking cancellation)
+
+  const removeUser = async (id, user) => {
+    const res = await props.client.removeSessionUser(id, user)
+    const updated = sessions.map((session) => {
+      if(session._id === id){
+        session.sessionUsers = res.data.body.sessionUsers
+      }
+      return session
+    })
+    cSessions(updated)
+  }
+
   // renders calendar header
 
   const renderHeader = () => {
-    const dateFormat = 'MMMM yyyy';
+    const dateFormat = 'MMMM yyyy'
     return (
       <div className = 'header row flex-middle'>
         <div className = 'col col-start'>
@@ -65,20 +90,21 @@ function VolunteerCalendar(props) {
   const renderFilters = () => {
     return (
       <Row className = 'filters'>
-      <Col className = 'bullet-list'>
-        <ul className = 'filter-list-bullet'>
-          <li className = 'bullet-green'><span className = 'bullet-text'>Sessions you are assigned to</span></li>
-          <li className = 'bullet-green bullet-blue'><span className = 'bullet-text'> Sessions you are not assigned to</span></li>
-        </ul>
-      </Col>
-      <Col lg = {5} md = {4} className = 'dropdown-name volunteer-filter'>Filter calendar by your assigned sessions:</Col>
-      <Col lg = {2} md = {3} className = 'user-filter-dropdown'> 
-        <select className = 'dropdown-list' onChange = {(e) => cSort(e.target.value)} value = {sort}>
-          <option value = {'showAll'}>Show All</option>
-          <option value = {'assigned'}>Assigned sessions</option>
-        </select> 
-      </Col>
-    </Row>
+        <Col className = 'bullet-list'>
+          <ul className = 'filter-list-bullet'>
+            <li className = 'bullet-green'><span className = 'bullet-text'>Booked sessions</span></li>
+            <li className = 'bullet-green bullet-blue'><span className = 'bullet-text'> Sessions available to book</span></li>
+          </ul>
+        </Col>
+        <Col lg = {5} md = {4} className = 'dropdown-name user-filter'>Filter calendar by your booked sessions or sessions still available to book:</Col>
+        <Col lg = {2} md = {3} className = 'user-filter-dropdown'> 
+          <select className = 'dropdown-list' onChange={(e) => cSort(e.target.value)} value={sort}>
+            <option className = 'dropdown-option' value={'showAll'}>Show All</option>
+            <option className = 'dropdown-option' value={'booked'}>Booked Sessions</option>
+            <option className = 'dropdown-option' value={'available'}>Available Sessions</option>
+          </select> 
+        </Col>
+      </Row>
     )
   }
 
@@ -106,7 +132,6 @@ function VolunteerCalendar(props) {
   }
 
   // renders calendar cells
-
   const renderCells = () => {
     const monthStart = dateFns.startOfMonth(currentMonth)
     const monthEnd = dateFns.endOfMonth(monthStart)
@@ -120,9 +145,9 @@ function VolunteerCalendar(props) {
 
     while (day <= endDate) {
       for (let i = 0; i < 7; i++) {
-        formattedDate = dateFns.format(day, dateFormat);
+        formattedDate = dateFns.format(day, dateFormat)
         days.push(
-          <div
+          <div 
             className={`col cell ${
               !dateFns.isSameMonth(day, monthStart)
                 ? 'disabled'
@@ -133,15 +158,15 @@ function VolunteerCalendar(props) {
             <span className='number'>{formattedDate}</span>
             <span><ul className = 'ul-show-sessions'>{showSessions(day)}</ul></span>
           </div>
-        );
+        )
         day = dateFns.addDays(day, 1); 
       }
       rows.push(
         <div className='row' key={day}>
           {days}
         </div>
-      )
-      days = [];
+      ) 
+      days = []
     }
     return <div className='body'>{rows}</div>
   }
@@ -171,25 +196,30 @@ function VolunteerCalendar(props) {
     }
     return finalSessionsArray
   }
+
   // session HTML to display in calendar cell
 
   const sessionEntry = (session, i) => {
     return (
       <OverlayTrigger key = {i} trigger = 'click' placement = 'bottom' overlay = {popoverClick(session)} rootClose>
         <li className = 'dis-session-info li-show-sessions' 
-        style = {{ backgroundColor : session.volunteer === '6155a15a164ea2ebb8b960cb' ? '#5Cb85C' : '#0D6EFD', color : 'White'}}>
+        style={{ backgroundColor : session.sessionUsers.includes(usersOld[0].id) ? '#5Cb85C': session.sessionUsers.length === session.userLimit ? 'White' : '#0D6EFD', 
+        color : session.sessionUsers.includes(usersOld[0].id) ? 'White' : session.sessionUsers.length === session.userLimit ? 'rgb(170, 163, 163)' : 'White'}} 
+        >
           {session.sessionTimeStart}{' '}{displaySessionDescription(session.userLimit).name}
         </li>
       </OverlayTrigger>
     )
   }
 
-  // displays the session based on filter
+  // displays the session based on filter, user's booking and session user limit
 
   const displaySessions = (session, i) => {
     const sessionDateTime = new Date(session.date + ' ' + session.sessionTimeStart)
-    if (sort === 'assigned' && session.volunteer === '6155a15a164ea2ebb8b960cb'){
-      return [sessionEntry(session,i), sessionDateTime] 
+    if (sort === 'booked' && session.sessionUsers.includes(usersOld[0].id)) {
+      return [sessionEntry(session,i), sessionDateTime]
+    } else if (sort === 'available' && !session.sessionUsers.includes(usersOld[0].id) && session.sessionUsers.length < session.userLimit) {
+      return [sessionEntry(session,i), sessionDateTime]
     } else if (sort === 'showAll') {
       return [sessionEntry(session,i), sessionDateTime]
     }
@@ -212,27 +242,65 @@ function VolunteerCalendar(props) {
   const displaySessionDescription = (limit) => {
     switch(limit) {
       case 1:
-        return sessionInfo[0] 
+        return sessionInfo()[0] 
       case 2:
-        return sessionInfo[1]
+        return sessionInfo()[1]
       case 5:
-        return sessionInfo[2]
+        return sessionInfo()[2]
       default:
-        return sessionInfo[3]
+        return sessionInfo()[3]
     }
   }
 
-  const displayMemberNames = (session) => {
-    let members = []
-    users.map((user) => {
-      if (session.sessionUsers.includes(user._id)) {
-        members.push(user.nameFirst + ' ' + user.nameLast + ' ')
+  // books user into a session
+
+  const bookingHandler = async (e, ses) => {
+    e.preventDefault()
+    sessions.forEach(async (session) => {
+      if (session._id === ses._id) {
+        addUser(ses._id, usersOld[0].id)
       }
     })
-    return members.join(', ')
   }
 
-  // session calendar popover
+  // cancels booking for the user
+  
+  const cancelBookingHandler = async (e, ses) => {
+    e.preventDefault()
+    sessions.forEach(async (session) => {
+      if (session._id === ses._id) {
+        removeUser(ses._id, usersOld[0].id)
+      }
+    })
+  }
+
+  // displays either book session, cancel booking or fully booked button depending on the user
+
+  const showBookingButton = (session) => {
+    if (session.sessionUsers.includes(usersOld[0].id)) {
+      return <Button className = 'booking-btn btn-danger' onClick = {(e) => cancelBookingHandler(e, session)}>Cancel booking</Button>
+    } if (!session.sessionUsers.includes(usersOld[0].id) && session.sessionUsers.length === session.userLimit) {
+      return <Button className = 'booking-btn btn-secondary'>Fully booked</Button>
+    } else {
+      return <Button className = 'booking-btn' onClick = {(e) => bookingHandler(e, session)}>Book session</Button>
+    }
+  }
+
+  const findVolunteerName = (session) => {
+    return users.map((volunteer) => {
+      if (session.sessionUsers.includes(usersOld[0].id) && volunteer._id === session.volunteer){
+        return 'Session volunteer: ' + volunteer.nameFirst + ' ' + volunteer.nameLast
+      }}
+    )
+  }
+
+  const findVolunteerEmail = (session) => {
+    return users.map((volunteer) => {
+      if (session.sessionUsers.includes(usersOld[0].id) && volunteer._id === session.volunteer){
+        return 'Volunteer contact: ' + volunteer.email
+      }}
+    )
+  }
 
   const popoverClick = (session) => (
     <Popover className = 'popover-main' id='popover-trigger-click' title='Popover bottom'>
@@ -244,9 +312,9 @@ function VolunteerCalendar(props) {
           <Row>
             {session.date}{' '}{session.sessionTimeStart}{'-'}{session.sessionTimeFinish}
           </Row>
-          <Row className = 'session-location'>
+          <Row>
             <Col className = 'location-icon' xs='auto'>
-              <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-geo-alt-fill' viewBox='0 0 16 16'>
+              <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' className='bi bi-geo-alt-fill' viewBox='0 0 16 16'>
               <path d='M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z'/>
               </svg>  
             </Col> 
@@ -258,16 +326,14 @@ function VolunteerCalendar(props) {
           <Row>
             {displaySessionDescription(session.userLimit).cost}
           </Row>
-          <Row className = 'members-attending'>
-            {'Members attending: '}{displayMemberNames(session)}
+          <Row className = 'session-volunteer'>
+            {findVolunteerName(session)}
           </Row>
-          <Row className = 'cga-contact'>
-            {'CGA contact: '}
-            <ul className = 'cga-contact-list'>
-              <li>{'Anthony Hills'}</li>
-              <li>{'Email: '}{'dsdsrej@gmail.com'}</li>
-              <li>{'Number: '}{'9754353232'}</li>
-            </ul>
+          <Row>
+            {findVolunteerEmail(session)}
+          </Row>
+          <Row className = 'booking-btn-row'>
+            {showBookingButton(session)}
           </Row>
         </Card.Body>
       </Card>
@@ -279,15 +345,18 @@ function VolunteerCalendar(props) {
   }, [])
 
   return (
-    <div className='calendar-main'>
-      <div className='calendar'>
-        {renderHeader()}
-        {renderFilters()}
-        {renderDays()}
-        {renderCells()}
-      </div>
+    <div>
+        <div className="navOffset">
+            <NavBar links={links} />
+        </div>
+        <div className = 'calendar'>
+          {renderHeader()}
+          {renderFilters()}
+          {renderDays()}
+          {renderCells()}
+        </div>
     </div>
-  );
+  )
 }
 
-export default VolunteerCalendar
+export default UserCalendar

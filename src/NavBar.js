@@ -4,16 +4,7 @@ import Container from 'react-bootstrap/Container'
 import Nav from 'react-bootstrap/Nav'
 import './NavBar.css'
 import navImg from "./images/logo.png"
-import {
-  HashRouter as Router,
-  Switch,
-  Route,
-  Link
-} from 'react-router-dom';
-import VolunteerCalendar from "./Calendar/VolunteerCalendar"
-import CgaCalendar from "./Calendar/CgaCalendar"
-import CreateSession from "./CgaDashboard/CgaCreateSession"
-import CgaCreateSessionMain from "./CgaDashboard/CgaCreateSessionMain"
+import { Link } from 'react-router-dom'
 
 function NavBar(props) {
   console.log(props)
@@ -21,6 +12,7 @@ function NavBar(props) {
   function logout() {
     // console.log("im the logout function")
   }
+  
   return (
     <>
       <Navbar>
@@ -41,7 +33,7 @@ function NavBar(props) {
               <Link className = 'custom-nav-item nav-link' to = '/cga/view-users'>
               View users
             </Link> */}
-              <Nav.Item>
+              <Nav.Item >
                 {props.links[0] ?
                   "Log in as:" : null
                 }

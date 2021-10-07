@@ -9,7 +9,7 @@ function VolunteerProfile(props) {
     false,
     { name: "Calendar", url: "/volunteer/calendar" },
     { name: "Profile", url: "/volunteer/profile" },
-    { name: "Log Out", url: "/landingpage" },
+    { name: "Log Out", url: "/home" },
 
   ]
 

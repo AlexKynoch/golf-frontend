@@ -33,8 +33,6 @@ export class ApiClient {
         return this.apiCall("put", url + `user/${id}`, dataObj)
     }
 
-
-
     removeSession(id) {
         return this.apiCall('delete', `${url}session/${id}`)
     }
@@ -56,11 +54,15 @@ export class ApiClient {
     }
 
     addSession(date, volunteer, sessionLocation, sessionTimeStart, sessionTimeFinish, userLimit, details) {
-        return this.apiCall("post", url + 'session', {
-            date: date, volunteer: volunteer, sessionUsers: [], sessionLocation: sessionLocation,
-            sessionTimeStart: sessionTimeStart, sessionTimeFinish: sessionTimeFinish, userLimit: userLimit, details: details
-        })
+        return this.apiCall("post", url + 'session', { date: date, volunteer: volunteer, sessionUsers: [],  sessionLocation: sessionLocation, 
+            sessionTimeStart: sessionTimeStart, sessionTimeFinish: sessionTimeFinish, userLimit: userLimit, details: details })
     }
 
+    getLocationByCGA(activeCGA) {
+        return this.apiCall('get', `${url}locationcga/${activeCGA}`)
+    }
 
+    getUserByLocation(location) {
+        return this.apiCall('get', `${url}userlocation/${location}`)
+    }
 }

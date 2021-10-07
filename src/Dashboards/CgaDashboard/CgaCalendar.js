@@ -5,35 +5,17 @@ import Popover from 'react-bootstrap/Popover'
 import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import 'bootstrap/dist/css/bootstrap.min.css'
-import "./Calendar.css"
+import sessionDate from "./../../CalendarComponents/sessionDate"
+import sessionInfo from "./../../CalendarComponents/sessionInfo"
 
 function CgaCalendar(props) {
   const [currentMonth, cCurrentMonth] = useState(new Date())
   const [currentDate, cCurrentDate] = useState(new Date())
-  const [location, cLocation] = useState('showAll')
+  const [location, cLocation] = useState('Glasgow')
   const [locations, cLocations] = useState([])
   const [sessions, cSessions] = useState([])
   const [users, cUsers] = useState([])
-  const [sessionInfo, cSessionInfo] = useState([
-    {name: 'One-to-One Coaching',
-    description:'These person-centred sessions are delivered by one of our trained team at a local golf club. The service provides an enjoyable & rewarding day for the golfer PLUS a deserved respite break for carers. No golfing experience is necessary.',
-    cost: '£20 per hour'
-    },
-    {name: 'The Perfect Three Ball',
-    description:'Two golfers enjoying golf & companionship with a member of our team at a local golf club. This service provides an enjoyable & rewarding day out, the chance to make new friends and a well deserved respite break for carers. No golfing experience is necessary.',
-    cost: '£15 per hour'
-    },
-    {name: 'Group Session',
-    description:'At present we’re limited to the “rule of six”. The sessions are perfect for people who enjoy socialising, being part of a team and group coaching.',
-    cost: '£10 per hour'
-    },
-    {name: 'No session info to show',
-    description:'No session with such user limit',
-    cost: 'No session info to show'
-    }
-  ])
- 
+
   // gets all the sessions, users and locations from the database
 
   const refreshList = () => {
@@ -41,17 +23,21 @@ function CgaCalendar(props) {
     props.client.getUsers().then((response) => cUsers(response.data))
     props.client.getLocations().then((response) => cLocations(response.data))
   }
-  // get all unique session locations
+
+  // gets all unique session locations
 
   const sessionLocations = () => {
     let loc = []
     locations.forEach((location) => {
-      loc.push(location.locationName)
+      if (!loc.includes(location.locationName)) {
+        loc.push(location.locationName)
+      }
     })
     return loc
   }
 
   // renders calendar header
+
   const renderHeader = () => {
     const dateFormat = 'MMMM yyyy'
     return (
@@ -72,6 +58,7 @@ function CgaCalendar(props) {
   }
 
   // renders calendar key and filters
+
   const renderFilters = () => {
     return (
         <Row className = 'filters'>
@@ -102,7 +89,7 @@ function CgaCalendar(props) {
       </div>)
   }
 
-  // renders calendar days
+  // renders calendar days (mobile-responsive)
 
   const renderDays = () => {
     const shortDays = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
@@ -225,13 +212,13 @@ function CgaCalendar(props) {
   const displaySessionDescription = (limit) => {
     switch(limit) {
       case 1:
-        return sessionInfo[0] 
+        return sessionInfo()[0] 
       case 2:
-        return sessionInfo[1]
+        return sessionInfo()[1]
       case 5:
-        return sessionInfo[2]
+        return sessionInfo()[2]
       default:
-        return sessionInfo[3]
+        return sessionInfo()[3]
     }
   }
 
@@ -271,7 +258,7 @@ function CgaCalendar(props) {
             {displaySessionDescription(session.userLimit).name}
           </Row>
           <Row>
-            {session.date}{' '}{session.sessionTimeStart}{'-'}{session.sessionTimeFinish}
+            {sessionDate(session)}
           </Row>
           <Row>
             <Col className = 'location-icon' xs='auto'>

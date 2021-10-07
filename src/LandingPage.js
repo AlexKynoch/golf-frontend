@@ -3,9 +3,9 @@ import NavBar from "./NavBar"
 
 function LandingPage() {
     const links = [
-        { name: "CustomerLogin", url: "/loginpage" },
-        { name: "VoluneerLogin", url: "/loginpage" },
-        { name: "AdminLogin", url: "/loginpage" },
+        { name: "Customer", url: "/login" },
+        { name: "Voluneer", url: "/login" },
+        { name: "Admin", url: "/login" },
     ]
     return (
         <div>
