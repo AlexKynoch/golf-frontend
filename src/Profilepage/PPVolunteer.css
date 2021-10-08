@@ -5,11 +5,7 @@
   /* background-color: rgb(204, 221, 221); */
 }
 
-.App {
-  display: flex;
-  justify-content: center;
-  align-items: start;
-}
+
 
 .volunteer-container {
   display: block;

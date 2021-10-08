@@ -13,21 +13,22 @@ import sessionInfo from "./../../CalendarComponents/sessionInfo"
 import NavBar from '../../NavBar'
 
 function AdminCalendar(props) {
+  const currentDate = new Date()
+
   const [currentMonth, cCurrentMonth] = useState(new Date())
-  const [userBooking, cUserBooking] = useState(false)
-  const [currentDate, cCurrentDate] = useState(new Date())
+  // const [userBooking, cUserBooking] = useState(false)
   const [currentUser, cCurrentUser] = useState(undefined)
   const [sessions, cSessions] = useState([])
   const [users, cUsers] = useState([])
   const [sort, cSort] = useState('showAll')
-  const [usersOld, cUsersOld] = useState([
-    {id: '1',
-    userName: 'Pauln1',
-    location: 'Sheffield',
-    role: 'user',
-    firstName: 'Paul'
-    }
-  ])
+  // const [usersOld, cUsersOld] = useState([
+  //   {id: '1',
+  //   userName: 'Pauln1',
+  //   location: 'Sheffield',
+  //   role: 'user',
+  //   firstName: 'Paul'
+  //   }
+  // ])
   const [autoCompleteInput, cAutoCompleteInput] = useState('');
   const [autoCompleteInputBooking, cAutoCompleteInputBooking] = useState('');
   const [autoCompleteInputCancel, cAutoCompleteInputCancel] = useState('');
