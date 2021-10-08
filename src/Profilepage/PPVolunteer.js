@@ -68,7 +68,7 @@ function PPVolunteer(props) {
                                 return (
                                     <ToggleButton
                                         key={index}
-                                        className=" d-flex justify-content-between"
+                                        className=" d-flex justify-content-between button-profile"
                                         type="checkbox"
                                         checked={radio[1]}
                                         value={radio[0]}
@@ -81,7 +81,7 @@ function PPVolunteer(props) {
                         </ButtonGroup>
 
                         <div className="btn-container justify-content-end">
-                            <Button className='volunteer-btn' onClick={() => handleSubmit()} variant="light">Update</Button>
+                            <Button className='volunteer-btn button-profile' onClick={() => handleSubmit()} variant="light">Update</Button>
                             <ToastContainer position='bottom-center' />
                         </div>
                     </Card.Body>

@@ -122,7 +122,7 @@ function Profile() {
                                     className="dropdownButton col-sm-12"
                                     title="Location."
                                     onSelect={(e) => handleDropdownChanger(e)}
-                                    style={{ backgroundColor: '#ccdddd', border: "1px solid red" }}>
+                                    style={{ backgroundColor: '#ccdddd', border: "1px solid " }}>
                                     <Dropdown.Item eventKey={users.location[0]}>{users.location[0]}</Dropdown.Item>
 
                                     <Dropdown.Item eventKey={users.location[1]} href="#">{users.location[1]}</Dropdown.Item>
@@ -200,7 +200,7 @@ function Profile() {
 
 
                         <div className="btn-container justify-content-end">
-                            <Button onClick={() => handleSubmit()} variant="light">Update</Button>
+                            <Button className = 'button-profile' onClick={() => handleSubmit()} variant="light">Update</Button>
                             <ToastContainer position='bottom-center' />
                         </div>
                     </form >

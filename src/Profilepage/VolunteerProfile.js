@@ -10,7 +10,6 @@ function VolunteerProfile(props) {
     { name: "Calendar", url: "/volunteer/calendar" },
     { name: "Profile", url: "/volunteer/profile" },
     { name: "Log Out", url: "/home" },
-
   ]
 
   return (
