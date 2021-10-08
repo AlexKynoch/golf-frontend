@@ -13,31 +13,30 @@ import sessionInfo from "./../../CalendarComponents/sessionInfo"
 import NavBar from '../../NavBar'
 
 function AdminCalendar(props) {
-  const currentDate = new Date()
-
   const [currentMonth, cCurrentMonth] = useState(new Date())
-  // const [userBooking, cUserBooking] = useState(false)
+  const [userBooking, cUserBooking] = useState(false)
+  const [currentDate, cCurrentDate] = useState(new Date())
   const [currentUser, cCurrentUser] = useState(undefined)
   const [sessions, cSessions] = useState([])
   const [users, cUsers] = useState([])
   const [sort, cSort] = useState('showAll')
-  // const [usersOld, cUsersOld] = useState([
-  //   {id: '1',
-  //   userName: 'Pauln1',
-  //   location: 'Sheffield',
-  //   role: 'user',
-  //   firstName: 'Paul'
-  //   }
-  // ])
-  const [autoCompleteInput, cAutoCompleteInput] = useState('');
-  const [autoCompleteInputBooking, cAutoCompleteInputBooking] = useState('');
-  const [autoCompleteInputCancel, cAutoCompleteInputCancel] = useState('');
+  const [usersOld, cUsersOld] = useState([
+    {id: '1',
+    userName: 'Pauln1',
+    location: 'Sheffield',
+    role: 'user',
+    firstName: 'Paul'
+    }
+  ])
   const links = [
     false,
     { name: "Calendar", url: "/admin" },
     { name: "Register a user", url: "admin/register-user" },
     { name: "Log Out", url: "/home" },
   ]
+  const [autoCompleteInput, cAutoCompleteInput] = useState('');
+  const [autoCompleteInputBooking, cAutoCompleteInputBooking] = useState('');
+  const [autoCompleteInputCancel, cAutoCompleteInputCancel] = useState('');
 
   // gets all the sessions and users from the database
 
@@ -57,6 +56,8 @@ function AdminCalendar(props) {
     })
     return userArray
   }
+
+  
 
   // adds user to session users (booking)
 
@@ -308,11 +309,11 @@ function AdminCalendar(props) {
 
   const showBookingButton = (session) => {
     if (session.sessionUsers.includes(currentUser)) {
-      return <Button className = 'booking-btn btn-danger' onClick = {(e) => cancelBookingHandler(e, session)}>Cancel booking</Button>
+      return <Button className = 'btn-danger' onClick = {(e) => cancelBookingHandler(e, session)}>Cancel booking</Button>
     } if (!session.sessionUsers.includes(currentUser) && session.sessionUsers.length === session.userLimit) {
-      return <Button className = 'booking-btn btn-secondary'>Fully booked</Button>
+      return <Button className = 'btn-secondary'>Fully booked</Button>
     } else {
-      return <Button className = 'booking-btn' onClick = {(e) => bookingHandler(e, session)}>Book session</Button>
+      return <Button className = 'btn-book-session' onClick = {(e) => bookingHandler(e, session)}>Book session</Button>
     }
   }
 
@@ -342,8 +343,8 @@ function AdminCalendar(props) {
                  <Autocomplete input = {autoCompleteInput} setInput = {cAutoCompleteInput}
                       suggestions = {suggestions}
                   />
-                <Button className = 'user-submit' type = 'submit'>Search</Button> 
-                <Button className = 'show-all' onClick = {() => showAll()}>Show All</Button>
+                <Button className = 'user-submit-btn general-btn' type = 'submit'>Search</Button> 
+                <Button className = 'show-all general-btn' onClick = {() => showAll()}>Show All</Button>
             </form>
     )
   }
@@ -382,7 +383,7 @@ function AdminCalendar(props) {
       <Autocomplete input = {autoCompleteInputBooking} setInput = {cAutoCompleteInputBooking}
                       suggestions = {suggestions}
                   />
-      <Button className = 'booking-submit' type = 'submit'>Book</Button> 
+      <Button className = 'btn-book-session btn-book-session-margin' type = 'submit'>Book</Button> 
   </form>)
   }
 
@@ -495,6 +496,7 @@ function AdminCalendar(props) {
   const displayMemberNames = (session) => {
     let members = []
     users.map((user) => {
+      console.log(session.sessionUsers)
       if (session.sessionUsers.includes(user._id)) {
         members.push(user.nameFirst + ' ' + user.nameLast + ' ')
       }

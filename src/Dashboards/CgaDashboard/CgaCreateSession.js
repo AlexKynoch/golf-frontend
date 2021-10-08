@@ -164,7 +164,7 @@ function CreateSession(props) {
                             </div>
                         </div>
                         <div className = 'btn-container justify-content-end'>
-                            <Button type = 'submit' variant = 'light'>Submit</Button>
+                            <Button className = 'button-profile' type = 'submit' variant = 'light'>Submit</Button>
                             <ToastContainer position = 'bottom-center' />
                         </div>        
                     </form>

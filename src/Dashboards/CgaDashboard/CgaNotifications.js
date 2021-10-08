@@ -97,7 +97,7 @@ function CgaNotifications(props) {
                                 <th>{userNum(users)}</th>
                                 <th>
                                     <OverlayTrigger classname = 'notif-overlay' trigger = 'click' placement = 'right' overlay = {popoverClick(users, cUsers)} rootClose>
-                                        <Button className = 'th-btn' disabled = {userNum(users) === 0 ? true : false}>View</Button>
+                                        <Button className = 'th-btn button-profile' disabled = {userNum(users) === 0 ? true : false}>View</Button>
                                     </OverlayTrigger>
                                 </th>
                             </tr>
@@ -106,7 +106,7 @@ function CgaNotifications(props) {
                                 <th>{userNum(volunteers)}</th>
                                 <th>
                                     <OverlayTrigger classname = 'notif-overlay' trigger = 'click' placement = 'right' overlay = {popoverClick(volunteers, cVolunteers)} rootClose>
-                                        <Button className = 'th-btn' disabled = {userNum(volunteers) === 0 ? true : false}>View</Button>
+                                        <Button className = 'th-btn button-profile' disabled = {userNum(volunteers) === 0 ? true : false}>View</Button>
                                     </OverlayTrigger>
                                 </th>
                             </tr>   

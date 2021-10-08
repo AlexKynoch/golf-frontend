@@ -7,7 +7,6 @@ import navImg from "./images/logo.png"
 import { Link } from 'react-router-dom'
 
 function NavBar(props) {
-  console.log(props)
 
   function logout() {
     // console.log("im the logout function")
@@ -39,7 +38,6 @@ function NavBar(props) {
                 }
               </Nav.Item>
               {props.links.slice(0).map((v, i) => {
-                console.log(v)
                 return (
                   <Link key={i} className='custom-nav-item nav-link' to={v.url}>
                     {v.name}

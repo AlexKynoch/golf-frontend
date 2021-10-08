@@ -277,11 +277,11 @@ function UserCalendar(props) {
 
   const showBookingButton = (session) => {
     if (session.sessionUsers.includes(usersOld[0].id)) {
-      return <Button className = 'booking-btn btn-danger' onClick = {(e) => cancelBookingHandler(e, session)}>Cancel booking</Button>
+      return <Button className = 'btn-danger' onClick = {(e) => cancelBookingHandler(e, session)}>Cancel booking</Button>
     } if (!session.sessionUsers.includes(usersOld[0].id) && session.sessionUsers.length === session.userLimit) {
-      return <Button className = 'booking-btn btn-secondary'>Fully booked</Button>
+      return <Button className = 'btn-secondary'>Fully booked</Button>
     } else {
-      return <Button className = 'booking-btn' onClick = {(e) => bookingHandler(e, session)}>Book session</Button>
+      return <Button className = 'btn-book-session' onClick = {(e) => bookingHandler(e, session)}>Book session</Button>
     }
   }
 
