@@ -13,7 +13,7 @@ import {
 } from 'react-router-dom'
 import VolunteerCalendar from "./Dashboards/VolunteerDashboard/VolunteerCalendar"
 import VolunteerProfile from "./Profilepage/VolunteerProfile"
-import Profile from "./Profilepage/Profile"
+import UserProfile from "./Dashboards/UserDashboard/UserProfile"
 import CgaDashboard from "./Dashboards/CgaDashboard/CgaDashboard"
 import CgaCreateSessionMain from "./Dashboards/CgaDashboard/CgaCreateSessionMain"
 import ViewUsers from "./Dashboards/CgaDashboard/CgaViewUsers"
@@ -41,7 +41,7 @@ function App() {
                 <UserCalendar client={client} />
               </Route>
               <Route path='/customer/profile'>
-                <Profile client={client} />
+                <UserProfile client={client} />
               </Route>
               <Route path='/volunteer/calendar'>
                 <VolunteerCalendar client={client} />

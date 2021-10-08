@@ -54,6 +54,11 @@
   color: white;
 }
 
+.btn:active {
+  background-color: rgb(6, 101, 50) !important;
+  color: white;
+}
+
 .btn-container {
   display: flex;
   border: none !important;

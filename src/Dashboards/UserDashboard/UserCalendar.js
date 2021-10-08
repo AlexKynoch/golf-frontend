@@ -28,7 +28,6 @@ function UserCalendar(props) {
     { name: "Calendar", url: "/customer/calendar" },
     { name: "Profile", url: "/customer/profile" },
     { name: "Log Out", url: "/home" },
-
   ]
 
   // gets all the sessions and users from the database

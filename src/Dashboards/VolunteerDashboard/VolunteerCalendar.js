@@ -16,7 +16,10 @@ function VolunteerCalendar(props) {
   const [users, cUsers] = useState([])
   const [sort, cSort] = useState('showAll')
   const links = [
-        
+    false,
+    { name: "Calendar", url: "/volunteer/calendar" },
+    { name: "Profile", url: "/volunteer/profile" },
+    { name: "Log Out", url: "/home" },
   ]
 
   // gets all the sessions and users from the database

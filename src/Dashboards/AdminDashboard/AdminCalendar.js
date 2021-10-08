@@ -33,7 +33,10 @@ function AdminCalendar(props) {
   const [autoCompleteInputBooking, cAutoCompleteInputBooking] = useState('');
   const [autoCompleteInputCancel, cAutoCompleteInputCancel] = useState('');
   const links = [
-        
+    false,
+    { name: "Calendar", url: "/admin" },
+    { name: "Register a user", url: "admin/register-user" },
+    { name: "Log Out", url: "/home" },
   ]
 
   // gets all the sessions and users from the database
@@ -54,8 +57,6 @@ function AdminCalendar(props) {
     })
     return userArray
   }
-
-  
 
   // adds user to session users (booking)
 
