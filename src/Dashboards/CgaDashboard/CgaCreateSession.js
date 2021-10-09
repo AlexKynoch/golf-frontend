@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css'
 
 function CreateSession(props) {
     const [volunteers, cVolunteers] = useState([])
+    const [currentCgaLocation, cCurrentCgaLocation] = useState([])
     const location = 'Newcastle'
     const [disabled, cDisabled] = useState(false)
     const [input, cInput] = useState()
@@ -13,6 +14,7 @@ function CreateSession(props) {
     // get data from database
     const refreshList = () => {
         props.client.getUserByRole('volunteer').then((response) => cVolunteers(response.data))
+        props.client.getAdminById('615d7e616d365c85eff5f442').then((response) => cCurrentCgaLocation(response.data[0].location)) 
     }
 
     // return all registered volunteers for a location

@@ -5,6 +5,7 @@ import NavBar from "./../../NavBar"
 
 function ViewUsers(props) {
     const [users, cUsers] = useState([])
+    const [currentCgaLocation, cCurrentCgaLocation] = useState([])
     const [sort, cSort] = useState('all')
     const links = [
         false,
@@ -15,7 +16,8 @@ function ViewUsers(props) {
     ]
     
     const refreshList = () => {
-        props.client.getUserByLocation('Newcastle').then((response) => cUsers(response.data))
+        props.client.getAdminById('615d7e616d365c85eff5f442').then((response) => cCurrentCgaLocation(response.data[0].location))
+        props.client.getUserByLocation(currentCgaLocation).then((response) => cUsers(response.data))
     }
 
     // return an array of users and volunteers

@@ -101,6 +101,7 @@ function AdminCalendar(props) {
   // renders calendar key and filters
 
   const renderFilters = () => {
+    let suggestions = userList()
     return (
         <Row className = 'filters'>
           <Col className = 'bullet-list'>
@@ -110,27 +111,32 @@ function AdminCalendar(props) {
               <li className = 'bullet-green bullet-gray'><span className = 'bullet-text'> Fully booked</span></li>
             </ul>
           </Col>
-          <Col md={7}>
+          <Col lg = {8} md = {8}>
             <Row>
-              <div>
-                <div className = 'dropdown-container'>
-                    <div className = 'dropdown-name'>Filter calendar by available sessions:</div> 
-                      <select className = 'dropdown-list' onChange = {(e) => cSort(e.target.value)} value={sort}>
-                          <option className = 'dropdown-option' value = {'showAll'}>Show All</option>
-                          <option className = 'dropdown-option' value = {'available'}>Available Sessions</option>
-                      </select>
-                  </div>
-              </div> 
+              <Col lg = {8} md = {6} className = 'dropdown-name text-lg-end txt-align-end' >Filter calendar by available sessions:</Col>
+              <Col className = 'user-filter-dropdown txt-align-end'>
+                <select className = 'dropdown-list ' onChange = {(e) => cSort(e.target.value)} value={sort}>
+                    <option className = 'dropdown-option' value = {'showAll'}>Show All</option>
+                    <option className = 'dropdown-option' value = {'available'}>Available Sessions</option>
+                </select>
+              </Col>
             </Row>
-            <Row className = 'search-input'>
-            {renderSearchBar()} 
+            <Row>
+              <Col lg = {5} md = {5} className = 'dropdown-name text-lg-end txt-align-end'><label for='userform'>Search sessions by user: </label></Col>
+              <Col className = 'txt-align-end'>
+              <form className = 'user-search-form' onSubmit = {(e) => userSubmitHandler(e, suggestions)} id = 'addUserSearchForm'>
+                 <Autocomplete input = {autoCompleteInput} setInput = {cAutoCompleteInput}
+                      suggestions = {suggestions}
+                  />
+                <Button className = 'user-submit-btn general-btn' type = 'submit'>Search</Button> 
+                <Button className = 'show-all general-btn' onClick = {() => showAll()}>Show All</Button>
+              </form></Col>
             </Row>
           </Col>
         </Row>
     )
   }
 
-  
   // displays names of days in calendar
 
   const buildDayName = (day, i) => {
@@ -325,21 +331,7 @@ function AdminCalendar(props) {
     )
   }
 
-  // displays search bar to search sessions for a specified user
-  
-  const renderSearchBar = () => {
-    let suggestions = userList()
-    return ( 
-            <form className = 'user-search-form' onSubmit = {(e) => userSubmitHandler(e, suggestions)} id = 'addUserSearchForm'>
-                <label className = 'user-search-form-label' for='userform'>Search sessions by user: </label>
-                 <Autocomplete input = {autoCompleteInput} setInput = {cAutoCompleteInput}
-                      suggestions = {suggestions}
-                  />
-                <Button className = 'user-submit-btn general-btn' type = 'submit'>Search</Button> 
-                <Button className = 'show-all general-btn' onClick = {() => showAll()}>Show All</Button>
-            </form>
-    )
-  }
+ 
 
   
   // searches for all the sessions for a specified user

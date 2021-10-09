@@ -65,4 +65,8 @@ export class ApiClient {
     getUserByLocation(location) {
         return this.apiCall('get', `${url}userlocation/${location}`)
     }
+
+    getAdminById(id) {
+        return this.apiCall('get', `${url}adminid/${id}`)
+    }
 }

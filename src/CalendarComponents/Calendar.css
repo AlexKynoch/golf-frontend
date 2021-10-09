@@ -416,6 +416,12 @@ header #logo .icon {
   padding-top: 6px;
 }
 
+.txt-align-end {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+
 /* admin search field */
 
 .search-field {
@@ -508,15 +514,16 @@ header #logo .icon {
 
 .user-search-form {
   margin-top: 5px;
-  justify-content: right;
-  display: flex;
-  align-items: center;
+  margin-right: 0px;
+  /* justify-content: right; 
+  display: flex; */
+  /* align-items: center; */
 }
 
 .user-search-form-label {
   color: black;
-  margin-right: 5px;
-  text-align: center
+  /* margin-right: 5px;
+  text-align: center */
 }
 
 .user-submit-btn {
@@ -549,5 +556,10 @@ header #logo .icon {
 
   .calendar .body .cell {
     min-height: 3em;  
+  }
+
+  .txt-align-end {
+    justify-content: start;
+    margin-left: 13px;
   }
 }
