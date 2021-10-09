@@ -10,11 +10,11 @@ import sessionInfo from "./../../CalendarComponents/sessionInfo"
 
 function CgaCalendar(props) {
   const [currentMonth, cCurrentMonth] = useState(new Date())
-  const [currentDate, cCurrentDate] = useState(new Date())
   const [location, cLocation] = useState('Glasgow')
   const [locations, cLocations] = useState([])
   const [sessions, cSessions] = useState([])
   const [users, cUsers] = useState([])
+  const currentDate = new Date()
 
   // gets all the sessions, users and locations from the database
 

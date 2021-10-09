@@ -7,36 +7,28 @@ import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import "./../../CalendarComponents/autoComplete.css"
-import Autocomplete from "./../../CalendarComponents/AutoComplete"
-import sessionInfo from "./../../CalendarComponents/sessionInfo"
+import './../../CalendarComponents/autoComplete.css'
+import Autocomplete from './../../CalendarComponents/AutoComplete'
+import sessionInfo from './../../CalendarComponents/sessionInfo'
 import NavBar from '../../NavBar'
 
 function AdminCalendar(props) {
   const [currentMonth, cCurrentMonth] = useState(new Date())
-  const [userBooking, cUserBooking] = useState(false)
-  const [currentDate, cCurrentDate] = useState(new Date())
   const [currentUser, cCurrentUser] = useState(undefined)
   const [sessions, cSessions] = useState([])
   const [users, cUsers] = useState([])
   const [sort, cSort] = useState('showAll')
-  const [usersOld, cUsersOld] = useState([
-    {id: '1',
-    userName: 'Pauln1',
-    location: 'Sheffield',
-    role: 'user',
-    firstName: 'Paul'
-    }
-  ])
+  const [autoCompleteInput, cAutoCompleteInput] = useState('')
+  const [autoCompleteInputBooking, cAutoCompleteInputBooking] = useState('')
+  const [autoCompleteInputCancel, cAutoCompleteInputCancel] = useState('')
+
+  const currentDate = new Date()
   const links = [
     false,
-    { name: "Calendar", url: "/admin" },
-    { name: "Register a user", url: "admin/register-user" },
-    { name: "Log Out", url: "/home" },
+    { name: 'Calendar', url: '/admin' },
+    { name: 'Register a user', url: 'admin/register-user' },
+    { name: 'Log Out', url: '/home' },
   ]
-  const [autoCompleteInput, cAutoCompleteInput] = useState('');
-  const [autoCompleteInputBooking, cAutoCompleteInputBooking] = useState('');
-  const [autoCompleteInputCancel, cAutoCompleteInputCancel] = useState('');
 
   // gets all the sessions and users from the database
 
@@ -496,7 +488,6 @@ function AdminCalendar(props) {
   const displayMemberNames = (session) => {
     let members = []
     users.map((user) => {
-      console.log(session.sessionUsers)
       if (session.sessionUsers.includes(user._id)) {
         members.push(user.nameFirst + ' ' + user.nameLast + ' ')
       }
@@ -543,10 +534,10 @@ function AdminCalendar(props) {
             {findVolunteerEmail(session)}
           </Row>
           <Row className = 'booking-btn-row '>
-            {currentUser ? showBookingButton(session) : ""}
+            {currentUser ? showBookingButton(session) : ''}
           </Row>
           <Row className = 'admin-user-booking-buttons'>
-            {currentUser ? "" : showBookingInput(session)}
+            {currentUser ? '' : showBookingInput(session)}
           </Row>
         </Card.Body>
       </Card>
@@ -559,7 +550,7 @@ function AdminCalendar(props) {
 
   return (
     <div>
-      <div className="navOffset">
+      <div className='navOffset'>
           <NavBar links={links} />
       </div>
       <div className='calendar'>

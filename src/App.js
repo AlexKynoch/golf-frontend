@@ -3,7 +3,6 @@ import { ApiClient } from "./apiClient"
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './CalendarComponents/Calendar.css'
 import './App.css'
-import NavBar from "./NavBar"
 import Footer from "./Footer"
 import Container from 'react-bootstrap/Container'
 import {

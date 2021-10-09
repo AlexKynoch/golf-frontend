@@ -5,15 +5,13 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 function CreateSession(props) {
-    const [sessions, cSessions] = useState([])
     const [volunteers, cVolunteers] = useState([])
-    const [location, cLocation] = useState('Newcastle')
+    const location = 'Newcastle'
     const [disabled, cDisabled] = useState(false)
     const [input, cInput] = useState()
 
     // get data from database
     const refreshList = () => {
-        props.client.getSessions().then((response) => cSessions(response.data))
         props.client.getUserByRole('volunteer').then((response) => cVolunteers(response.data))
     }
 
@@ -135,8 +133,8 @@ function CreateSession(props) {
                                 <label className = 'input-form-label' form = 'inputUserLimit'>Session type<span className = 'required-asterisk'>*</span></label> 
                             </div>
                             <div className = 'col-sm-8'>                           
-                            <select className = 'form-control' id = 'inputUserLimit'>
-                                <option disabled selected value>-- select an option --</option>
+                            <select className = 'form-control' id = 'inputUserLimit' defaultValue = {'default'}>
+                                <option value = 'default' disabled>-- select an option --</option>
                                 <option value = '1' >One-to-One Coaching</option>
                                 <option value = '2' >The Perfect Three Ball</option>
                                 <option value = '3' >Group Session</option>
@@ -148,10 +146,10 @@ function CreateSession(props) {
                                 <label className = 'input-form-label' form = 'inputVolunteer' >Volunteer<span className = 'required-asterisk'>*</span></label> 
                             </div>
                             <div className = 'col-sm-8'>                           
-                            <select size = '1' className = 'form-control' id = 'inputVolunteer'>
-                                <option disabled selected value>-- select an option --</option>
+                            <select size = '1' className = 'form-control' id = 'inputVolunteer' defaultValue = {'default'} >
+                                <option value = 'default' disabled>-- select an option --</option>
                                 {availableVolunteerFilter().map((volunteer) => (
-                                <option value = {volunteer._id}>{volunteer.nameFirst + ' ' + volunteer.nameLast}</option>))}
+                                <option key = {volunteer._id} value = {volunteer._id}>{volunteer.nameFirst + ' ' + volunteer.nameLast}</option>))}
                             </select> 
                             </div>
                         </div>
@@ -160,11 +158,11 @@ function CreateSession(props) {
                                 <label className = 'inputAdditionalDetails' form = 'inputUserLimit'>Additional details</label> 
                             </div>
                             <div className = 'col-sm-8'>                           
-                                <input className = 'form-control' type = 'text'  id = 'inputAdditionalDetails' name = 'inputAdditionalDetails' placeholder = 'Additional details' autocomplete = 'off'></input> 
+                                <input className = 'form-control' type = 'text'  id = 'inputAdditionalDetails' name = 'inputAdditionalDetails' placeholder = 'Additional details' autoComplete = 'off'></input> 
                             </div>
                         </div>
                         <div className = 'btn-container justify-content-end'>
-                            <Button className = 'button-profile' type = 'submit' variant = 'light'>Submit</Button>
+                            <Button className = 'button-profile' type = 'submit' variant = 'light' disabled = {disabled}>Submit</Button>
                             <ToastContainer position = 'bottom-center' />
                         </div>        
                     </form>

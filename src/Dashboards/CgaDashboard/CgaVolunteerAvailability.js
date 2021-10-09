@@ -4,12 +4,10 @@ import React, { useState, useEffect } from 'react'
 
 function VolunteerAvailability(props) {
     const [volunteers, cVolunteers] = useState([])
-    const [location, cLocation] = useState('Newcastle')
-    const [radios, cRadios] = useState([]);
+    const location = 'Newcastle'
 
     const refreshList = () => {
         props.client.getUserByRole('volunteer').then((response) => cVolunteers(response.data))
-        props.client.getUser('615d7fb42d2b095a0593e6d7').then((response) => {cRadios(response.data[0]['availability'])})
     }
 
     // return an array of volunteers in the area

@@ -11,10 +11,11 @@ import NavBar from '../../NavBar'
 
 function VolunteerCalendar(props) {
   const [currentMonth, cCurrentMonth] = useState(new Date())
-  const [currentDate, cCurrentDate] = useState(new Date())
   const [sessions, cSessions] = useState([])
   const [users, cUsers] = useState([])
   const [sort, cSort] = useState('showAll')
+  const currentVolunteer = '6155a15a164ea2ebb8b960cb'
+  const currentDate = new Date()
   const links = [
     false,
     { name: "Calendar", url: "/volunteer/calendar" },
@@ -167,7 +168,7 @@ function VolunteerCalendar(props) {
     return (
       <OverlayTrigger key = {i} trigger = 'click' placement = 'bottom' overlay = {popoverClick(session)} rootClose>
         <li className = 'dis-session-info li-show-sessions' 
-        style = {{ backgroundColor : session.volunteer === '6155a15a164ea2ebb8b960cb' ? '#5Cb85C' : '#0D6EFD', color : 'White'}}>
+        style = {{ backgroundColor : session.volunteer === currentVolunteer ? '#5Cb85C' : '#0D6EFD', color : 'White'}}>
           {session.sessionTimeStart}{' '}{displaySessionDescription(session.userLimit).name}
         </li>
       </OverlayTrigger>
@@ -178,7 +179,7 @@ function VolunteerCalendar(props) {
 
   const displaySessions = (session, i) => {
     const sessionDateTime = new Date(session.date + ' ' + session.sessionTimeStart)
-    if (sort === 'assigned' && session.volunteer === '6155a15a164ea2ebb8b960cb'){
+    if (sort === 'assigned' && session.volunteer === currentVolunteer){
       return [sessionEntry(session,i), sessionDateTime] 
     } else if (sort === 'showAll') {
       return [sessionEntry(session,i), sessionDateTime]

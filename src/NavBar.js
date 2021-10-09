@@ -8,16 +8,16 @@ import { Link } from 'react-router-dom'
 
 function NavBar(props) {
 
-  function logout() {
-    // console.log("im the logout function")
-  }
+  // function logout() {
+  //   // console.log("im the logout function")
+  // }
   
   return (
     <>
       <Navbar>
         <Container className="navbarContentContainer">
           <Navbar.Brand href="/">
-            <img src={navImg}></img>
+            <img src = {navImg} alt = 'Golf in Society logo'></img>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
