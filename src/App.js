@@ -22,6 +22,7 @@ import AdminCalendar from "./Dashboards/AdminDashboard/AdminCalendar"
 import UserRegister from "./Dashboards/AdminDashboard/UserRegister"
 import LoginPage from "./LoginPage"
 import ManagerPage from "./Dashboards/ManagerDashboard/ManagerPage"
+import ManagerCalendar from "./Dashboards/ManagerDashboard/ManagerCalendar"
 
 
 function App() {
@@ -63,13 +64,16 @@ function App() {
               <Route path='/admin'>
                 <AdminCalendar client={client} />
               </Route>
-              <Route path='/admin/register-user'>
+              <Route path='/admin/register-customer'>
                 <UserRegister client={client} />
               </Route>
               <Route path='/login'>
                 <LoginPage client={client} />
               </Route>
-              <Route path='/manager'>
+              <Route path='/manager/calendar'>
+                <ManagerCalendar client={client} />
+              </Route>
+              <Route path='/manager/new-areas'>
                 <ManagerPage client={client} />
               </Route>
               <Route exact path='/'>

@@ -5,39 +5,50 @@ import Popover from 'react-bootstrap/Popover'
 import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import sessionDate from './../../CalendarComponents/sessionDate'
-import sessionInfo from './../../CalendarComponents/sessionInfo'
+import sessionDate from "./../../CalendarComponents/sessionDate"
+import sessionInfo from "./../../CalendarComponents/sessionInfo"
 import NavBar from '../../NavBar'
 
-function VolunteerCalendar(props) {
+function ManagerCalendar(props) {
   const [currentMonth, cCurrentMonth] = useState(new Date())
+  const [location, cLocation] = useState('showAll')
+  const [locations, cLocations] = useState([])
+//   const [currentManagerLocation, cCurrentManagerLocation] = useState([])
   const [sessions, cSessions] = useState([])
   const [users, cUsers] = useState([])
-  const [sort, cSort] = useState('showAll')
-  const [currentLocation, cCurrentLocation] = useState()
-  const [currentCga, cCurrentCga] = useState()
-  const currentVolunteer = '615d84702d2b095a0593e6e5'
   const currentDate = new Date()
   const links = [
     false,
-    { name: "Calendar", url: "/volunteer/calendar" },
-    { name: "Profile", url: "/volunteer/profile" },
+    { name: "Dashboard", url: "/manager/calendar" },
+    { name: "Add new areas", url: "/manager/new-areas" },
     { name: "Log Out", url: "/home" },
-  ]
+]
 
-  // gets all the sessions and users from the database
+  // gets all the sessions, users and locations from the database
 
   const refreshList = () => {
-    props.client.getSessionByLocation('Newcastle').then((response) => cSessions(response.data))
+    props.client.getSessions().then((response) => cSessions(response.data))
     props.client.getUsers().then((response) => cUsers(response.data))
-    props.client.getUser(currentVolunteer).then((response) => cCurrentLocation(response.data[0].location))
-    props.client.getAdminByLocation('Sheffield').then((response) => console.log(response.data))
+    props.client.getLocations().then((response) => cLocations(response.data))
+    // props.client.getAdminById('615d7e616d365c85eff5f442').then((response) => cCurrentManagerLocation(response.data[0].location))  
+  }
+
+  // gets all unique session locations
+
+  const sessionLocations = () => {
+    let loc = []
+    locations.forEach((location) => {
+      if (!loc.includes(location.locationName)) {
+        loc.push(location.locationName)
+      }
+    })
+    return loc
   }
 
   // renders calendar header
 
   const renderHeader = () => {
-    const dateFormat = 'MMMM yyyy';
+    const dateFormat = 'MMMM yyyy'
     return (
       <div className = 'header row flex-middle'>
         <div className = 'col col-start'>
@@ -59,34 +70,35 @@ function VolunteerCalendar(props) {
 
   const renderFilters = () => {
     return (
-      <Row className = 'filters'>
-      <Col className = 'bullet-list'>
-        <ul className = 'filter-list-bullet'>
-          <li className = 'bullet-green'><span className = 'bullet-text'>Sessions you are assigned to</span></li>
-          <li className = 'bullet-green bullet-blue'><span className = 'bullet-text'> Sessions you are not assigned to</span></li>
-        </ul>
-      </Col>
-      <Col lg = {5} md = {4} className = 'dropdown-name volunteer-filter'>Filter calendar by your assigned sessions:</Col>
-      <Col lg = {2} md = {3} className = 'user-filter-dropdown'> 
-        <select className = 'dropdown-list' onChange = {(e) => cSort(e.target.value)} value = {sort}>
-          <option value = {'showAll'}>Show All</option>
-          <option value = {'assigned'}>Assigned sessions</option>
-        </select> 
-      </Col>
-    </Row>
+        <Row className = 'filters'>
+          <Col className = 'bullet-list'>
+            <ul className = 'filter-list-bullet'>
+              <li className = 'bullet-green bullet-blue'><span className = 'bullet-text'> Available to book</span></li>
+              <li className = 'bullet-green bullet-gray'><span className = 'bullet-text'> Fully booked</span></li>
+            </ul>
+          </Col>
+          <Col lg = {3} md = {4} className = 'dropdown-name cga-filter text-lg-end'>Filter calendar by location:</Col>
+          <Col lg = {2} md = {3} className = 'user-filter-dropdown text-lg-end'>
+            <select className = 'dropdown-list' onChange = {(e) => cLocation(e.target.value)} value = {location}>
+                  <option value = {'showAll'}>Show All</option>
+                  {sessionLocations().map((location) => (
+                  <option value = {location}>{location}</option>))}
+              </select>
+          </Col>          
+        </Row>
     )
   }
 
-  // displays names of days in calendar
+   // displays names of days in calendar
 
-  const buildDayName = (day, i) => {
+   const buildDayName = (day, i) => {
     return (
       <div className='col col-center' key={i}>
         {day}
       </div>)
   }
 
-  // renders calendar days
+  // renders calendar days (mobile-responsive)
 
   const renderDays = () => {
     const shortDays = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
@@ -128,7 +140,7 @@ function VolunteerCalendar(props) {
             <span className='number'>{formattedDate}</span>
             <span><ul className = 'ul-show-sessions'>{showSessions(day)}</ul></span>
           </div>
-        );
+        )
         day = dateFns.addDays(day, 1); 
       }
       rows.push(
@@ -136,9 +148,9 @@ function VolunteerCalendar(props) {
           {days}
         </div>
       )
-      days = [];
+      days = []
     }
-    return <div className='body'>{rows}</div>
+    return <div className = 'body'>{rows}</div>;
   }
 
   // shows sessions in the calendar cell for that specific day
@@ -166,13 +178,16 @@ function VolunteerCalendar(props) {
     }
     return finalSessionsArray
   }
+
   // session HTML to display in calendar cell
 
   const sessionEntry = (session, i) => {
     return (
-      <OverlayTrigger key = {i} trigger = 'click' placement = 'bottom' overlay = {popoverClick(session)} rootClose>
+      <OverlayTrigger key = {i} trigger='click' placement='bottom' overlay={popoverClick(session)} rootClose>
         <li className = 'dis-session-info li-show-sessions' 
-        style = {{ backgroundColor : session.volunteer === currentVolunteer ? '#5Cb85C' : '#0D6EFD', color : 'White'}}>
+        style={{ backgroundColor : session.sessionUsers.length < session.userLimit ? '#0D6EFD' : '#62666b', 
+        color : 'White'}} 
+        >
           {session.sessionTimeStart}{' '}{displaySessionDescription(session.userLimit).name}
         </li>
       </OverlayTrigger>
@@ -181,26 +196,25 @@ function VolunteerCalendar(props) {
 
   // displays the session based on filter
 
-  const displaySessions = (session, i) => {
-    const sessionDateTime = new Date(session.date + ' ' + session.sessionTimeStart)
-    if (sort === 'assigned' && session.volunteer === currentVolunteer){
+  const displaySessions = (session, i) => { 
+    const sessionDateTime = new Date(session.date + ' ' + session.sessionTimeStart) 
+    if (location === session.sessionLocation ) {
       return [sessionEntry(session,i), sessionDateTime] 
-    } else if (sort === 'showAll') {
-      return [sessionEntry(session,i), sessionDateTime]
-    }
+    } else if (location === 'showAll') {
+      return [sessionEntry(session,i), sessionDateTime] 
+    } 
   }
-
   // switches calendar to next month
 
   const nextMonth = () => {
     cCurrentMonth(dateFns.addMonths(currentMonth, 1))
-  };
+  }
 
   // switches calendar to previous month
 
   const prevMonth = () => {
     cCurrentMonth(dateFns.subMonths(currentMonth, 1))
-  };
+  }
 
   // displays correct session details based on the user limit
 
@@ -217,6 +231,22 @@ function VolunteerCalendar(props) {
     }
   }
 
+  const findVolunteerName = (session) => {
+    return users.map((volunteer) => {
+      if (volunteer._id === session.volunteer){
+        return 'Session volunteer: ' + volunteer.nameFirst + ' ' + volunteer.nameLast
+      }}
+    )
+  }
+
+  const findVolunteerEmail = (session) => {
+    return users.map((volunteer) => {
+      if (volunteer._id === session.volunteer){
+        return 'Volunteer contact: ' + volunteer.email
+      }}
+    )
+  }
+
   const displayMemberNames = (session) => {
     let members = []
     users.map((user) => {
@@ -230,7 +260,7 @@ function VolunteerCalendar(props) {
   // session calendar popover
 
   const popoverClick = (session) => (
-    <Popover className = 'popover-main' id='popover-trigger-click' title='Popover bottom'>
+    <Popover className = 'popover-main' id = 'popover-trigger-click' title = 'Popover bottom'>
       <Card className = 'popover-card'>
         <Card.Body className = 'popover-body'>
           <Row className = 'session-name'>
@@ -239,7 +269,7 @@ function VolunteerCalendar(props) {
           <Row>
             {sessionDate(session)}
           </Row>
-          <Row className = 'session-location'>
+          <Row>
             <Col className = 'location-icon' xs='auto'>
               <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-geo-alt-fill' viewBox='0 0 16 16'>
               <path d='M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z'/>
@@ -256,13 +286,14 @@ function VolunteerCalendar(props) {
           <Row className = 'members-attending'>
             {'Members attending: '}{displayMemberNames(session)}
           </Row>
-          <Row className = 'cga-contact'>
-            {'CGA contact: '}
-            <ul className = 'cga-contact-list'>
-              <li>{'Anthony Hills'}</li>
-              <li>{'Email: '}{'dsdsrej@gmail.com'}</li>
-              <li>{'Number: '}{'9754353232'}</li>
-            </ul>
+          <Row>
+            {'Available places: '}{session.userLimit - session.sessionUsers.length}
+          </Row>
+          <Row className = 'session-volunteer'>
+            {findVolunteerName(session)}
+          </Row>
+          <Row>
+            {findVolunteerEmail(session)}
           </Row>
         </Card.Body>
       </Card>
@@ -287,7 +318,7 @@ function VolunteerCalendar(props) {
           </div>
         </div>
     </div>
-  );
+  )
 }
 
-export default VolunteerCalendar
+export default ManagerCalendar

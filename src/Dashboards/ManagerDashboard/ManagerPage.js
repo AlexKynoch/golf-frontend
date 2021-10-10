@@ -4,7 +4,8 @@ import NavBar from '../../NavBar'
 function ManagerPage() {
     const links = [
         false,
-        { name: "Dashboard", url: "/manager" },
+        { name: "Dashboard", url: "/manager/calendar" },
+        { name: "Add new areas", url: "/manager/new-areas" },
         { name: "Log Out", url: "/home" },
     ]
 

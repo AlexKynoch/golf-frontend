@@ -5,7 +5,7 @@ function UserRegister(props) {
     const links = [
         false,
         { name: "Calendar", url: "/admin" },
-        { name: "Register a user", url: "admin/register-user" },
+        { name: "Register a customer", url: "admin/register-customer" },
         { name: "Log Out", url: "/home" },
     ]
 

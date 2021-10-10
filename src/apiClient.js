@@ -21,6 +21,10 @@ export class ApiClient {
         return this.apiCall("get", url + 'sessions')
     }
 
+    getSessionByLocation(location) {
+        return this.apiCall("get", `${url}sessionlocation/${location}`)
+    }
+
     getUsers() {
         return this.apiCall("get", url + 'user')
     }
@@ -68,5 +72,9 @@ export class ApiClient {
 
     getAdminById(id) {
         return this.apiCall('get', `${url}adminid/${id}`)
+    }
+
+    getAdminByLocation(location) {
+        return this.apiCall('get', `${url}adminlocation/${location}`)
     }
 }
