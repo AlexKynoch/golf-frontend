@@ -1,8 +1,14 @@
 import Profile from "./Profile"
 import PPVolunteer from "./PPVolunteer"
+
 import "./VolunteerProfile.css"
+import "./Profile.css"
 import NavBar from "../NavBar"
+import ChangePassword from "./ChangePassword"
 import React, { useState, useEffect } from 'react'
+import { Container } from 'react-bootstrap'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 
 
 
@@ -35,7 +41,15 @@ function VolunteerProfile(props) {
       </div>
       <div className="col volunteerDashboardCol"><Profile activeUser={user} client={props.client} /></div>
       <div className="col volunteerDashboardCol"><PPVolunteer activeUser={user} client={props.client} /></div>
-    </div>
+      <Container>
+        <Row>
+          <div className="col volunteerDashboardCol">
+            <ChangePassword client={props.client} />
+          </div>
+        </Row>
+      </Container>
+    </div>    
+
   )
 }
 

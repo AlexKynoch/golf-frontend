@@ -62,6 +62,10 @@ export class ApiClient {
         return this.apiCall("get", url + 'location')
     }
 
+
+    updateUser(id, dataObj) {
+        return this.apiCall("put", url + `user/${id}`, dataObj)
+
     getUserByRole(role) {
         return this.apiCall("get", `${url}userrole/${role}`)
     }
@@ -85,5 +89,6 @@ export class ApiClient {
 
     getAdminByLocation(location) {
         return this.apiCall('get', `${url}adminlocation/${location}`)
+
     }
 }
