@@ -21,9 +21,30 @@ export class ApiClient {
         return this.apiCall("get", url + 'sessions')
     }
 
+    getSessionByLocation(location) {
+        return this.apiCall("get", `${url}sessionlocation/${location}`)
+    }
+
     getUsers() {
         return this.apiCall("get", url + 'user')
     }
+
+    getUser(id) {
+        return this.apiCall("get", url + `userid/${id}`)
+    }
+
+    updateUser(id, dataObj) {
+        return this.apiCall("put", url + `user/${id}`, dataObj)
+    }
+
+
+    updateUserProfile(id, username, firstname, lastname, location, emaildata, phonedata) {
+        return this.apiCall("put", url + `user/${id}`, {
+            userName: username, nameFirst: firstname, nameLast: lastname,
+            location: location, email: emaildata, phone: phonedata
+        })
+    }
+
 
     removeSession(id) {
         return this.apiCall('delete', `${url}session/${id}`)
@@ -41,7 +62,33 @@ export class ApiClient {
         return this.apiCall("get", url + 'location')
     }
 
+
     updateUser(id, dataObj) {
         return this.apiCall("put", url + `user/${id}`, dataObj)
+
+    getUserByRole(role) {
+        return this.apiCall("get", `${url}userrole/${role}`)
+    }
+
+    addSession(date, volunteer, sessionLocation, sessionTimeStart, sessionTimeFinish, userLimit, details) {
+        return this.apiCall("post", url + 'session', { date: date, volunteer: volunteer, sessionUsers: [],  sessionLocation: sessionLocation, 
+            sessionTimeStart: sessionTimeStart, sessionTimeFinish: sessionTimeFinish, userLimit: userLimit, details: details })
+    }
+
+    getLocationByCGA(activeCGA) {
+        return this.apiCall('get', `${url}locationcga/${activeCGA}`)
+    }
+
+    getUserByLocation(location) {
+        return this.apiCall('get', `${url}userlocation/${location}`)
+    }
+
+    getAdminById(id) {
+        return this.apiCall('get', `${url}adminid/${id}`)
+    }
+
+    getAdminByLocation(location) {
+        return this.apiCall('get', `${url}adminlocation/${location}`)
+
     }
 }
