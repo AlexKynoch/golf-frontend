@@ -25,7 +25,7 @@ function VolunteerProfile(props) {
       <Container>
         <Row>
           <div className="col volunteerDashboardCol">
-            <ChangePassword />
+            <ChangePassword client={props.client} />
           </div>
         </Row>
       </Container>

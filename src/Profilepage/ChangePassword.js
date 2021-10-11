@@ -6,16 +6,47 @@ import React, { useState, useEffect } from "react"
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
-const showSuccess = () => {
-    toast.success("Your details have been updated");
-};
+function ChangePassword(props) {
 
-const handleSubmit = () => {
-    console.log("submitting form data")
-    showSuccess();
-}
 
-function ChangePassword() {
+    const userId = "615d7fb42d2b095a0593e6d7";
+
+    const showSuccess = () => {
+        toast.success("Your details have been updated");
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        const password1 = document.getElementById("password1").value;
+        const password2 = document.getElementById("password2").value;
+        console.log(password1);
+        console.log(password2);
+
+        if (password2 === password1) {
+            props.client.updateUser(
+                userId,
+                {
+                    password: password2,
+                }
+            )
+                .then(() => {
+                    showSuccess()
+
+                })
+                .catch(() => {
+                    alert('an error occured, please try again')
+
+                })
+        }
+
+
+
+
+    }
+
+
+
+
     return (
         // <div className="changePassword-container" >
         //     <Card id="changePassword" className="changePassword-card" style={{ width: '30rem' }}>
@@ -34,17 +65,17 @@ function ChangePassword() {
 
                             <label form="inputUsername3" className="col-sm-12 col-form-label">Change Password</label>
                             <div className="col-sm-12">
-                                <input type="username" className="form-control" id="inputUsername3" placeholder="New Password"></input>
+                                <input type="password" className="form-control" name="password1" id="password1" placeholder="New Password"></input>
                             </div><br />
                         </div>
                         <div className="form-group row">
                             <label form="inputFirstName3" className="col-sm-12 col-form-label">Confirm New Password</label>
                             <div className="col-sm-12">
-                                <input type="firstname" className="form-control" id="inputFirstName3" placeholder="Confirm Password"></input>
+                                <input type="password" className="form-control" name="password2" id="password2" placeholder="Confirm Password"></input>
                             </div>
                         </div>
                         <div className="btn-container justify-content-end">
-                            <Button onClick={() => handleSubmit()} variant="light">Update</Button>
+                            <Button onClick={(e) => handleSubmit(e)} variant="light">Update</Button>
                             <ToastContainer position='bottom-center' />
                         </div>
                     </form >

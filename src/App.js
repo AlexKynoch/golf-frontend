@@ -14,7 +14,7 @@ function App() {
       <NavBar client={client} />
       {/* <Footer /> */}
 
-      <VolunteerProfile />
+      <VolunteerProfile client={client} />
 
     </div>
   );

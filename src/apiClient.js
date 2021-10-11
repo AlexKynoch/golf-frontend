@@ -28,16 +28,20 @@ export class ApiClient {
     removeSession(id) {
         return this.apiCall('delete', `${url}session/${id}`)
     }
-    
+
     addSessionUser(id, sessionUser) {
-        return this.apiCall('put', `${url}sessionUser/${id}`, { user: sessionUser } )
+        return this.apiCall('put', `${url}sessionUser/${id}`, { user: sessionUser })
     }
 
     removeSessionUser(id, sessionUser) {
-        return this.apiCall('put', `${url}sessionDelUser/${id}`, { user: sessionUser})
+        return this.apiCall('put', `${url}sessionDelUser/${id}`, { user: sessionUser })
     }
 
     getLocations() {
         return this.apiCall("get", url + 'location')
+    }
+
+    updateUser(id, dataObj) {
+        return this.apiCall("put", url + `user/${id}`, dataObj)
     }
 }
