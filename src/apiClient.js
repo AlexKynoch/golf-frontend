@@ -65,14 +65,17 @@ export class ApiClient {
 
     updateUser(id, dataObj) {
         return this.apiCall("put", url + `user/${id}`, dataObj)
+    }
 
     getUserByRole(role) {
         return this.apiCall("get", `${url}userrole/${role}`)
     }
 
     addSession(date, volunteer, sessionLocation, sessionTimeStart, sessionTimeFinish, userLimit, details) {
-        return this.apiCall("post", url + 'session', { date: date, volunteer: volunteer, sessionUsers: [],  sessionLocation: sessionLocation, 
-            sessionTimeStart: sessionTimeStart, sessionTimeFinish: sessionTimeFinish, userLimit: userLimit, details: details })
+        return this.apiCall("post", url + 'session', {
+            date: date, volunteer: volunteer, sessionUsers: [], sessionLocation: sessionLocation,
+            sessionTimeStart: sessionTimeStart, sessionTimeFinish: sessionTimeFinish, userLimit: userLimit, details: details
+        })
     }
 
     getLocationByCGA(activeCGA) {
