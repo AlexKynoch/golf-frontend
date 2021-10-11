@@ -4,6 +4,10 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import './CalendarComponents/Calendar.css'
 import './App.css'
 import Footer from "./Footer"
+
+
+
+
 import Container from 'react-bootstrap/Container'
 import {
   HashRouter as Router,
@@ -25,10 +29,14 @@ import ManagerPage from "./Dashboards/ManagerDashboard/ManagerPage"
 import ManagerCalendar from "./Dashboards/ManagerDashboard/ManagerCalendar"
 
 
+
+
 function App() {
   const client = new ApiClient()
 
   return (
+
+
     <Router>
       <div className="App">
         {/* <div className="navOffset">
@@ -88,6 +96,8 @@ function App() {
         </div>
       </div>
     </Router>
+
+
   );
 }
 

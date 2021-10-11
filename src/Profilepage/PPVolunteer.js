@@ -8,7 +8,9 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import "./PPVolunteer.css"
 
+
 function PPVolunteer(props) {
+
     const [radios, cRadios] = useState([
         ["Monday", false],
         ["Tuesday", false],
@@ -52,8 +54,8 @@ function PPVolunteer(props) {
     }
     return (
         <>
-            <div className="volunteer-container row">
-                <Card id="myProfile" className="volunteer-card" style={{ width: '15rem' }}>
+            <div className="volunteer-container">
+                <Card id="myDays" className="volunteer-card" >
                     <Card.Body className="volunteer-card-body">
                         <Card.Title className="volunteer-card-title">My Available Days</Card.Title>
                         <Card.Subtitle className="mb-2 text-muted"></Card.Subtitle>
@@ -76,7 +78,9 @@ function PPVolunteer(props) {
                         </ButtonGroup>
 
                         <div className="btn-container justify-content-end">
+
                             <Button className='volunteer-btn button-profile' onClick={() => handleSubmit()} variant="light">Update</Button>
+
                             <ToastContainer position='bottom-center' />
                         </div>
                     </Card.Body>
