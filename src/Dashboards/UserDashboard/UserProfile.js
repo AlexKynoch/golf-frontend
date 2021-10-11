@@ -1,5 +1,6 @@
 import Profile from "./../../Profilepage/Profile"
 import NavBar from '../../NavBar'
+import ChangePassword from "./../../Profilepage/ChangePassword"
 
 
 function UserProfile(props) {
@@ -15,7 +16,8 @@ function UserProfile(props) {
       <div className="navOffset">
         <NavBar links={links} />
       </div>
-        <div><Profile /></div>
+      <div><Profile client={props.client} /></div>
+      <div><ChangePassword client={props.client} /></div>
     </div>
   )
 }
