@@ -24,7 +24,7 @@ function CgaCalendar(props) {
     props.client.getSessions().then((response) => cSessions(response.data))
     props.client.getUsers().then((response) => cUsers(response.data))
     props.client.getLocations().then((response) => cLocations(response.data))
-    props.client.getAdminById('615d7e616d365c85eff5f442').then((response) => cCurrentCgaLocation(response.data[0].location))  
+    props.client.getAdminById('615d7e616d365c85eff5f442').then((response) => cCurrentCgaLocation(response.data.location))  
   }
 
   // gets all unique session locations

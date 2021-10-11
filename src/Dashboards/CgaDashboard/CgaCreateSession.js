@@ -14,7 +14,7 @@ function CreateSession(props) {
     // get data from database
     const refreshList = () => {
         props.client.getUserByRole('volunteer').then((response) => cVolunteers(response.data))
-        props.client.getAdminById('615d7e616d365c85eff5f442').then((response) => cCurrentCgaLocation(response.data[0].location)) 
+        props.client.getAdminById('615d7e616d365c85eff5f442').then((response) => cCurrentCgaLocation(response.data.location)) 
     }
 
     // return all registered volunteers for a location
