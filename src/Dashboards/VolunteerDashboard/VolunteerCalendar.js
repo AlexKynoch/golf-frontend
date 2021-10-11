@@ -30,8 +30,8 @@ function VolunteerCalendar(props) {
   const refreshList = () => {
     props.client.getSessionByLocation('Newcastle').then((response) => cSessions(response.data))
     props.client.getUsers().then((response) => cUsers(response.data))
-    props.client.getUser(currentVolunteer).then((response) => cCurrentLocation(response.data[0].location))
-    props.client.getAdminByLocation('Sheffield').then((response) => console.log(response.data))
+    props.client.getUser(currentVolunteer).then((response) => cCurrentLocation(response.data.location))
+    // props.client.getAdminByLocation('Sheffield').then((response) => console.log(response.data))
   }
 
   // renders calendar header

@@ -12,19 +12,9 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 
 function Profile(props) {
 
-    const [locations, cLocationList] = useState([
-        "Abbeydale Golf Club - Sheffield",
-        "Coxmoor Golf Club - Nottinghamshire",
-        "Matfen Hall - Matfen Village",
-        "Mearns Castle Golf Academy - Newton Mearns",
-        "Millfield Golf Club - Lincolnshire",
-        "N1 Golf - Morpeth",
-        "Stirling Golf Club - Stirlingshire",
-        "Whitecraigs Golf Club - East Renfrewshire"
-    ]);
-
-    const [userId, setUserId] = React.useState("615d7fb42d2b095a0593e6d7");
-    const [location, cLocation] = useState("Abbeydale Golf Club2.0 - Sheffield");
+    const [locations, cLocations] = useState([])
+    const [userId, setUserId] = React.useState("615d7fb42d2b095a0593e6d7")
+    const [location, cLocation] = useState()
     const [users, cUsers] = useState(
         {
             userName: "Jonny5",
@@ -52,53 +42,44 @@ function Profile(props) {
                 phone
             }
         )
-        // cRadios(props.activeUser['availability'])
     }, [props.activeUser]);
-
-
 
     const showSuccess = () => {
         toast.success("Your details have been updated");
     };
 
-
-    // userInfo = [...users];
     const handleChange = (e) => {
         const updatedState = { ...users }
         updatedState[e.target.name] = e.target.value
-        // console.log(updatedState)
         cUsers(updatedState)
         console.log(e.target.value, e.target.name);
     }
+
     const handleDropdownChanger = (e) => {
         cLocation(e)
-        // change the location field in the user object stored in state
     }
 
     const handleSubmit = (e) => {
         e.preventDefault()
-
-
         props.client.updateUser(
             userId,
             {
                 userName: users.userName,
                 nameFirst: users.nameFirst,
                 nameLast: users.nameLast,
-                location: users.location,
+                location: location,
                 email: users.email,
                 phone: users.phone,
             }
         )
+        .then(() => {
+            showSuccess()
 
-            .then(() => {
-                showSuccess()
+        })
+        .catch(() => {
+            alert('an error occured, please try again')
 
-            })
-            .catch(() => {
-                alert('an error occured, please try again')
-
-            })
+        })
     }
 
     useEffect(() => {
@@ -109,7 +90,7 @@ function Profile(props) {
                     return (location.locationName)
                 })
                 console.log(newArray);
-                cLocationList(newArray);
+                cLocations(newArray);
                 // cUsers(res.data[0]['locationName'])
             })
     }, []);
@@ -169,9 +150,6 @@ function Profile(props) {
                                 </input>
                             </div>
                         </div>
-
-
-
                         <Dropdown className="form-group row profile-drowdown" >
                             <label
                                 form="inputLocation3"
@@ -182,15 +160,10 @@ function Profile(props) {
                                     onSelect={(e) => handleDropdownChanger(e)}
 
                                     style={{ backgroundColor: '#ccdddd', border: "1px solid red" }}>
-                                    <Dropdown.Item eventKey={locations[0]}>{locations[0]}</Dropdown.Item>
-                                    <Dropdown.Item eventKey={locations[1]} href="#">{locations[1]}</Dropdown.Item>
-                                    <Dropdown.Item eventKey={locations[2]} href="#">{locations[2]}</Dropdown.Item>
-                                    <Dropdown.Item eventKey={locations[3]} href="#">{locations[3]}</Dropdown.Item>
-                                    <Dropdown.Item eventKey={locations[4]} href="#">{locations[4]}</Dropdown.Item>
-                                    <Dropdown.Item eventKey={locations[5]} href="#">{locations[5]}</Dropdown.Item>
-                                    <Dropdown.Item eventKey={locations[6]} href="#">{locations[6]}</Dropdown.Item>
-                                    <Dropdown.Item eventKey={locations[7]} href="#" selected="selected">{locations[7]}</Dropdown.Item>
 
+                                    {locations.map((location) => {
+                                     return <Dropdown.Item eventKey={location}>{location}</Dropdown.Item>   
+                                    })}
 
                                 </DropdownButton>
                             </label>
@@ -201,26 +174,10 @@ function Profile(props) {
                                     className="form-control"
                                     id="inputSurname3"
                                     name="location"
-                                    value={users.location}>
-                                    {/* // value={users.location}> */}
+                                    value={location}>
                                 </input>
                             </div>
                         </Dropdown>
-
-                        {/* </div> */}
-                        {/* <div className="col-sm-9">
-                                <input
-                                    type="location"
-                                    onInput={(e) => handleChange(e)}
-                                    className="form-control"
-                                    id="inputLocation3"
-                                    name="location"
-                                    value={users.location}>
-                                </input>
-                            </div> */}
-
-
-
 
                         <div className="form-group row">
                             <label
@@ -261,7 +218,7 @@ function Profile(props) {
 
                         <div className="btn-container justify-content-end">
 
-                            <Button onClick={(e) => handleSubmit(e)} variant="light">Update</Button>
+                            <Button className = 'button-profile' onClick={(e) => handleSubmit(e)} variant="light">Update</Button>
 
                             <ToastContainer position='bottom-center' />
                         </div>

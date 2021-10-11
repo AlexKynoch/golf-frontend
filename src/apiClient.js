@@ -37,7 +37,6 @@ export class ApiClient {
         return this.apiCall("put", url + `user/${id}`, dataObj)
     }
 
-
     updateUserProfile(id, username, firstname, lastname, location, emaildata, phonedata) {
         return this.apiCall("put", url + `user/${id}`, {
             userName: username, nameFirst: firstname, nameLast: lastname,

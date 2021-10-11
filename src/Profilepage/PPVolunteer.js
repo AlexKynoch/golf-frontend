@@ -11,9 +11,6 @@ import "./PPVolunteer.css"
 
 function PPVolunteer(props) {
 
-
-
-
     const [radios, cRadios] = useState([
         ["Monday", false],
         ["Tuesday", false],
@@ -95,5 +92,3 @@ function PPVolunteer(props) {
     );
 };
 export default PPVolunteer
-
-
