@@ -1,7 +1,7 @@
 import React from "react"
 import { ApiClient } from "./apiClient"
 import 'bootstrap/dist/css/bootstrap.min.css'
-import NavBar from "./NavBar"
+import './CalendarComponents/Calendar.css'
 import './App.css'
 import Footer from "./Footer"
 import Container from 'react-bootstrap/Container'
@@ -10,21 +10,23 @@ import {
   Switch,
   Route
 } from 'react-router-dom'
-import VolunteerCalendar from "./Calendar/VolunteerCalendar"
+import VolunteerCalendar from "./Dashboards/VolunteerDashboard/VolunteerCalendar"
 import VolunteerProfile from "./Profilepage/VolunteerProfile"
-import CgaDashboard from "./CgaDashboard"
-import CgaCreateSessionMain from "./CgaDashboard/CgaCreateSessionMain"
-import ViewUsers from "./CgaDashboard/CgaViewUsers"
-import UserPage from "./Profilepage/UserPage"
+import UserProfile from "./Dashboards/UserDashboard/UserProfile"
+import CgaDashboard from "./Dashboards/CgaDashboard/CgaDashboard"
+import CgaCreateSessionMain from "./Dashboards/CgaDashboard/CgaCreateSessionMain"
+import ViewUsers from "./Dashboards/CgaDashboard/CgaViewUsers"
+import UserCalendar from "./Dashboards/UserDashboard/UserCalendar"
 import LandingPage from "./LandingPage"
-import AdminPage from "./AdminPage"
+import AdminCalendar from "./Dashboards/AdminDashboard/AdminCalendar"
+import UserRegister from "./Dashboards/AdminDashboard/UserRegister"
 import LoginPage from "./LoginPage"
-import ManagerPage from "./ManagerPage"
+import ManagerPage from "./Dashboards/ManagerDashboard/ManagerPage"
+import ManagerCalendar from "./Dashboards/ManagerDashboard/ManagerCalendar"
 
 
 function App() {
   const client = new ApiClient()
-
 
   return (
     <Router>
@@ -35,6 +37,12 @@ function App() {
         <div className="contentContainer">
           <Container>
             <Switch>
+              <Route path='/customer/calendar'>
+                <UserCalendar client={client} />
+              </Route>
+              <Route path='/customer/profile'>
+                <UserProfile client={client} />
+              </Route>
               <Route path='/volunteer/calendar'>
                 <VolunteerCalendar client={client} />
               </Route>
@@ -49,26 +57,27 @@ function App() {
               </Route>
               <Route path='/cga/view-users'>
                 <ViewUsers client={client} />
-              </Route>
-              <Route path='/userpage'>
-                <UserPage client={client} />
-              </Route>
-              <Route path='/landingpage'>
+              </Route> 
+              <Route path='/home'>
                 <LandingPage client={client} />
               </Route>
-              <Route path='/adminpage'>
-                <AdminPage client={client} />
+              <Route path='/admin'>
+                <AdminCalendar client={client} />
               </Route>
-              <Route path='/loginpage'>
+              <Route path='/admin/register-customer'>
+                <UserRegister client={client} />
+              </Route>
+              <Route path='/login'>
                 <LoginPage client={client} />
               </Route>
-              <Route path='/managerpage'>
+              <Route path='/manager/calendar'>
+                <ManagerCalendar client={client} />
+              </Route>
+              <Route path='/manager/new-areas'>
                 <ManagerPage client={client} />
               </Route>
-
-
               <Route exact path='/'>
-                <VolunteerCalendar client={client} />
+                <LandingPage client={client} />
               </Route>
               <Route path='/'>Error: 404 not found</Route>
             </Switch>

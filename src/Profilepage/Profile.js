@@ -180,6 +180,7 @@ function Profile(props) {
                                     className="dropdownButton col-sm-12"
                                     title="Location."
                                     onSelect={(e) => handleDropdownChanger(e)}
+
                                     style={{ backgroundColor: '#ccdddd', border: "1px solid red" }}>
                                     <Dropdown.Item eventKey={locations[0]}>{locations[0]}</Dropdown.Item>
                                     <Dropdown.Item eventKey={locations[1]} href="#">{locations[1]}</Dropdown.Item>
@@ -189,6 +190,7 @@ function Profile(props) {
                                     <Dropdown.Item eventKey={locations[5]} href="#">{locations[5]}</Dropdown.Item>
                                     <Dropdown.Item eventKey={locations[6]} href="#">{locations[6]}</Dropdown.Item>
                                     <Dropdown.Item eventKey={locations[7]} href="#" selected="selected">{locations[7]}</Dropdown.Item>
+
 
                                 </DropdownButton>
                             </label>
@@ -258,7 +260,9 @@ function Profile(props) {
 
 
                         <div className="btn-container justify-content-end">
+
                             <Button onClick={(e) => handleSubmit(e)} variant="light">Update</Button>
+
                             <ToastContainer position='bottom-center' />
                         </div>
                     </form >

@@ -297,9 +297,6 @@ header #logo .icon {
   width:22% !important;
 }
 
-.booking-btn {
-  margin-top:10px
-}
 
 .row>* {
   padding-left: 2px;
@@ -419,6 +416,12 @@ header #logo .icon {
   padding-top: 6px;
 }
 
+.txt-align-end {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+
 /* admin search field */
 
 .search-field {
@@ -461,23 +464,70 @@ header #logo .icon {
   padding: -15px
 }
 
+.general-btn {
+  background-color: rgb(204, 221, 221) !important;
+  box-shadow: none !important;
+  color: black;
+  border: 1px solid rgb(6, 101, 50) !important;
+}
+
+.general-btn:focus,.general-btn:active, .general-btn:hover{
+  outline: none !important;
+  box-shadow: none !important;
+  background-color: rgb(6, 101, 50) !important;
+  color: white;
+}
+
+.btn-danger {
+  box-shadow: none !important;
+  background-color: #dd6461 !important;
+  color: black;
+  border: 1px solid #82322f !important;
+}
+
+.btn-danger:active, .btn-danger:hover {
+  box-shadow: none !important;
+  outline: none !important;
+  background-color: #82322f !important;
+  color: white;
+}
+
+.btn-book-session {
+  box-shadow: none !important;
+  background-color: #80bdff !important;
+  color: black !important;
+  border: 1px solid #004a99 !important;
+}
+
+.btn-book-session-margin {
+  margin-left: 5px;
+}
+
+.btn-book-session:active, .btn-book-session:hover {
+  box-shadow: none !important;
+  outline: none !important;
+  background-color: #004a99 !important;
+  color: white !important;
+}
+
 /* admin user search */
 
 .user-search-form {
   margin-top: 5px;
-  justify-content: right;
-  display: flex;
-  align-items: center;
+  margin-right: 0px;
+  /* justify-content: right; 
+  display: flex; */
+  /* align-items: center; */
 }
 
 .user-search-form-label {
   color: black;
-  margin-right: 5px;
-  text-align: center
+  /* margin-right: 5px;
+  text-align: center */
 }
 
-.user-submit {
-  margin-right: 5px;
+.user-submit-btn {
+  margin-right: 2px;
   margin-left: 5px
 }
 
@@ -506,5 +556,10 @@ header #logo .icon {
 
   .calendar .body .cell {
     min-height: 3em;  
+  }
+
+  .txt-align-end {
+    justify-content: start;
+    margin-left: 13px;
   }
 }

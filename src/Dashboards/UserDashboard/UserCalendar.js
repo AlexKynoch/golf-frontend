@@ -2,56 +2,72 @@ import React, { useState, useEffect } from 'react'
 import * as dateFns from 'date-fns'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Popover from 'react-bootstrap/Popover'
+import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import 'bootstrap/dist/css/bootstrap.min.css'
-import "./Calendar.css"
+import sessionInfo from "./../../CalendarComponents/sessionInfo"
+import NavBar from '../../NavBar'
 
-function CgaCalendar(props) {
+function UserCalendar(props) {
   const [currentMonth, cCurrentMonth] = useState(new Date())
-  const [currentDate, cCurrentDate] = useState(new Date())
-  const [location, cLocation] = useState('showAll')
-  const [locations, cLocations] = useState([])
+  
+  const [sort, cSort] = useState('showAll')
   const [sessions, cSessions] = useState([])
   const [users, cUsers] = useState([])
-  const [sessionInfo, cSessionInfo] = useState([
-    {name: 'One-to-One Coaching',
-    description:'These person-centred sessions are delivered by one of our trained team at a local golf club. The service provides an enjoyable & rewarding day for the golfer PLUS a deserved respite break for carers. No golfing experience is necessary.',
-    cost: '£20 per hour'
-    },
-    {name: 'The Perfect Three Ball',
-    description:'Two golfers enjoying golf & companionship with a member of our team at a local golf club. This service provides an enjoyable & rewarding day out, the chance to make new friends and a well deserved respite break for carers. No golfing experience is necessary.',
-    cost: '£15 per hour'
-    },
-    {name: 'Group Session',
-    description:'At present we’re limited to the “rule of six”. The sessions are perfect for people who enjoy socialising, being part of a team and group coaching.',
-    cost: '£10 per hour'
-    },
-    {name: 'No session info to show',
-    description:'No session with such user limit',
-    cost: 'No session info to show'
-    }
-  ])
- 
-  // gets all the sessions, users and locations from the database
+  const currentUser = {
+  _id: "615d846c2d2b095a0593e6df",
+   email: "becka74@gmail.com",
+  location: "Glasgow",
+  nameFirst: "Rebecca",
+  nameLast: "Surname",
+  password: "password",
+  role: "user",
+  token: "615d846c2d2b095a0593e6de",
+  userName: "Becka456"}
+  const currentDate = new Date()
+  const links = [
+    false,
+    { name: "Calendar", url: "/customer/calendar" },
+    { name: "Profile", url: "/customer/profile" },
+    { name: "Log Out", url: "/home" },
+  ]
+
+  // gets all the sessions and users from the database
 
   const refreshList = () => {
     props.client.getSessions().then((response) => cSessions(response.data))
     props.client.getUsers().then((response) => cUsers(response.data))
-    props.client.getLocations().then((response) => cLocations(response.data))
   }
-  // get all unique session locations
 
-  const sessionLocations = () => {
-    let loc = []
-    locations.forEach((location) => {
-      loc.push(location.locationName)
+  // adds user to session users (booking)
+
+  const addUser = async (id, user) => {
+    const res = await props.client.addSessionUser(id, user)
+    const updated = sessions.map((session) => {
+      if(session._id === id){
+        session.sessionUsers = res.data.body.sessionUsers
+      }
+      return session
     })
-    return loc
+    cSessions(updated)
+  }
+  
+  // removes user from session users (booking cancellation)
+
+  const removeUser = async (id, user) => {
+    const res = await props.client.removeSessionUser(id, user)
+    const updated = sessions.map((session) => {
+      if(session._id === id){
+        session.sessionUsers = res.data.body.sessionUsers
+      }
+      return session
+    })
+    cSessions(updated)
   }
 
   // renders calendar header
+
   const renderHeader = () => {
     const dateFormat = 'MMMM yyyy'
     return (
@@ -72,30 +88,31 @@ function CgaCalendar(props) {
   }
 
   // renders calendar key and filters
+
   const renderFilters = () => {
     return (
-        <Row className = 'filters'>
-          <Col className = 'bullet-list'>
-            <ul className = 'filter-list-bullet'>
-              <li className = 'bullet-green bullet-blue'><span className = 'bullet-text'> Available to book</span></li>
-              <li className = 'bullet-green bullet-gray'><span className = 'bullet-text'> Fully booked</span></li>
-            </ul>
-          </Col>
-          <Col lg = {3} md = {4} className = 'dropdown-name cga-filter text-lg-end'>Filter calendar by location:</Col>
-          <Col lg = {2} md = {3} className = 'user-filter-dropdown text-lg-end'>
-            <select className = 'dropdown-list' onChange = {(e) => cLocation(e.target.value)} value = {location}>
-                  <option value = {'showAll'}>Show All</option>
-                  {sessionLocations().map((location) => (
-                  <option value = {location}>{location}</option>))}
-              </select>
-          </Col>          
-        </Row>
+      <Row className = 'filters'>
+        <Col className = 'bullet-list'>
+          <ul className = 'filter-list-bullet'>
+            <li className = 'bullet-green'><span className = 'bullet-text'>Booked sessions</span></li>
+            <li className = 'bullet-green bullet-blue'><span className = 'bullet-text'> Sessions available to book</span></li>
+          </ul>
+        </Col>
+        <Col lg = {5} md = {4} className = 'dropdown-name user-filter'>Filter calendar by your booked sessions or sessions still available to book:</Col>
+        <Col lg = {2} md = {3} className = 'user-filter-dropdown'> 
+          <select className = 'dropdown-list' onChange={(e) => cSort(e.target.value)} value={sort}>
+            <option className = 'dropdown-option' value={'showAll'}>Show All</option>
+            <option className = 'dropdown-option' value={'booked'}>Booked Sessions</option>
+            <option className = 'dropdown-option' value={'available'}>Available Sessions</option>
+          </select> 
+        </Col>
+      </Row>
     )
   }
 
-   // displays names of days in calendar
+  // displays names of days in calendar
 
-   const buildDayName = (day, i) => {
+  const buildDayName = (day, i) => {
     return (
       <div className='col col-center' key={i}>
         {day}
@@ -117,7 +134,6 @@ function CgaCalendar(props) {
   }
 
   // renders calendar cells
-
   const renderCells = () => {
     const monthStart = dateFns.startOfMonth(currentMonth)
     const monthEnd = dateFns.endOfMonth(monthStart)
@@ -131,9 +147,9 @@ function CgaCalendar(props) {
 
     while (day <= endDate) {
       for (let i = 0; i < 7; i++) {
-        formattedDate = dateFns.format(day, dateFormat);
+        formattedDate = dateFns.format(day, dateFormat)
         days.push(
-          <div
+          <div 
             className={`col cell ${
               !dateFns.isSameMonth(day, monthStart)
                 ? 'disabled'
@@ -151,10 +167,10 @@ function CgaCalendar(props) {
         <div className='row' key={day}>
           {days}
         </div>
-      )
+      ) 
       days = []
     }
-    return <div className = 'body'>{rows}</div>;
+    return <div className='body'>{rows}</div>
   }
 
   // shows sessions in the calendar cell for that specific day
@@ -187,10 +203,10 @@ function CgaCalendar(props) {
 
   const sessionEntry = (session, i) => {
     return (
-      <OverlayTrigger key = {i} trigger='click' placement='bottom' overlay={popoverClick(session)} rootClose>
+      <OverlayTrigger key = {i} trigger = 'click' placement = 'bottom' overlay = {popoverClick(session)} rootClose>
         <li className = 'dis-session-info li-show-sessions' 
-        style={{ backgroundColor : session.sessionUsers.length < session.userLimit ? '#0D6EFD' : '#62666b', 
-        color : 'White'}} 
+        style={{ backgroundColor : session.sessionUsers.includes(currentUser._id) ? '#5Cb85C': session.sessionUsers.length === session.userLimit ? 'White' : '#0D6EFD', 
+        color : session.sessionUsers.includes(currentUser._id) ? 'White' : session.sessionUsers.length === session.userLimit ? 'rgb(170, 163, 163)' : 'White'}} 
         >
           {session.sessionTimeStart}{' '}{displaySessionDescription(session.userLimit).name}
         </li>
@@ -198,46 +214,83 @@ function CgaCalendar(props) {
     )
   }
 
-  // displays the session based on filter
+  // displays the session based on filter, user's booking and session user limit
 
-  const displaySessions = (session, i) => { 
-    const sessionDateTime = new Date(session.date + ' ' + session.sessionTimeStart) 
-    if (location === session.sessionLocation ) {
-      return [sessionEntry(session,i), sessionDateTime] 
-    } else if (location === 'showAll') {
-      return [sessionEntry(session,i), sessionDateTime] 
-    } 
+  const displaySessions = (session, i) => {
+    const sessionDateTime = new Date(session.date + ' ' + session.sessionTimeStart)
+    if (sort === 'booked' && session.sessionUsers.includes(currentUser._id)) {
+      return [sessionEntry(session,i), sessionDateTime]
+    } else if (sort === 'available' && !session.sessionUsers.includes(currentUser._id) && session.sessionUsers.length < session.userLimit) {
+      return [sessionEntry(session,i), sessionDateTime]
+    } else if (sort === 'showAll') {
+      return [sessionEntry(session,i), sessionDateTime]
+    }
   }
+
   // switches calendar to next month
 
   const nextMonth = () => {
     cCurrentMonth(dateFns.addMonths(currentMonth, 1))
-  }
+  };
 
   // switches calendar to previous month
 
   const prevMonth = () => {
     cCurrentMonth(dateFns.subMonths(currentMonth, 1))
-  }
+  };
 
   // displays correct session details based on the user limit
 
   const displaySessionDescription = (limit) => {
     switch(limit) {
       case 1:
-        return sessionInfo[0] 
+        return sessionInfo()[0] 
       case 2:
-        return sessionInfo[1]
+        return sessionInfo()[1]
       case 5:
-        return sessionInfo[2]
+        return sessionInfo()[2]
       default:
-        return sessionInfo[3]
+        return sessionInfo()[3]
+    }
+  }
+
+  // books user into a session
+
+  const bookingHandler = async (e, ses) => {
+    e.preventDefault()
+    sessions.forEach(async (session) => {
+      if (session._id === ses._id) {
+        addUser(ses._id, currentUser._id)
+      }
+    })
+  }
+
+  // cancels booking for the user
+  
+  const cancelBookingHandler = async (e, ses) => {
+    e.preventDefault()
+    sessions.forEach(async (session) => {
+      if (session._id === ses._id) {
+        removeUser(ses._id, currentUser._id)
+      }
+    })
+  }
+
+  // displays either book session, cancel booking or fully booked button depending on the user
+
+  const showBookingButton = (session) => {
+    if (session.sessionUsers.includes(currentUser._id)) {
+      return <Button className = 'btn-danger' onClick = {(e) => cancelBookingHandler(e, session)}>Cancel booking</Button>
+    } if (!session.sessionUsers.includes(currentUser._id) && session.sessionUsers.length === session.userLimit) {
+      return <Button className = 'btn-secondary'>Fully booked</Button>
+    } else {
+      return <Button className = 'btn-book-session' onClick = {(e) => bookingHandler(e, session)}>Book session</Button>
     }
   }
 
   const findVolunteerName = (session) => {
     return users.map((volunteer) => {
-      if (volunteer._id === session.volunteer){
+      if (session.sessionUsers.includes(currentUser._id) && volunteer._id === session.volunteer){
         return 'Session volunteer: ' + volunteer.nameFirst + ' ' + volunteer.nameLast
       }}
     )
@@ -245,26 +298,14 @@ function CgaCalendar(props) {
 
   const findVolunteerEmail = (session) => {
     return users.map((volunteer) => {
-      if (volunteer._id === session.volunteer){
+      if (session.sessionUsers.includes(currentUser._id) && volunteer._id === session.volunteer){
         return 'Volunteer contact: ' + volunteer.email
       }}
     )
   }
 
-  const displayMemberNames = (session) => {
-    let members = []
-    users.map((user) => {
-      if (session.sessionUsers.includes(user._id)) {
-        members.push(user.nameFirst + ' ' + user.nameLast + ' ')
-      }
-    })
-    return members.join(', ')
-  }
-
-  // session calendar popover
-
   const popoverClick = (session) => (
-    <Popover className = 'popover-main' id = 'popover-trigger-click' title = 'Popover bottom'>
+    <Popover className = 'popover-main' id='popover-trigger-click' title='Popover bottom'>
       <Card className = 'popover-card'>
         <Card.Body className = 'popover-body'>
           <Row className = 'session-name'>
@@ -275,7 +316,7 @@ function CgaCalendar(props) {
           </Row>
           <Row>
             <Col className = 'location-icon' xs='auto'>
-              <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-geo-alt-fill' viewBox='0 0 16 16'>
+              <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' className='bi bi-geo-alt-fill' viewBox='0 0 16 16'>
               <path d='M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z'/>
               </svg>  
             </Col> 
@@ -287,17 +328,14 @@ function CgaCalendar(props) {
           <Row>
             {displaySessionDescription(session.userLimit).cost}
           </Row>
-          <Row className = 'members-attending'>
-            {'Members attending: '}{displayMemberNames(session)}
-          </Row>
-          <Row>
-            {'Available places: '}{session.userLimit - session.sessionUsers.length}
-          </Row>
           <Row className = 'session-volunteer'>
             {findVolunteerName(session)}
           </Row>
           <Row>
             {findVolunteerEmail(session)}
+          </Row>
+          <Row className = 'booking-btn-row'>
+            {showBookingButton(session)}
           </Row>
         </Card.Body>
       </Card>
@@ -309,15 +347,18 @@ function CgaCalendar(props) {
   }, [])
 
   return (
-      <div className = 'calendar-main calendar-main-cga'>
-        <div className = 'calendar'>
-        {renderHeader()}
-        {renderFilters()}
-        {renderDays()}
-        {renderCells()}
+    <div>
+        <div className="navOffset">
+            <NavBar links={links} />
         </div>
-      </div>
+        <div className = 'calendar'>
+          {renderHeader()}
+          {renderFilters()}
+          {renderDays()}
+          {renderCells()}
+        </div>
+    </div>
   )
 }
 
-export default CgaCalendar
+export default UserCalendar

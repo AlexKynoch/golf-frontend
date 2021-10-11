@@ -5,38 +5,33 @@ import Popover from 'react-bootstrap/Popover'
 import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import "./Calendar.css"
+import sessionDate from './../../CalendarComponents/sessionDate'
+import sessionInfo from './../../CalendarComponents/sessionInfo'
+import NavBar from '../../NavBar'
 
 function VolunteerCalendar(props) {
   const [currentMonth, cCurrentMonth] = useState(new Date())
-  const [currentDate, cCurrentDate] = useState(new Date())
   const [sessions, cSessions] = useState([])
   const [users, cUsers] = useState([])
   const [sort, cSort] = useState('showAll')
-  const [sessionInfo, cSessionInfo] = useState([
-    {name: 'One-to-One Coaching',
-    description:'These person-centred sessions are delivered by one of our trained team at a local golf club. The service provides an enjoyable & rewarding day for the golfer PLUS a deserved respite break for carers. No golfing experience is necessary.',
-    cost: '£20 per hour'
-    },
-    {name: 'The Perfect Three Ball',
-    description:'Two golfers enjoying golf & companionship with a member of our team at a local golf club. This service provides an enjoyable & rewarding day out, the chance to make new friends and a well deserved respite break for carers. No golfing experience is necessary.',
-    cost: '£15 per hour'
-    },
-    {name: 'Group Session',
-    description:'At present we’re limited to the “rule of six”. The sessions are perfect for people who enjoy socialising, being part of a team and group coaching.',
-    cost: '£10 per hour'
-    },
-    {name: 'No session info to show',
-    description:'No session with such user limit',
-    cost: 'No session info to show'
-    }
-  ])
- 
+  const [currentLocation, cCurrentLocation] = useState()
+  const [currentCga, cCurrentCga] = useState()
+  const currentVolunteer = '615d84702d2b095a0593e6e5'
+  const currentDate = new Date()
+  const links = [
+    false,
+    { name: "Calendar", url: "/volunteer/calendar" },
+    { name: "Profile", url: "/volunteer/profile" },
+    { name: "Log Out", url: "/home" },
+  ]
+
   // gets all the sessions and users from the database
 
   const refreshList = () => {
-    props.client.getSessions().then((response) => cSessions(response.data))
+    props.client.getSessionByLocation('Newcastle').then((response) => cSessions(response.data))
     props.client.getUsers().then((response) => cUsers(response.data))
+    props.client.getUser(currentVolunteer).then((response) => cCurrentLocation(response.data[0].location))
+    props.client.getAdminByLocation('Sheffield').then((response) => console.log(response.data))
   }
 
   // renders calendar header
@@ -177,7 +172,7 @@ function VolunteerCalendar(props) {
     return (
       <OverlayTrigger key = {i} trigger = 'click' placement = 'bottom' overlay = {popoverClick(session)} rootClose>
         <li className = 'dis-session-info li-show-sessions' 
-        style = {{ backgroundColor : session.volunteer === '6155a15a164ea2ebb8b960cb' ? '#5Cb85C' : '#0D6EFD', color : 'White'}}>
+        style = {{ backgroundColor : session.volunteer === currentVolunteer ? '#5Cb85C' : '#0D6EFD', color : 'White'}}>
           {session.sessionTimeStart}{' '}{displaySessionDescription(session.userLimit).name}
         </li>
       </OverlayTrigger>
@@ -188,7 +183,7 @@ function VolunteerCalendar(props) {
 
   const displaySessions = (session, i) => {
     const sessionDateTime = new Date(session.date + ' ' + session.sessionTimeStart)
-    if (sort === 'assigned' && session.volunteer === '6155a15a164ea2ebb8b960cb'){
+    if (sort === 'assigned' && session.volunteer === currentVolunteer){
       return [sessionEntry(session,i), sessionDateTime] 
     } else if (sort === 'showAll') {
       return [sessionEntry(session,i), sessionDateTime]
@@ -212,13 +207,13 @@ function VolunteerCalendar(props) {
   const displaySessionDescription = (limit) => {
     switch(limit) {
       case 1:
-        return sessionInfo[0] 
+        return sessionInfo()[0] 
       case 2:
-        return sessionInfo[1]
+        return sessionInfo()[1]
       case 5:
-        return sessionInfo[2]
+        return sessionInfo()[2]
       default:
-        return sessionInfo[3]
+        return sessionInfo()[3]
     }
   }
 
@@ -242,7 +237,7 @@ function VolunteerCalendar(props) {
             {displaySessionDescription(session.userLimit).name}
           </Row>
           <Row>
-            {session.date}{' '}{session.sessionTimeStart}{'-'}{session.sessionTimeFinish}
+            {sessionDate(session)}
           </Row>
           <Row className = 'session-location'>
             <Col className = 'location-icon' xs='auto'>
@@ -279,13 +274,18 @@ function VolunteerCalendar(props) {
   }, [])
 
   return (
-    <div className='calendar-main'>
-      <div className='calendar'>
-        {renderHeader()}
-        {renderFilters()}
-        {renderDays()}
-        {renderCells()}
-      </div>
+    <div>
+        <div className="navOffset">
+            <NavBar links={links} />
+        </div>
+        <div className='calendar-main'>
+          <div className='calendar'>
+            {renderHeader()}
+            {renderFilters()}
+            {renderDays()}
+            {renderCells()}
+          </div>
+        </div>
     </div>
   );
 }

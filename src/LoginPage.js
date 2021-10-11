@@ -4,10 +4,10 @@ import NavBar from "./NavBar"
 export default function LoginPage() {
     const links = [
         true,
-        { name: "Customer", url: "/loginpage" },
-        { name: "Volunteer", url: "/loginpage" },
-        { name: "Admin", url: "/loginpage" },
-        { name: "Home", url: "/landingpage" },
+        { name: "Customer", url: "/login" },
+        { name: "Volunteer", url: "/login" },
+        { name: "Admin", url: "/login" },
+        { name: "Home", url: "/home" },
     ]
     return (
         <div>
