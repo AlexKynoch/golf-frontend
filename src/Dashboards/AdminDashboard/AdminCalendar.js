@@ -21,7 +21,7 @@ function AdminCalendar(props) {
   const [autoCompleteInput, cAutoCompleteInput] = useState('')
   const [autoCompleteInputBooking, cAutoCompleteInputBooking] = useState('')
   const [autoCompleteInputCancel, cAutoCompleteInputCancel] = useState('')
-  // const [currentAdminLocation, cCurrentAdminLocation] = useState([])
+  const [currentAdminLocation, cCurrentAdminLocation] = useState('')
 
   const currentDate = new Date()
   const links = [
@@ -34,10 +34,10 @@ function AdminCalendar(props) {
   // gets all the sessions and users from the database
 
   const refreshList = () => {
-    props.client.getSessions().then((response) => cSessions(response.data))
+    props.client.getAdminById('615d7faa2d2b095a0593e6d4').then((response) => cCurrentAdminLocation(response.data.location))
+    props.client.getSessionByLocation('Newcastle').then((response) => cSessions(response.data))
+    // props.client.getUsersByLocation('Newcastle').then((response) => cSessions(response.data))
     props.client.getUsers().then((response) => cUsers(response.data))
-    // props.client.getAdminById('615d7e616d365c85eff5f442').then((response) => cCurrentAdminLocation(response.data[0].location))
-    // get session by location
   }
 
   // make an array of all database users and their usernames

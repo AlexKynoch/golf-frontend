@@ -14,8 +14,8 @@ function VolunteerCalendar(props) {
   const [sessions, cSessions] = useState([])
   const [users, cUsers] = useState([])
   const [sort, cSort] = useState('showAll')
-  const [currentLocation, cCurrentLocation] = useState()
-  const [currentCga, cCurrentCga] = useState()
+  const [currentLocation, cCurrentLocation] = useState('')
+  const [currentCga, cCurrentCga] = useState('')
   const currentVolunteer = '615d84702d2b095a0593e6e5'
   const currentDate = new Date()
   const links = [
@@ -28,12 +28,12 @@ function VolunteerCalendar(props) {
   // gets all the sessions and users from the database
 
   const refreshList = () => {
-    props.client.getSessionByLocation('Newcastle').then((response) => cSessions(response.data))
-    props.client.getUsers().then((response) => cUsers(response.data))
     props.client.getUser(currentVolunteer).then((response) => cCurrentLocation(response.data.location))
-    // props.client.getAdminByLocation('Sheffield').then((response) => console.log(response.data))
+    props.client.getSessionByLocation('Newcastle').then((response) => cSessions(response.data))
+    props.client.getUsers().then((response) => cUsers(response.data)) 
+    props.client.getCgaByLocation('Sheffield').then((response) => cCurrentCga(response.data)) 
   }
-
+ 
   // renders calendar header
 
   const renderHeader = () => {
@@ -259,9 +259,9 @@ function VolunteerCalendar(props) {
           <Row className = 'cga-contact'>
             {'CGA contact: '}
             <ul className = 'cga-contact-list'>
-              <li>{'Anthony Hills'}</li>
-              <li>{'Email: '}{'dsdsrej@gmail.com'}</li>
-              <li>{'Number: '}{'9754353232'}</li>
+              <li>{currentCga.nameFirst + ' ' + currentCga.nameLast}</li>
+              <li>{'Email: '}{currentCga.email}</li>
+              <li>{'Number: '}{currentCga.phone}</li>
             </ul>
           </Row>
         </Card.Body>
