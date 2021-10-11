@@ -10,7 +10,8 @@ import "./PPVolunteer.css"
 
 function PPVolunteer(props) {
 
-    const [userId, setUserId] = React.useState("615d7fb42d2b095a0593e6d7");
+
+
     const [radios, cRadios] = useState([
         ["Monday", false],
         ["Tuesday", false],
@@ -23,14 +24,11 @@ function PPVolunteer(props) {
     ]);
 
     useEffect(() => {
-        // Update the document title using the browser API
-        console.log(props);
-        props.client.getUser(userId)
-            .then((res) => {
-                console.log(res.data[0]);
-                cRadios(res.data[0]['availability'])
-            })
-    }, []);
+        if (!props.activeUser) {
+            return;
+        }
+        cRadios(props.activeUser['availability'])
+    }, [props.activeUser]);
 
     const showSuccess = () => {
         toast.success("Your details have been updated");
@@ -39,7 +37,7 @@ function PPVolunteer(props) {
     const handleSubmit = () => {
         console.log("your choices have been saved")
         showSuccess();
-        props.client.updateUser(userId, { availability: radios })
+        props.client.updateUser(props.activeUser.userId, { availability: radios })
             .then((res) => {
                 console.log(res)
             })
