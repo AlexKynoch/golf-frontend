@@ -19,7 +19,7 @@ function ManagerCalendar(props) {
   const currentDate = new Date()
   const links = [
     false,
-    { name: "Dashboard", url: "/manager/calendar" },
+    { name: "Calendar", url: "/manager/calendar" },
     { name: "Add new areas", url: "/manager/new-areas" },
     { name: "Log Out", url: "/home" },
 ]

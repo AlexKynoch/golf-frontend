@@ -77,4 +77,17 @@ export class ApiClient {
     getAdminByLocation(location) {
         return this.apiCall('get', `${url}adminlocation/${location}`)
     }
+
+    getAdmins() {
+        return this.apiCall('get', url + 'admin')
+    }
+
+    addLocation(data) {
+        return this.apiCall('post', url + 'location', data)
+    }
+
+    addCga(username, password, locationdata, emaildata, phonedata, namef, namel) {
+        return this.apiCall('post', url + 'admin', { userName: username, password: password, location: locationdata, 
+            role: "CGA", email: emaildata, phone: phonedata, nameFirst: namef, nameLast: namel })
+    }
 }
