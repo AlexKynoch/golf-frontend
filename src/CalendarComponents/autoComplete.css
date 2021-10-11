@@ -1,0 +1,44 @@
+.suggestion-dropdown {
+  background-color: white;
+  color: black;
+  display: inline-block
+}
+
+.no-suggestions {
+  color: #999;
+  padding: 0.5rem;
+  position:absolute;
+  z-index:1000;
+  background-color: #1a8fff;
+  color: white;
+  margin-top: 5px;
+}
+
+.suggestions {
+  background-color: white;
+  border: 1px solid #999;
+  border-top-width: 0;
+  list-style: none;
+  margin-top: 5px;
+  max-height: 143px;
+  overflow-y: auto;
+  padding-left: 0;
+  width: calc(300px + 1rem);
+  position:absolute;
+  z-index:1000
+}
+
+.suggestions li {
+  padding: 0.5rem;
+}
+
+.suggestion-active,
+.suggestions li:hover {
+  background-color: #1a8fff;
+  color: white;
+  cursor: pointer;
+}
+
+.suggestions li:not(:last-of-type) {
+  border-bottom: 1px solid #999;
+}

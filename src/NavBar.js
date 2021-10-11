@@ -4,51 +4,65 @@ import Container from 'react-bootstrap/Container'
 import Nav from 'react-bootstrap/Nav'
 import './NavBar.css'
 import navImg from "./images/logo.png"
+import { Link } from 'react-router-dom'
+
+function NavBar(props) {
 
 
-const NavBar = () => {
 
-  function logout() {
-    // console.log("im the logout function")
-  }
+  // function logout() {
+  //   // console.log("im the logout function")
+  // }
+  
+
   return (
     <>
-
-      <Navbar className="navbar">
+      <Navbar>
         <Container className="navbarContentContainer">
-
           <Navbar.Brand href="/">
-            <img src={navImg}></img>
+            <img src = {navImg} alt = 'Golf in Society logo'></img>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
-
-
-
             <Nav className="justify-content-end me-auto" activeKey="/home" style={{ width: "100%" }}>
               {/* <Nav className="justify-content-xl-evenly" activeKey="/home" style={{ width: "100%" }}> */}
-              {/* <Nav.Item>
-              <Nav.Link href="/home">Active</Nav.Link>
-            </Nav.Item> */}
-              <Nav.Item>
-                <Nav.Link className="custom-nav-item" href="./Calendar">Calendar</Nav.Link>
+              {/* <Link className = 'custom-nav-item nav-link' to = '/cga/dashboard'>
+              Dashboard
+              </Link>
+              <Link className = 'custom-nav-item nav-link' to = '/cga/create-session'>
+              Create session
+              </Link>
+              <Link className = 'custom-nav-item nav-link' to = '/cga/view-users'>
+              View users
+            </Link> */}
+              <Nav.Item >
+                {props.links[0] ?
+                  "Log in as:" : null
+                }
               </Nav.Item>
-              <Nav.Item>
-                <Nav.Link className="custom-nav-item" href="./Profile">Profile</Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link className="custom-nav-item" onClick={logout}>Log Out
-                </Nav.Link>
-              </Nav.Item>
+              {props.links.slice(0).map((v, i) => {
+                return (
+                  <Link key={i} className='custom-nav-item nav-link' to={v.url}>
+                    {v.name}
+                  </Link>
+                )
+              })}
+              {/* <Link className='custom-nav-item nav-link' to='/volunteer/calendar'>
+                    Calendar
+                  </Link>
+              <Link className='custom-nav-item nav-link' to='/volunteer/profile'>
+                Profile
+              </Link>
+              <Link className='custom-nav-item nav-link' onClick={logout}>
+                Log Out
+              </Link> */}
             </Nav>
           </Navbar.Collapse>
         </Container>
-      </Navbar>
-
-
-
+      </Navbar >
     </>
   );
 };
 
 export default NavBar;
+

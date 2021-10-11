@@ -4,7 +4,7 @@
   padding: 0;
 }
 
-.container {
+.profile-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -13,50 +13,57 @@
   padding: 2rem;
 }
 
-.card {
-  border: none;
-}
-
-.card-title {
-  margin-bottom: 1.5rem;
-}
-
-.card-body {
-  margin: 20px;
+.profile-card {
   border: 0.15rem solid rgb(6, 101, 50);
-  border-radius: 10px;
 }
 
-.btn {
-  background-color: rgb(204, 221, 221) !important;
+.profile-card-title {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
 
+.profile-card-body {
+  margin: 20px;
+  border-radius: 10px;
+  margin: 0;
+}
+
+.button-profile {
+  background-color: rgb(204, 221, 221) !important;
   color: black;
   border: 1px solid rgb(6, 101, 50) !important;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  /* background-color: rgb(204, 221, 221) !important; */
+  border-radius: 5px;
 }
-.btn-primary {
+
+.dropdown-toggle {
   display: flex;
   justify-content: flex-end;
   align-items: center;
   background-color: rgb(204, 221, 221) !important;
   border-radius: 5px;
 }
+
 .show > .btn-primary.dropdown-toggle {
   color: black;
   background-color: rgb(6, 101, 50) !important;
   color: white;
 }
+
 .dropdownButton:visited {
   background-color: rgb(204, 221, 221) !important;
 }
 
-.btn:hover {
+.button-profile:hover {
   background-color: rgb(6, 101, 50) !important;
   color: white;
 }
 
 .btn-container {
   display: flex;
-
   border: none !important;
 }
 
@@ -69,7 +76,7 @@
   border: 0.1rem solid rgb(204, 221, 221);
 }
 
-.dropdown {
+.profile-dropdown {
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
@@ -79,10 +86,39 @@
   width: 90%;
   margin-left: 5%;
 }
-.card-body {
-  margin: 0;
-}
+
 .col-form-label {
-  display: flex;
-  justify-content: flex-start;
+  /* display: flex;
+  justify-content: flex-start; */
 }
+.volunteerDashboardColContainer {
+  justify-content: center;
+  align-items: center;
+}
+.volunteerDashboardContainer {
+  width: 100%;
+}
+.volunteerDashboardRow {
+  width: 100%;
+}
+.volunteerDashboardCol {
+  position: relative;
+  width: fit-content;
+}
+
+/* .volunteerDashboardCol {
+  position: relative;
+  background-color: lightblue;
+  width: fit-content;
+}
+.profile-container,
+.volunteer-container {
+  margin: 0;
+  height: 100%;
+  width: fit-content;
+}
+.volunteerDashboardRow,
+.volunteerDashboardContainer {
+  width: 100%;
+  flex-wrap: nowrap;
+} */

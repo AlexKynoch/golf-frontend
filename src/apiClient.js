@@ -9,7 +9,6 @@ export class ApiClient {
             url,
             data,
         }).catch((error) => {
-            console.log(error)
             if (error.response.status === 403) {
                 return Promise.reject()
             } else {
@@ -19,26 +18,80 @@ export class ApiClient {
     }
 
     getSessions() {
-        return this.apiCall("get", url);
+        return this.apiCall("get", url + 'sessions')
     }
 
-    addSession(date, volunteer) {
-        return this.apiCall("post", url, { date, volunteer });
+    getSessionByLocation(location) {
+        return this.apiCall("get", `${url}sessionlocation/${location}`)
     }
 
-    addUser(userName, password) {
-    return this.apiCall('post', url + 'user', {userName, password})
+    getUsers() {
+        return this.apiCall("get", url + 'user')
     }
 
-  async login(userName, password) {
-    return await axios({
-      method: 'POST',
-      url: `${url}auth`,
-      data: {
-        userName,
-        password,
-      }
-    })
-  }    
+    getUser(id) {
+        return this.apiCall("get", url + `userid/${id}`)
+    }
 
+    updateUser(id, dataObj) {
+        return this.apiCall("put", url + `user/${id}`, dataObj)
+    }
+
+
+    updateUserProfile(id, username, firstname, lastname, location, emaildata, phonedata) {
+        return this.apiCall("put", url + `user/${id}`, {
+            userName: username, nameFirst: firstname, nameLast: lastname,
+            location: location, email: emaildata, phone: phonedata
+        })
+    }
+
+
+    removeSession(id) {
+        return this.apiCall('delete', `${url}session/${id}`)
+    }
+
+    addSessionUser(id, sessionUser) {
+        return this.apiCall('put', `${url}sessionUser/${id}`, { user: sessionUser })
+    }
+
+    removeSessionUser(id, sessionUser) {
+        return this.apiCall('put', `${url}sessionDelUser/${id}`, { user: sessionUser })
+    }
+
+    getLocations() {
+        return this.apiCall("get", url + 'location')
+    }
+
+
+    updateUser(id, dataObj) {
+        return this.apiCall("put", url + `user/${id}`, dataObj)
+    }
+
+    getUserByRole(role) {
+        return this.apiCall("get", `${url}userrole/${role}`)
+    }
+
+    addSession(date, volunteer, sessionLocation, sessionTimeStart, sessionTimeFinish, userLimit, details) {
+        return this.apiCall("post", url + 'session', {
+            date: date, volunteer: volunteer, sessionUsers: [], sessionLocation: sessionLocation,
+            sessionTimeStart: sessionTimeStart, sessionTimeFinish: sessionTimeFinish, userLimit: userLimit, details: details
+        })
+    }
+
+    getLocationByCGA(activeCGA) {
+        return this.apiCall('get', `${url}locationcga/${activeCGA}`)
+    }
+
+    getUserByLocation(location) {
+        return this.apiCall('get', `${url}userlocation/${location}`)
+    }
+
+    getAdminById(id) {
+        return this.apiCall('get', `${url}adminid/${id}`)
+    }
+
+    getAdminByLocation(location) {
+        return this.apiCall('get', `${url}adminlocation/${location}`)
+
+    }
 }

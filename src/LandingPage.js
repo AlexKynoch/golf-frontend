@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Container } from 'react-bootstrap';
 import './LandingPage.css'
@@ -47,6 +48,28 @@ const LandingPage = () => {
 
 
         </>
+    )
+}
+
+export default LandingPage
+
+
+import React from 'react'
+import NavBar from "./NavBar"
+
+function LandingPage() {
+    const links = [
+        { name: "Customer", url: "/login" },
+        { name: "Voluneer", url: "/login" },
+        { name: "Admin", url: "/login" },
+    ]
+    return (
+        <div>
+            <div className="navOffset">
+                <NavBar links={links} />
+            </div>
+            Landing Page
+        </div>
     )
 }
 
