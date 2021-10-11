@@ -8,10 +8,13 @@ import { Link } from 'react-router-dom'
 
 function NavBar(props) {
 
+
+
   // function logout() {
   //   // console.log("im the logout function")
   // }
   
+
   return (
     <>
       <Navbar>
