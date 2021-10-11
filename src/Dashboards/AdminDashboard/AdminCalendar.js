@@ -128,7 +128,7 @@ function AdminCalendar(props) {
               <Col lg = {5} md = {5} className = 'dropdown-name text-lg-end txt-align-end'><label for='userform'>Search sessions by user: </label></Col>
               <Col className = 'txt-align-end'>
               <form className = 'user-search-form' onSubmit = {(e) => userSubmitHandler(e, suggestions)} id = 'addUserSearchForm'>
-                 <Autocomplete input = {autoCompleteInput} setInput = {cAutoCompleteInput}
+                 <Autocomplete newClassName = {'search-field'} placeholder = {'Search by user...'} input = {autoCompleteInput} setInput = {cAutoCompleteInput}
                       suggestions = {suggestions}
                   />
                 <Button className = 'user-submit-btn general-btn' type = 'submit'>Search</Button> 
@@ -367,7 +367,7 @@ function AdminCalendar(props) {
     return (
     <form className = 'user-book-form' onSubmit = {(e) => adminUserBookingHandler(e, session, suggestions)} id = 'adminUserBookingForm'>
       <label className = 'user-book-form-label' for='userform'>Book for a user: </label>
-      <Autocomplete input = {autoCompleteInputBooking} setInput = {cAutoCompleteInputBooking}
+      <Autocomplete newClassName = {'search-field'} placeholder = {'Search by user...'} input = {autoCompleteInputBooking} setInput = {cAutoCompleteInputBooking}
                       suggestions = {suggestions}
                   />
       <Button className = 'btn-book-session btn-book-session-margin' type = 'submit'>Book</Button> 
@@ -432,7 +432,7 @@ function AdminCalendar(props) {
     return (
       <form className = 'user-book-form' onSubmit = {(e) => adminUserCancelHandler(e, session, suggestions)} id = 'adminUserCancelForm'>
         <label className = 'user-book-form-label' for='userform'>Cancel booking for a user: </label>
-        <Autocomplete input = {autoCompleteInputCancel} setInput = {cAutoCompleteInputCancel}
+        <Autocomplete newClassName = {'search-field'} placeholder = {'Search by user...'} input = {autoCompleteInputCancel} setInput = {cAutoCompleteInputCancel}
                       suggestions = {suggestions}
                   />
         <Button className = 'btn-danger booking-submit' type = 'submit'>Cancel booking</Button> 

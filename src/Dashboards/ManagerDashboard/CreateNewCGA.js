@@ -96,11 +96,13 @@ function CreateNewCGA(props) {
                             <div className = 'col-form-label col-sm-4'>
                                 <label className = 'input-form-label' form = 'inputLocation'>Location</label> 
                             </div>
-                            <select className = 'form-control' id = 'inputLocation' onChange = {(e) => cLocation(e.target.value)} defaultValue = {'default'}>
-                                <option value = 'default' disabled>-- select an option --</option>
-                                {sessionLocations().map((location) => (
-                                <option value = {location}>{location}</option>))}
-                            </select>
+                            <div className='col-sm-8'>
+                                <select className = 'form-control' id = 'inputLocation' onChange = {(e) => cLocation(e.target.value)} defaultValue = {'default'}>
+                                    <option value = 'default' disabled>-- select an option --</option>
+                                    {sessionLocations().map((location) => (
+                                    <option value = {location}>{location}</option>))}
+                                </select>
+                            </div>
                         </div>
                         <div className = 'form-group row'>
                             <div className = 'col-form-label col-sm-4'>

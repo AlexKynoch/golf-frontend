@@ -109,7 +109,7 @@ function NewArea(props) {
                                 <label className = 'input-form-label' form = 'inputCga' >Active CGA</label> 
                             </div>
                             <div className='col-sm-8'>      
-                                <Autocomplete className = 'cga-input' input = {autoCompleteInputBooking} setInput = {cAutoCompleteInputBooking}
+                                <Autocomplete newClassName = {'form-control'}  placeholder = {'Search by CGA...'}input = {autoCompleteInputBooking} setInput = {cAutoCompleteInputBooking}
                                     suggestions = {allCGAs()}
                                 /> 
                             </div>
