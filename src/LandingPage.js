@@ -2,24 +2,26 @@
 import React from 'react';
 import { Container } from 'react-bootstrap';
 import './LandingPage.css'
-
 import Image from 'react-bootstrap/Image'
+import NavBar from "./NavBar"
 
-const LandingPage = () => {
+function LandingPage() {
+    const links = [
+        { name: "Customer", url: "/login" },
+        { name: "Voluneer", url: "/login" },
+        { name: "Admin", url: "/login" },
+    ]
 
-    // function logout() {
-    //     // console.log("im the logout function")
-    // }
     return (
-        <>
+        <div>
+            <div className="navOffset">
+                <NavBar links={links} />
+            </div>
             <div className="landing-text">
                 <h1><i>“Our lives begin to end when we become silent about the things that really matter in life”</i>. <b>Dr Martin Luther King.</b></h1>
             </div>
             <Container >
-
                 <Image className="Landing-image" src={process.env.PUBLIC_URL + "/crowd-wave.jpg"} />
-
-
             </Container>
 
             <div className="landing-text">
@@ -38,37 +40,6 @@ const LandingPage = () => {
                     So, if you, or someone you know is looking for a service that supports carers and people diagnosed with dementia simultaneously, then our services could be the perfect match.</h3></p>
 
             </div>
-
-
-            {/* <div className="row volunteerDashboardRow">
-                <div className="col volunteerDashboardCol"><Profile /></div>
-                <div className="col volunteerDashboardCol"><PPVolunteer /></div>
-            </div> */}
-
-
-
-        </>
-    )
-}
-
-export default LandingPage
-
-
-import React from 'react'
-import NavBar from "./NavBar"
-
-function LandingPage() {
-    const links = [
-        { name: "Customer", url: "/login" },
-        { name: "Voluneer", url: "/login" },
-        { name: "Admin", url: "/login" },
-    ]
-    return (
-        <div>
-            <div className="navOffset">
-                <NavBar links={links} />
-            </div>
-            Landing Page
         </div>
     )
 }
