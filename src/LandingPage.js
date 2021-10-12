@@ -1,21 +1,20 @@
-
 import React from 'react';
 import { Container } from 'react-bootstrap';
 import './LandingPage.css'
 import Image from 'react-bootstrap/Image'
 import NavBar from "./NavBar"
 
-function LandingPage() {
+function LandingPage(props) {
     const links = [
-        { name: "Customer", url: "/login" },
-        { name: "Voluneer", url: "/login" },
-        { name: "Admin", url: "/login" },
+        { name: "Customer", url: "/login/user" },
+        { name: "Volunteer", url: "/login/volunteer" },
+        { name: "Admin", url: "/login/admin" },
     ]
 
     return (
         <div>
             <div className="navOffset">
-                <NavBar links={links} />
+                <NavBar links = {links} client = {props.client} landing = {true}/>
             </div>
             <div className="landing-text">
                 <h1><i>“Our lives begin to end when we become silent about the things that really matter in life”</i>. <b>Dr Martin Luther King.</b></h1>

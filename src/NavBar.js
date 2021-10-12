@@ -1,5 +1,7 @@
 import React from 'react';
 import Navbar from 'react-bootstrap/Navbar'
+import Button from 'react-bootstrap/Button'
+import { useHistory } from "react-router-dom"
 import Container from 'react-bootstrap/Container'
 import Nav from 'react-bootstrap/Nav'
 import './NavBar.css'
@@ -7,14 +9,13 @@ import navImg from "./images/logo.png"
 import { Link } from 'react-router-dom'
 
 function NavBar(props) {
+  let history = useHistory()
 
-
-
-  // function logout() {
-  //   // console.log("im the logout function")
-  // }
+  function logout() {
+    props.client.logout()
+    history.push('/home')
+  }
   
-
   return (
     <>
       <Navbar>
@@ -25,19 +26,10 @@ function NavBar(props) {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="justify-content-end me-auto" activeKey="/home" style={{ width: "100%" }}>
-              {/* <Nav className="justify-content-xl-evenly" activeKey="/home" style={{ width: "100%" }}> */}
-              {/* <Link className = 'custom-nav-item nav-link' to = '/cga/dashboard'>
-              Dashboard
-              </Link>
-              <Link className = 'custom-nav-item nav-link' to = '/cga/create-session'>
-              Create session
-              </Link>
-              <Link className = 'custom-nav-item nav-link' to = '/cga/view-users'>
-              View users
-            </Link> */}
               <Nav.Item >
                 {props.links[0] ?
-                  "Log in as:" : null
+                <div className='custom-nav-item nav-link'>Log in as:</div>
+                : null      
                 }
               </Nav.Item>
               {props.links.slice(0).map((v, i) => {
@@ -47,15 +39,14 @@ function NavBar(props) {
                   </Link>
                 )
               })}
-              {/* <Link className='custom-nav-item nav-link' to='/volunteer/calendar'>
-                    Calendar
-                  </Link>
-              <Link className='custom-nav-item nav-link' to='/volunteer/profile'>
-                Profile
-              </Link>
-              <Link className='custom-nav-item nav-link' onClick={logout}>
-                Log Out
-              </Link> */}
+              { !props.landing ?
+              <Nav.Item >
+                {/* <div className = 'logout-btn-parent'> */}
+                <div className='custom-nav-item nav-link logout-text' onClick = {() => logout()}>Log out</div>
+                {/* </div> */}
+              </Nav.Item>
+              : ' '
+              }
             </Nav>
           </Navbar.Collapse>
         </Container>

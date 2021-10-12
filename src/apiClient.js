@@ -3,6 +3,11 @@ const url = "https://golf-dka.herokuapp.com/"
 
 export class ApiClient {
 
+    constructor(token, logout) {
+        this.token = token
+        this.logout = logout
+    }
+
     apiCall(method, url, data) {
         return axios({
             method,
@@ -35,6 +40,10 @@ export class ApiClient {
 
     getUser(id) {
         return this.apiCall("get", url + `userid/${id}`)
+    }
+
+    addUser(data) {
+        return this.apiCall("post", url + 'user', data)
     }
 
     updateUser(id, dataObj) {
@@ -107,5 +116,27 @@ export class ApiClient {
 
     getCgaByLocation(location) {
         return this.apiCall('get', `${url}cgalocation/${location}`)
+    }
+
+    async userlogin(user, pass) {
+        return await axios({
+          method: 'POST',
+          url: `${url}userauth`,
+          data: {
+            userName: user,
+            password: pass,
+          }
+        })
+    }
+
+    async adminlogin(user, pass) {
+        return await axios({
+          method: 'POST',
+          url: `${url}adminauth`,
+          data: {
+            userName: user,
+            password: pass,
+          }
+        })
     }
 }

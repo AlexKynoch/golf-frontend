@@ -14,24 +14,22 @@ function VolunteerCalendar(props) {
   const [sessions, cSessions] = useState([])
   const [users, cUsers] = useState([])
   const [sort, cSort] = useState('showAll')
-  const [currentLocation, cCurrentLocation] = useState('')
   const [currentCga, cCurrentCga] = useState('')
-  const currentVolunteer = '615d84702d2b095a0593e6e5'
+  const currentVolunteer = props.currentUser._id
+  const currentLocation = props.currentUser.location
   const currentDate = new Date()
   const links = [
     false,
     { name: "Calendar", url: "/volunteer/calendar" },
-    { name: "Profile", url: "/volunteer/profile" },
-    { name: "Log Out", url: "/home" },
+    { name: "Profile", url: "/volunteer/profile" }
   ]
 
   // gets all the sessions and users from the database
 
   const refreshList = () => {
-    props.client.getUser(currentVolunteer).then((response) => cCurrentLocation(response.data.location))
-    props.client.getSessionByLocation('Newcastle').then((response) => cSessions(response.data))
+    props.client.getSessionByLocation(currentLocation).then((response) => cSessions(response.data))
     props.client.getUsers().then((response) => cUsers(response.data)) 
-    props.client.getCgaByLocation('Sheffield').then((response) => cCurrentCga(response.data)) 
+    props.client.getCgaByLocation(currentLocation).then((response) => cCurrentCga(response.data)) 
   }
  
   // renders calendar header
@@ -276,7 +274,7 @@ function VolunteerCalendar(props) {
   return (
     <div>
         <div className="navOffset">
-            <NavBar links={links} />
+            <NavBar links = {links} client = {props.client} />
         </div>
         <div className='calendar-main'>
           <div className='calendar'>

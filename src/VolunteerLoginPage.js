@@ -1,29 +1,35 @@
 import React, { useState } from 'react'
+import { useHistory } from "react-router-dom"
+import './App.css'
 import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import NavBar from '../../NavBar'
+import NavBar from "./NavBar"
 
-function UserRegister(props) {
+function VolunteerLoginPage(props) {
+  const [signUp, cSignUp] = useState(false)
   const [disabled, cDisabled] = useState(false)
+  let history = useHistory()
   const links = [
-    false,
-    { name: "Calendar", url: "/admin/calendar" },
-    { name: "Register a customer", url: "/admin/register-customer" }
-  ]
-
+    { name: "Customer", url: "/login/user" },
+    { name: "Volunteer", url: "/login/volunteer" },
+    { name: "Admin", url: "/login/admin" },
+    { name: "Home", url: "/home" }
+  ] 
   const showSuccess = () => {
     toast.success("New user added")
   }
 
   const submitHandler = (e) => {
+    
+    if (signUp) { // sign up new user
       e.preventDefault(); 
       props.client.addUser({
           userName: e.target.username.value, 
           password: e.target.password.value,
           location: e.target.location.value,
-          role: 'user', 
+          role: 'volunteer', 
           email: e.target.email.value,
           phone: e.target.phone.value, 
           nameFirst: e.target.nameFirst.value,
@@ -33,6 +39,7 @@ function UserRegister(props) {
       .then((response) => {
         cDisabled(false)
         showSuccess()
+        cSignUp(false)
         resetInput() 
       })
       .catch(() => {
@@ -40,22 +47,81 @@ function UserRegister(props) {
         cDisabled(false)
         resetInput()
       })
+    } else { // log in with existing user
+    e.preventDefault()
+    cDisabled(true)
+    props.client.userlogin(e.target.username.value, e.target.password.value)
+      .then((response) => {
+        if (response.data.user.role === 'volunteer') {
+          props.loggedIn(response.data.user.token)
+          props.cCurrentUser(response.data.user)
+          history.push('/volunteer/calendar')
+        } else {
+          alert('not a valid username or password')
+          cDisabled(false)
+          resetInput()
+        }
+      })
+      .catch(() => {
+        alert('not a valid username or password')
+        cDisabled(false)
+        resetInput()
+      })
     }
+  }
 
   const resetInput = () => {
     document.getElementById('addLogin').reset()
   }
 
+  const showSignUp = () => {
+    if (signUp) {
+      return <div className = 'account-sign-up'>Already have an account? <a href="#/login/user" className = 'purple-text' onClick = {() => {cSignUp(false); resetInput()}}> Sign In</a></div>
+    } else {
+      return <div className = 'account-sign-up'>Don't have an account? <a href="#/login/user" className = 'purple-text'onClick = {() => {cSignUp(true); resetInput()}}> Register</a></div>
+    }
+  }
+
   return (
     <div>
         <div className="navOffset">
-            <NavBar links = {links} client = {props.client}/>
+            <NavBar links = {links} client = {props.client} landing = {true} />
         </div>
         <div>
           <div className = 'd-flex justify-content-center'>
             <Card id = 'myProfile' className = 'profile-card cga-session-card' style = {{maxWidth: '30rem'}}>
               <Card.Body className = 'profile-card-body'>
-              <Card.Title className = 'profile-card-title'>Register a new customer</Card.Title>
+              <Card.Title className = 'profile-card-title'>{signUp ? 'Register as a volunteer' : 'Sign in as a volunteer'}</Card.Title>
+                {!signUp? 
+                <form onSubmit={(e) => submitHandler(e)} id = 'addLogin'>
+                  <br />
+                  <input 
+                    className = 'form-control' 
+                    type = 'text' 
+                    name = 'username' 
+                    placeholder = 'Username' 
+                    disabled = {disabled} 
+                    autoComplete = 'off'
+                  />
+                  <br />
+                  <input 
+                    className = 'form-control' 
+                    type = 'password' 
+                    name = 'password' 
+                    placeholder = 'Password' 
+                    disabled = {disabled} 
+                    autoComplete = 'off'
+                  />
+                  <br />
+                  <div className = 'btn-container justify-content-center'>
+                    <Button className = 'button-profile' type = 'submit' disabled = {disabled}>
+                      {' '}
+                      {'Sign In'}{' '}
+                    </Button>
+                    <ToastContainer position = 'bottom-center' />
+                  </div>
+                  <br />
+                </form> : 
                 <form onSubmit={(e) => submitHandler(e)} id = 'addLogin'>
                 <br />
                 <div className = 'form-group row'>
@@ -188,6 +254,8 @@ function UserRegister(props) {
                 </div>
                 <br />
               </form> 
+            }
+                {showSignUp()}
               </Card.Body>
             </Card>
           </div>
@@ -196,4 +264,4 @@ function UserRegister(props) {
   )
 }
 
-export default UserRegister
+export default VolunteerLoginPage

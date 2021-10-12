@@ -9,22 +9,20 @@ import sessionDate from "./../../CalendarComponents/sessionDate"
 import sessionInfo from "./../../CalendarComponents/sessionInfo"
 
 function CgaCalendar(props) {
+  const currentCgaLocation = props.currentUser.location
   const [currentMonth, cCurrentMonth] = useState(new Date())
-  const [location, cLocation] = useState('Glasgow')
+  const [location, cLocation] = useState(currentCgaLocation)
   const [locations, cLocations] = useState([])
-  const [currentCgaLocation, cCurrentCgaLocation] = useState([])
   const [sessions, cSessions] = useState([])
   const [users, cUsers] = useState([])
   const currentDate = new Date()
  
-
   // gets all the sessions, users and locations from the database
 
   const refreshList = () => {
     props.client.getSessions().then((response) => cSessions(response.data))
     props.client.getUsers().then((response) => cUsers(response.data))
     props.client.getLocations().then((response) => cLocations(response.data))
-    props.client.getAdminById('615d7e616d365c85eff5f442').then((response) => cCurrentCgaLocation(response.data.location))  
   }
 
   // gets all unique session locations

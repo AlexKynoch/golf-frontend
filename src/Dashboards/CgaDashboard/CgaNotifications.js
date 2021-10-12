@@ -11,12 +11,11 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 function CgaNotifications(props) {
     const [volunteers, cVolunteers] = useState([])
     const [users, cUsers] = useState([])
-    const [CgaLocation, cCgaLocation] = useState([])
+    const CgaLocation = props.currentUser.location
     
     const refreshList = () => {
         props.client.getUserByRole('volunteer').then((response) => {cVolunteers(response.data)})
         props.client.getUserByRole('user').then((response) => {cUsers(response.data)})
-        props.client.getLocationByCGA('615d7e616d365c85eff5f442').then((response) => {cCgaLocation(response.data)})
     }
 
     // show popover with a list of new volunteers/customers

@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 
 function VolunteerAvailability(props) {
     const [volunteers, cVolunteers] = useState([])
-    const location = 'Newcastle'
+    const location = props.currentUser.location
 
     const refreshList = () => {
         props.client.getUserByRole('volunteer').then((response) => cVolunteers(response.data))

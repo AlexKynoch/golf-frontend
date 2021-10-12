@@ -21,21 +21,19 @@ function AdminCalendar(props) {
   const [autoCompleteInput, cAutoCompleteInput] = useState('')
   const [autoCompleteInputBooking, cAutoCompleteInputBooking] = useState('')
   const [autoCompleteInputCancel, cAutoCompleteInputCancel] = useState('')
-  const [currentAdminLocation, cCurrentAdminLocation] = useState('')
+  const currentLocation = props.currentUser.location
 
   const currentDate = new Date()
   const links = [
     false,
-    { name: 'Calendar', url: '/admin' },
-    { name: 'Register a customer', url: 'admin/register-customer' },
-    { name: 'Log Out', url: '/home' },
+    { name: 'Calendar', url: '/admin/calendar' },
+    { name: 'Register a customer', url: '/admin/register-customer' }
   ]
 
   // gets all the sessions and users from the database
 
   const refreshList = () => {
-    props.client.getAdminById('615d7faa2d2b095a0593e6d4').then((response) => cCurrentAdminLocation(response.data.location))
-    props.client.getSessionByLocation('Newcastle').then((response) => cSessions(response.data))
+    props.client.getSessionByLocation(currentLocation).then((response) => cSessions(response.data))
     // props.client.getUsersByLocation('Newcastle').then((response) => cSessions(response.data))
     props.client.getUsers().then((response) => cUsers(response.data))
   }
@@ -546,7 +544,7 @@ function AdminCalendar(props) {
   return (
     <div>
       <div className='navOffset'>
-          <NavBar links={links} />
+          <NavBar links = {links} client = {props.client} />
       </div>
       <div className='calendar'>
         {renderHeader()}

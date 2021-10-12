@@ -11,8 +11,7 @@ function ViewUsers(props) {
         false,
         { name: "Dashboard", url: "/cga/dashboard" },
         { name: "Create Session", url: "/cga/create-session" },
-        { name: "View Users", url: "/cga/view-users" },
-        { name: "Log Out", url: "/home" },
+        { name: "View Users", url: "/cga/view-users" }
     ]
     
     const refreshList = () => {
@@ -121,7 +120,7 @@ function ViewUsers(props) {
     return (
         <div>
             <div className="navOffset">
-                <NavBar links = {links} />
+                <NavBar links = {links} client = {props.client} />
             </div>
             <Card id = 'myProfile' className = 'profile-card registered-users-table' >
                 <Card.Body className = 'profile-card-body'>

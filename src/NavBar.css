@@ -18,3 +18,7 @@ img {
 .navbarContentContainer {
   background-color: transparent;
 }
+
+.logout-text:hover {
+  cursor: pointer;
+}
