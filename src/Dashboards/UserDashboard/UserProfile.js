@@ -16,7 +16,7 @@ function UserProfile(props) {
   ]
 
   useEffect(() => {
-    props.client.getUser(userId).then((res) => {cUser(res.data)})
+    props.client.getUser(userId).then((res) => { cUser(res.data) })
   }, []);
 
   return (
@@ -24,12 +24,10 @@ function UserProfile(props) {
       <div className="navOffset">
         <NavBar links={links} />
       </div>
-<<<<<<< HEAD
+
       <div><Profile client={props.client} /></div>
       <div><ChangePassword client={props.client} /></div>
-=======
-        <div><Profile activeUser={user} client={props.client} /></div>
->>>>>>> 1f538c2f4e9cdca5b56887d0e00ac6ce38f5ba5a
+
     </div>
   )
 }
