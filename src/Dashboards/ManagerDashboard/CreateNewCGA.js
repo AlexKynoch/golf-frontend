@@ -27,13 +27,6 @@ function CreateNewCGA(props) {
         return loc
       }
 
-    // get dropdown list value
-
-    const getItemValue = (q) => {
-        const e = document.getElementById(q)
-        return e.options[e.selectedIndex].value
-    } 
-
     // display message after new session submission
 
     const showSuccess = () => {
@@ -144,6 +137,6 @@ function CreateNewCGA(props) {
                 </Card.Body>
             </Card>
     )
-    }
+}
 
 export default CreateNewCGA

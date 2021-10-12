@@ -11,21 +11,20 @@ function CgaCreateSessionMain(props) {
     false,
     { name: "Dashboard", url: "/cga/dashboard" },
     { name: "Create Session", url: "/cga/create-session" },
-    { name: "View Users", url: "/cga/view-users" },
-    { name: "Log Out", url: "/home" },
+    { name: "View Users", url: "/cga/view-users" }
   ]
     return (
       <div>
           <div className="navOffset">
-            <NavBar links={links} />
+            <NavBar links = {links} client = {props.client} />
           </div>
           <Container fluid>
             <Row > 
               <Col lg={6} className = 'create-session'>
-                <CreateSession client = {props.client}/>
+                <CreateSession client = {props.client} currentUser = {props.currentUser}/>
               </Col>
               <Col lg={6}>
-                <VolunteerAvailability client = {props.client} />
+                <VolunteerAvailability client = {props.client} currentUser = {props.currentUser}/>
               </Col>
             </Row>
           </Container>

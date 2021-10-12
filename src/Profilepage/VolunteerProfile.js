@@ -8,9 +8,6 @@ import ChangePassword from "./ChangePassword"
 import React, { useState, useEffect } from 'react'
 import { Container } from 'react-bootstrap'
 import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
-
-
 
 function VolunteerProfile(props) {
 
@@ -20,8 +17,7 @@ function VolunteerProfile(props) {
   const links = [
     false,
     { name: "Calendar", url: "/volunteer/calendar" },
-    { name: "Profile", url: "/volunteer/profile" },
-    { name: "Log Out", url: "/home" },
+    { name: "Profile", url: "/volunteer/profile" }
   ]
 
   useEffect(() => {
@@ -32,19 +28,19 @@ function VolunteerProfile(props) {
         cUser(res.data)
         // cRadios(res.data[0]['availability'])
       })
-  }, []);
+  }, [])
 
   return (
     <div className="row volunteerDashboardRow">
       <div className="navOffset">
-        <NavBar links={links} />
+        <NavBar links = {links} client = {props.client} />
       </div>
       <div className="col volunteerDashboardCol"><Profile activeUser={user} client={props.client} /></div>
       <div className="col volunteerDashboardCol"><PPVolunteer activeUser={user} client={props.client} /></div>
       <Container>
         <Row>
           <div className="col volunteerDashboardCol">
-            <ChangePassword client={props.client} />
+            <ChangePassword client = {props.client} currentUser = {props.currentUser}/>
           </div>
         </Row>
       </Container>

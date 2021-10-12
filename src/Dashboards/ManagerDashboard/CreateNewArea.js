@@ -7,13 +7,10 @@ import Autocomplete from './../../CalendarComponents/AutoComplete'
 import './../../CalendarComponents/autoComplete.css'
 
 function NewArea(props) {
-    const [autoCompleteInput, cAutoCompleteInput] = useState('')
     const [autoCompleteInputBooking, cAutoCompleteInputBooking] = useState('')
-    const [autoCompleteInputCancel, cAutoCompleteInputCancel] = useState('')
     const [disabled, cDisabled] = useState(false)
     const [admins, cAdmins] = useState([])
-    const [selectedCGA, cSelectedCGA] = useState([])
-    const activeManager = "616401b674eeaaf046f00abe"
+    const activeManager = props.currentUser._id
 
     // get data from database
 

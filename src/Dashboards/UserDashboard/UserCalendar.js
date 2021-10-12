@@ -11,32 +11,22 @@ import NavBar from '../../NavBar'
 
 function UserCalendar(props) {
   const [currentMonth, cCurrentMonth] = useState(new Date())
-  
   const [sort, cSort] = useState('showAll')
   const [sessions, cSessions] = useState([])
   const [users, cUsers] = useState([])
-  const currentUser = {
-  _id: "615d846c2d2b095a0593e6df",
-   email: "becka74@gmail.com",
-  location: "Glasgow",
-  nameFirst: "Rebecca",
-  nameLast: "Surname",
-  password: "password",
-  role: "user",
-  token: "615d846c2d2b095a0593e6de",
-  userName: "Becka456"}
+  const currentUser = props.currentUser._id
+  const currentLocation = props.currentUser.location
   const currentDate = new Date()
   const links = [
     false,
     { name: "Calendar", url: "/customer/calendar" },
-    { name: "Profile", url: "/customer/profile" },
-    { name: "Log Out", url: "/home" },
+    { name: "Profile", url: "/customer/profile" }
   ]
 
   // gets all the sessions and users from the database
 
   const refreshList = () => {
-    props.client.getSessions().then((response) => cSessions(response.data))
+    props.client.getSessionByLocation(currentLocation).then((response) => cSessions(response.data))
     props.client.getUsers().then((response) => cUsers(response.data))
   }
 
@@ -205,8 +195,8 @@ function UserCalendar(props) {
     return (
       <OverlayTrigger key = {i} trigger = 'click' placement = 'bottom' overlay = {popoverClick(session)} rootClose>
         <li className = 'dis-session-info li-show-sessions' 
-        style={{ backgroundColor : session.sessionUsers.includes(currentUser._id) ? '#5Cb85C': session.sessionUsers.length === session.userLimit ? 'White' : '#0D6EFD', 
-        color : session.sessionUsers.includes(currentUser._id) ? 'White' : session.sessionUsers.length === session.userLimit ? 'rgb(170, 163, 163)' : 'White'}} 
+        style={{ backgroundColor : session.sessionUsers.includes(currentUser) ? '#5Cb85C': session.sessionUsers.length === session.userLimit ? 'White' : '#0D6EFD', 
+        color : session.sessionUsers.includes(currentUser) ? 'White' : session.sessionUsers.length === session.userLimit ? 'rgb(170, 163, 163)' : 'White'}} 
         >
           {session.sessionTimeStart}{' '}{displaySessionDescription(session.userLimit).name}
         </li>
@@ -218,9 +208,9 @@ function UserCalendar(props) {
 
   const displaySessions = (session, i) => {
     const sessionDateTime = new Date(session.date + ' ' + session.sessionTimeStart)
-    if (sort === 'booked' && session.sessionUsers.includes(currentUser._id)) {
+    if (sort === 'booked' && session.sessionUsers.includes(currentUser)) {
       return [sessionEntry(session,i), sessionDateTime]
-    } else if (sort === 'available' && !session.sessionUsers.includes(currentUser._id) && session.sessionUsers.length < session.userLimit) {
+    } else if (sort === 'available' && !session.sessionUsers.includes(currentUser) && session.sessionUsers.length < session.userLimit) {
       return [sessionEntry(session,i), sessionDateTime]
     } else if (sort === 'showAll') {
       return [sessionEntry(session,i), sessionDateTime]
@@ -260,7 +250,7 @@ function UserCalendar(props) {
     e.preventDefault()
     sessions.forEach(async (session) => {
       if (session._id === ses._id) {
-        addUser(ses._id, currentUser._id)
+        addUser(ses._id, currentUser)
       }
     })
   }
@@ -271,7 +261,7 @@ function UserCalendar(props) {
     e.preventDefault()
     sessions.forEach(async (session) => {
       if (session._id === ses._id) {
-        removeUser(ses._id, currentUser._id)
+        removeUser(ses._id, currentUser)
       }
     })
   }
@@ -279,9 +269,9 @@ function UserCalendar(props) {
   // displays either book session, cancel booking or fully booked button depending on the user
 
   const showBookingButton = (session) => {
-    if (session.sessionUsers.includes(currentUser._id)) {
+    if (session.sessionUsers.includes(currentUser)) {
       return <Button className = 'btn-danger' onClick = {(e) => cancelBookingHandler(e, session)}>Cancel booking</Button>
-    } if (!session.sessionUsers.includes(currentUser._id) && session.sessionUsers.length === session.userLimit) {
+    } if (!session.sessionUsers.includes(currentUser) && session.sessionUsers.length === session.userLimit) {
       return <Button className = 'btn-secondary'>Fully booked</Button>
     } else {
       return <Button className = 'btn-book-session' onClick = {(e) => bookingHandler(e, session)}>Book session</Button>
@@ -290,7 +280,7 @@ function UserCalendar(props) {
 
   const findVolunteerName = (session) => {
     return users.map((volunteer) => {
-      if (session.sessionUsers.includes(currentUser._id) && volunteer._id === session.volunteer){
+      if (session.sessionUsers.includes(currentUser) && volunteer._id === session.volunteer){
         return 'Session volunteer: ' + volunteer.nameFirst + ' ' + volunteer.nameLast
       }}
     )
@@ -298,7 +288,7 @@ function UserCalendar(props) {
 
   const findVolunteerEmail = (session) => {
     return users.map((volunteer) => {
-      if (session.sessionUsers.includes(currentUser._id) && volunteer._id === session.volunteer){
+      if (session.sessionUsers.includes(currentUser) && volunteer._id === session.volunteer){
         return 'Volunteer contact: ' + volunteer.email
       }}
     )
@@ -349,7 +339,7 @@ function UserCalendar(props) {
   return (
     <div>
         <div className="navOffset">
-            <NavBar links={links} />
+            <NavBar links = {links} client = {props.client} />
         </div>
         <div className = 'calendar'>
           {renderHeader()}

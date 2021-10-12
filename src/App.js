@@ -1,13 +1,9 @@
-import React from "react"
+import React, { useState } from "react"
 import { ApiClient } from "./apiClient"
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './CalendarComponents/Calendar.css'
 import './App.css'
 import Footer from "./Footer"
-
-
-
-
 import Container from 'react-bootstrap/Container'
 import {
   HashRouter as Router,
@@ -24,65 +20,82 @@ import UserCalendar from "./Dashboards/UserDashboard/UserCalendar"
 import LandingPage from "./LandingPage"
 import AdminCalendar from "./Dashboards/AdminDashboard/AdminCalendar"
 import UserRegister from "./Dashboards/AdminDashboard/UserRegister"
-import LoginPage from "./LoginPage"
+import UserLoginPage from "./UserLoginPage"
+import VolunteerLoginPage from "./VolunteerLoginPage"
+import AdminLoginPage from "./AdminLoginPage"
 import ManagerPage from "./Dashboards/ManagerDashboard/ManagerPage"
 import ManagerCalendar from "./Dashboards/ManagerDashboard/ManagerCalendar"
 
-
-
-
 function App() {
-  const client = new ApiClient()
+  const client = new ApiClient(
+    () => token,
+    () => logout()
+  )
+
+  const [token, changeToken] = useState(window.localStorage.getItem('token'))
+  const [currentUser, cCurrentUser] = useState('')
+  console.log(currentUser)
+  const login = (t) => {
+    window.localStorage.setItem('token', t)
+    changeToken(t)
+  }
+
+  const logout = () => {
+    window.localStorage.removeItem('token')
+    changeToken(undefined)
+  }
 
   return (
-
-
+ 
     <Router>
       <div className="App">
-        {/* <div className="navOffset">
-          <NavBar client={client} />
-        </div> */}
         <div className="contentContainer">
           <Container>
             <Switch>
               <Route path='/customer/calendar'>
-                <UserCalendar client={client} />
+                <UserCalendar client={client} currentUser = {currentUser} />
               </Route>
               <Route path='/customer/profile'>
-                <UserProfile client={client} />
+                <UserProfile client={client} currentUser = {currentUser} />
               </Route>
               <Route path='/volunteer/calendar'>
-                <VolunteerCalendar client={client} />
+                <VolunteerCalendar client={client} currentUser = {currentUser}/>
               </Route>
               <Route path='/volunteer/profile'>
-                <VolunteerProfile client={client} />
+                <VolunteerProfile client={client} currentUser = {currentUser}/>
               </Route>
               <Route path='/cga/dashboard'>
-                <CgaDashboard client={client} />
+                <CgaDashboard client={client} currentUser = {currentUser}/>
               </Route>
               <Route path='/cga/create-session'>
-                <CgaCreateSessionMain client={client} />
+                <CgaCreateSessionMain client={client} currentUser = {currentUser}/>
               </Route>
               <Route path='/cga/view-users'>
-                <ViewUsers client={client} />
+                <ViewUsers client={client} currentUser = {currentUser}/>
               </Route> 
               <Route path='/home'>
                 <LandingPage client={client} />
               </Route>
-              <Route path='/admin'>
-                <AdminCalendar client={client} />
+              <Route path='/admin/calendar'>
+                <AdminCalendar client={client} currentUser = {currentUser}/>
               </Route>
               <Route path='/admin/register-customer'>
-                <UserRegister client={client} />
+                <UserRegister client={client}/>
               </Route>
-              <Route path='/login'>
-                <LoginPage client={client} />
+              <Route path='/login/user'>
+                <UserLoginPage loggedIn = {(t => login(t))} client = {client} cCurrentUser = {cCurrentUser}/>
+              </Route>
+              <Route path='/login/volunteer'>
+                <VolunteerLoginPage loggedIn = {(t => login(t))} client = {client} cCurrentUser = {cCurrentUser}/>
+              </Route>
+              <Route path='/login/admin'>
+                <AdminLoginPage loggedIn = {(t => login(t))} client = {client} cCurrentUser = {cCurrentUser}/>
               </Route>
               <Route path='/manager/calendar'>
-                <ManagerCalendar client={client} />
+                <ManagerCalendar client={client} currentUser = {currentUser}/>
               </Route>
               <Route path='/manager/new-areas'>
-                <ManagerPage client={client} />
+                <ManagerPage client={client} currentUser = {currentUser}/>
               </Route>
               <Route exact path='/'>
                 <LandingPage client={client} />
@@ -96,8 +109,6 @@ function App() {
         </div>
       </div>
     </Router>
-
-
   );
 }
 

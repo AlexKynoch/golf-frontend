@@ -4,23 +4,21 @@ import  "./../../CalendarComponents/Calendar.css"
 import NavBar from "./../../NavBar"
 
 function CgaDashboard(props) {
-  // document.getElementById("mon").checked = false
 
   const links = [
     false,
     { name: "Dashboard", url: "/cga/dashboard" },
     { name: "Create Session", url: "/cga/create-session" },
-    { name: "View Users", url: "/cga/view-users" },
-    { name: "Log Out", url: "/home" },
+    { name: "View Users", url: "/cga/view-users" }
 
   ]
   return (
     <div>
       <div className="navOffset">
-        <NavBar links={links} />
+        <NavBar links = {links} client = {props.client} />
       </div>
-        <CgaNotifications client={props.client} />
-        <CgaCalendar client={props.client} />
+        <CgaNotifications client={props.client} currentUser = {props.currentUser}/>
+        <CgaCalendar client={props.client} currentUser = {props.currentUser} />
     </div>
   )
 }

@@ -20,8 +20,7 @@ function ManagerCalendar(props) {
   const links = [
     false,
     { name: "Calendar", url: "/manager/calendar" },
-    { name: "Add new areas", url: "/manager/new-areas" },
-    { name: "Log Out", url: "/home" },
+    { name: "Add new areas", url: "/manager/new-areas" }
 ]
 
   // gets all the sessions, users and locations from the database
@@ -307,7 +306,7 @@ function ManagerCalendar(props) {
   return (
     <div>
         <div className="navOffset">
-            <NavBar links={links} />
+            <NavBar links = {links} client = {props.client} />
         </div>
         <div className='calendar-main'>
           <div className='calendar'>

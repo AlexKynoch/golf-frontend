@@ -2,147 +2,141 @@ import axios from "axios";
 const url = "https://golf-dka.herokuapp.com/";
 
 export class ApiClient {
-  apiCall(method, url, data) {
-    return axios({
-      method,
-      url,
-      data,
-    }).catch((error) => {
-      console.log(error);
-      if (error.response.status === 403) {
-        return Promise.reject();
-      } else {
-        throw error;
-      }
-    });
-  }
+  
+    constructor(token, logout) {
+        this.token = token
+        this.logout = logout
+    }
 
-  getSessions() {
-    return this.apiCall("get", url + "sessions");
-  }
+    apiCall(method, url, data) {
+        return axios({
+            method,
+            url,
+            data,
+        }).catch((error) => {
+            if (error.response.status === 403) {
+                return Promise.reject()
+            } else {
+                throw error;
+            }
+        });
+    }
 
-  getSessionByLocation(location) {
-    return this.apiCall("get", `${url}sessionlocation/${location}`);
-  }
+    getSessions() {
+        return this.apiCall("get", url + 'sessions')
+    }
 
-  getUsersByLocation(location) {
-    return this.apiCall("get", `${url}userlocation/${location}`);
-  }
+    getSessionByLocation(location) {
+        return this.apiCall("get", `${url}sessionlocation/${location}`)
+    }
 
-  getUsers() {
-    return this.apiCall("get", url + "user");
-  }
+    getUsersByLocation(location) {
+        return this.apiCall("get", `${url}userlocation/${location}`)
+    }
 
-  getUser(id) {
-    return this.apiCall("get", url + `userid/${id}`);
-  }
+    getUsers() {
+        return this.apiCall("get", url + 'user')
+    }
 
-  updateUser(id, dataObj) {
-    return this.apiCall("put", url + `user/${id}`, dataObj);
-  }
+    getUser(id) {
+        return this.apiCall("get", url + `userid/${id}`)
+    }
 
-  updateUserProfile(
-    id,
-    username,
-    firstname,
-    lastname,
-    location,
-    emaildata,
-    phonedata
-  ) {
-    return this.apiCall("put", url + `user/${id}`, {
-      userName: username,
-      nameFirst: firstname,
-      nameLast: lastname,
-      location: location,
-      email: emaildata,
-      phone: phonedata,
-    });
-  }
+    addUser(data) {
+        return this.apiCall("post", url + 'user', data)
+    }
 
-  removeSession(id) {
-    return this.apiCall("delete", `${url}session/${id}`);
-  }
+    updateUser(id, dataObj) {
+        return this.apiCall("put", url + `user/${id}`, dataObj)
+    }
 
-  addSessionUser(id, sessionUser) {
-    return this.apiCall("put", `${url}sessionUser/${id}`, {
-      user: sessionUser,
-    });
-  }
+    updateUserProfile(id, username, firstname, lastname, location, emaildata, phonedata) {
+        return this.apiCall("put", url + `user/${id}`, {
+            userName: username, nameFirst: firstname, nameLast: lastname,
+            location: location, email: emaildata, phone: phonedata
+        })
+    }
 
-  removeSessionUser(id, sessionUser) {
-    return this.apiCall("put", `${url}sessionDelUser/${id}`, {
-      user: sessionUser,
-    });
-  }
+    removeSession(id) {
+        return this.apiCall('delete', `${url}session/${id}`)
+    }
 
-  getLocations() {
-    return this.apiCall("get", url + "location");
-  }
+    addSessionUser(id, sessionUser) {
+        return this.apiCall('put', `${url}sessionUser/${id}`, { user: sessionUser })
+    }
 
-  getUserByRole(role) {
-    return this.apiCall("get", `${url}userrole/${role}`);
-  }
+    removeSessionUser(id, sessionUser) {
+        return this.apiCall('put', `${url}sessionDelUser/${id}`, { user: sessionUser })
+    }
 
-  addSession(
-    date,
-    volunteer,
-    sessionLocation,
-    sessionTimeStart,
-    sessionTimeFinish,
-    userLimit,
-    details
-  ) {
-    return this.apiCall("post", url + "session", {
-      date: date,
-      volunteer: volunteer,
-      sessionUsers: [],
-      sessionLocation: sessionLocation,
-      sessionTimeStart: sessionTimeStart,
-      sessionTimeFinish: sessionTimeFinish,
-      userLimit: userLimit,
-      details: details,
-    });
-  }
+    getLocations() {
+        return this.apiCall("get", url + 'location')
+    }
 
-  getLocationByCGA(activeCGA) {
-    return this.apiCall("get", `${url}locationcga/${activeCGA}`);
-  }
+    getUserByRole(role) {
+        return this.apiCall("get", `${url}userrole/${role}`)
+    }
 
-  getUserByLocation(location) {
-    return this.apiCall("get", `${url}userlocation/${location}`);
-  }
+    addSession(date, volunteer, sessionLocation, sessionTimeStart, sessionTimeFinish, userLimit, details) {
+        return this.apiCall("post", url + 'session', {
+            date: date, volunteer: volunteer, sessionUsers: [], sessionLocation: sessionLocation,
+            sessionTimeStart: sessionTimeStart, sessionTimeFinish: sessionTimeFinish, userLimit: userLimit, details: details
+        })
+    }
 
-  getAdminById(id) {
-    return this.apiCall("get", `${url}adminid/${id}`);
-  }
+    getLocationByCGA(activeCGA) {
+        return this.apiCall('get', `${url}locationcga/${activeCGA}`)
+    }
 
-  getAdminByLocation(location) {
-    return this.apiCall("get", `${url}adminlocation/${location}`);
-  }
+    getUserByLocation(location) {
+        return this.apiCall('get', `${url}userlocation/${location}`)
+    }
 
-  getAdmins() {
-    return this.apiCall("get", url + "admin");
-  }
+    getAdminById(id) {
+        return this.apiCall('get', `${url}adminid/${id}`)
+    }
 
-  addLocation(data) {
-    return this.apiCall("post", url + "location", data);
-  }
+    getAdminByLocation(location) {
+        return this.apiCall('get', `${url}adminlocation/${location}`)
 
-  addCga(username, password, locationdata, emaildata, phonedata, namef, namel) {
-    return this.apiCall("post", url + "admin", {
-      userName: username,
-      password: password,
-      location: locationdata,
-      role: "CGA",
-      email: emaildata,
-      phone: phonedata,
-      nameFirst: namef,
-      nameLast: namel,
-    });
-  }
+    }
 
-  getCgaByLocation(location) {
-    return this.apiCall("get", `${url}cgalocation/${location}`);
-  }
+    getAdmins() {
+        return this.apiCall('get', url + 'admin')
+    }
+
+    addLocation(data) {
+        return this.apiCall('post', url + 'location', data)
+    }
+
+    addCga(username, password, locationdata, emaildata, phonedata, namef, namel) {
+        return this.apiCall('post', url + 'admin', { userName: username, password: password, location: locationdata, 
+            role: "CGA", email: emaildata, phone: phonedata, nameFirst: namef, nameLast: namel })
+    }
+
+    getCgaByLocation(location) {
+        return this.apiCall('get', `${url}cgalocation/${location}`)
+    }
+
+    async userlogin(user, pass) {
+        return await axios({
+          method: 'POST',
+          url: `${url}userauth`,
+          data: {
+            userName: user,
+            password: pass,
+          }
+        })
+    }
+
+    async adminlogin(user, pass) {
+        return await axios({
+          method: 'POST',
+          url: `${url}adminauth`,
+          data: {
+            userName: user,
+            password: pass,
+          }
+        })
+    }
 }

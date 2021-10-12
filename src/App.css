@@ -51,6 +51,10 @@
   height: fit-content;
 }
 
+.account-sign-up {
+  text-align: center;
+}
+
 @media only screen and (min-height: 400px) {
   .contentContainer {
     padding: 16vh 0;
