@@ -34,7 +34,7 @@ function App() {
 
   const [token, changeToken] = useState(window.localStorage.getItem('token'))
   const [currentUser, cCurrentUser] = useState('')
-  console.log(currentUser)
+ 
   const login = (t) => {
     window.localStorage.setItem('token', t)
     changeToken(t)

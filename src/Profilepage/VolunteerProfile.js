@@ -8,6 +8,7 @@ import ChangePassword from "./ChangePassword"
 import React, { useState, useEffect } from 'react'
 import { Container } from 'react-bootstrap'
 import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 
 function VolunteerProfile(props) {
 
@@ -35,14 +36,20 @@ function VolunteerProfile(props) {
       <div className="navOffset">
         <NavBar links = {links} client = {props.client} />
       </div>
-      <div className="col volunteerDashboardCol"><Profile activeUser={user} client={props.client} /></div>
-      <div className="col volunteerDashboardCol"><PPVolunteer activeUser={user} client={props.client} /></div>
-      <Container>
-        <Row>
-          <div className="col volunteerDashboardCol">
-            <ChangePassword client = {props.client} currentUser = {props.currentUser}/>
-          </div>
+      <Container fluid>
+        <Row >
+          <Col lg={8} className = 'volunteerDashboardCol'>
+          <Profile activeUser={user} client={props.client} />
+          </Col>
+          <Col lg={4} className = 'volunteerDashboardCol'>
+          <PPVolunteer activeUser={user} client={props.client} />
+          </Col>
         </Row>
+        <Row>
+          <Col >
+            <ChangePassword client = {props.client} currentUser = {props.currentUser}/>
+          </Col>
+      </Row>
       </Container>
     </div>    
 

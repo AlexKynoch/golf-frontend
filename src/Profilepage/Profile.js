@@ -1,20 +1,15 @@
-// import Navbar from 'react-bootstrap/Navbar'
 import Card from 'react-bootstrap/Card'
-import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import './Profile.css'
-import ProfileForm from './ProfileForm'
 import React, { useState, useEffect } from "react"
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { Dropdown } from 'react-bootstrap';
-import DropdownButton from 'react-bootstrap/DropdownButton';
 
 function Profile(props) {
 
     const [locations, cLocations] = useState([])
     const [userId, setUserId] = React.useState("615d7fb42d2b095a0593e6d7")
-    const [location, cLocation] = useState()
+    const [location, cLocation] = useState(props.activeUser.location)
     const [users, cUsers] = useState(
         {
             userName: "Jonny5",
@@ -91,12 +86,12 @@ function Profile(props) {
 
     return (
         <div className="profile-container" >
-            <Card id="myProfile" className="profile-card" >
+            <Card id="myProfile" className="profile-card" style={{ maxWidth: '30rem' }}>
                 <Card.Body className="profile-card-body">
                     <Card.Title className="profile-card-title">My Profile</Card.Title>
                     <Card.Subtitle className="mb-2 text-muted"></Card.Subtitle>
 
-                    <form className="cardFormContainer">
+                    <form className="cardFormContainer" >
                         <div className="form-group row">
                             <label
                                 form="inputemail3"
@@ -149,7 +144,7 @@ function Profile(props) {
                                 <label className = 'input-form-label' form = 'inputLocation' >Location</label> 
                             </div>
                             <div className = 'col-sm-9'>                           
-                            <select size = '1' className = 'form-control' onChange={(e) => cLocation(e.target.value)} id = 'inputLocation' defaultValue = {'default'} >
+                            <select size = '1' className = 'form-control' onChange={(e) => cLocation(e.target.value)} id = 'inputLocation' value = {location} >
                                 <option value = 'default' disabled>-- select an option --</option>
                                 {locations.map((location) => (
                                 <option key = {location} value = {location} name="location">{location}</option>))}

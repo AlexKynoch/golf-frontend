@@ -5,7 +5,7 @@ import ChangePassword from "./../../Profilepage/ChangePassword"
 
 
 function UserProfile(props) {
-  const userId = props.currentUser._id
+  const userId = "615d7fb42d2b095a0593e6d7"
   const [user, cUser] = useState({ availability: [] })
 
   const links = [
@@ -28,8 +28,8 @@ function UserProfile(props) {
 
 
 
-      <div><Profile activeUser={user} client={props.client} /></div>
-      <div><ChangePassword client={props.client} /></div>
+      <div><Profile activeUser={user} client={props.client} currentUser = {props.currentUser}/></div>
+      <div><ChangePassword client={props.client} currentUser = {props.currentUser}/></div>
     </div>
   )
 }

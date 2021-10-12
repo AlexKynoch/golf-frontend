@@ -1,8 +1,8 @@
-import axios from "axios";
-const url = "https://golf-dka.herokuapp.com/";
+import axios from "axios"
+const url = "https://golf-dka.herokuapp.com/"
 
 export class ApiClient {
-  
+
     constructor(token, logout) {
         this.token = token
         this.logout = logout

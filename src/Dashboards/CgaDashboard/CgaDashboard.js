@@ -10,8 +10,8 @@ function CgaDashboard(props) {
     { name: "Dashboard", url: "/cga/dashboard" },
     { name: "Create Session", url: "/cga/create-session" },
     { name: "View Users", url: "/cga/view-users" }
-
   ]
+  
   return (
     <div>
       <div className="navOffset">
