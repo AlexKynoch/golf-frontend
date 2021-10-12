@@ -9,6 +9,7 @@ export class ApiClient {
             url,
             data,
         }).catch((error) => {
+            console.log(error);
             if (error.response.status === 403) {
                 return Promise.reject()
             } else {
@@ -101,8 +102,10 @@ export class ApiClient {
     }
 
     addCga(username, password, locationdata, emaildata, phonedata, namef, namel) {
-        return this.apiCall('post', url + 'admin', { userName: username, password: password, location: locationdata, 
-            role: "CGA", email: emaildata, phone: phonedata, nameFirst: namef, nameLast: namel })
+        return this.apiCall('post', url + 'admin', {
+            userName: username, password: password, location: locationdata,
+            role: "CGA", email: emaildata, phone: phonedata, nameFirst: namef, nameLast: namel
+        })
     }
 
     getCgaByLocation(location) {
