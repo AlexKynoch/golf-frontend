@@ -1,6 +1,5 @@
 import axios from "axios";
-// const url = "https://golf-dka.herokuapp.com/"
-const url = "http://localhost:3005/";
+const url = "https://golf-dka.herokuapp.com/";
 
 export class ApiClient {
   apiCall(method, url, data) {
