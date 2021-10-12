@@ -21,6 +21,7 @@ function LandingPage() {
                 <h1><i>“Our lives begin to end when we become silent about the things that really matter in life”</i>. <b>Dr Martin Luther King.</b></h1>
             </div>
             <Container >
+                <b /><b />
                 <Image className="Landing-image" src={process.env.PUBLIC_URL + "/crowd-wave.jpg"} />
             </Container>
 

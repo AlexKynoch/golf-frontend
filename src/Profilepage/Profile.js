@@ -72,14 +72,14 @@ function Profile(props) {
                 phone: users.phone,
             }
         )
-        .then(() => {
-            showSuccess()
+            .then(() => {
+                showSuccess()
 
-        })
-        .catch(() => {
-            alert('an error occured, please try again')
+            })
+            .catch(() => {
+                alert('an error occured, please try again')
 
-        })
+            })
     }
 
     useEffect(() => {
@@ -106,9 +106,9 @@ function Profile(props) {
                         <div className="form-group row">
                             <label
                                 form="inputemail3"
-                                className="col-sm-3 col-form-label">Username
+                                className="col-sm-12 col-lg-3 col-form-label">Username
                             </label>
-                            <div className="col-sm-9">
+                            <div className="col-sm-12 col-lg-9">
                                 <input
                                     type="username"
                                     onInput={(e) => handleChange(e)}
@@ -153,21 +153,23 @@ function Profile(props) {
                         <Dropdown className="form-group row profile-drowdown" >
                             <label
                                 form="inputLocation3"
-                                className="col-form-label col-sm-3">
+                                className="col-form-label col-sm-5">
                                 <DropdownButton
                                     className="dropdownButton col-sm-12"
                                     title="Location."
                                     onSelect={(e) => handleDropdownChanger(e)}
 
-                                    style={{ backgroundColor: '#ccdddd', border: "1px solid red" }}>
+                                    style={{ backgroundColor: '#ccdddd' }}>
 
                                     {locations.map((location) => {
-                                     return <Dropdown.Item eventKey={location}>{location}</Dropdown.Item>   
+                                        return <Dropdown.Item eventKey={location}>{location}</Dropdown.Item>
                                     })}
 
                                 </DropdownButton>
                             </label>
-                            <div className="col col-sm-9 dropdownOffsetCol justify-content-left">
+
+
+                            <div className="col col-sm-7 dropdownOffsetCol justify-content-left">
                                 <input
                                     type="surname"
                                     onInput={(e) => handleChange(e)}
@@ -218,7 +220,7 @@ function Profile(props) {
 
                         <div className="btn-container justify-content-end">
 
-                            <Button className = 'button-profile' onClick={(e) => handleSubmit(e)} variant="light">Update</Button>
+                            <Button className='button-profile' onClick={(e) => handleSubmit(e)} variant="light">Update</Button>
 
                             <ToastContainer position='bottom-center' />
                         </div>
