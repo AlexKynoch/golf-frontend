@@ -90,7 +90,7 @@ function UserLoginPage(props) {
         </div>
         <div>
           <div className = 'd-flex justify-content-center'>
-            <Card id = 'myProfile' className = 'profile-card cga-session-card' style = {{maxWidth: '30rem'}}>
+            <Card id = 'myProfile' className = 'profile-card cga-session-card' style = {{maxWidth: signUp ? '30rem' : '20rem'}}>
               <Card.Body className = 'profile-card-body'>
               <Card.Title className = 'profile-card-title'>{signUp ? 'Register as a customer' : 'Sign in as a customer'}</Card.Title>
                 {!signUp? 

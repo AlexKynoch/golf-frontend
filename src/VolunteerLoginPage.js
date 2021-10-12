@@ -76,9 +76,9 @@ function VolunteerLoginPage(props) {
 
   const showSignUp = () => {
     if (signUp) {
-      return <div className = 'account-sign-up'>Already have an account? <a href="#/login/user" className = 'purple-text' onClick = {() => {cSignUp(false); resetInput()}}> Sign In</a></div>
+      return <div className = 'account-sign-up'>Already have an account? <a href="#/login/volunteer" className = 'purple-text' onClick = {() => {cSignUp(false); resetInput()}}> Sign In</a></div>
     } else {
-      return <div className = 'account-sign-up'>Don't have an account? <a href="#/login/user" className = 'purple-text'onClick = {() => {cSignUp(true); resetInput()}}> Register</a></div>
+      return <div className = 'account-sign-up'>Don't have an account? <a href="#/login/volunteer" className = 'purple-text'onClick = {() => {cSignUp(true); resetInput()}}> Register</a></div>
     }
   }
 
@@ -89,7 +89,7 @@ function VolunteerLoginPage(props) {
         </div>
         <div>
           <div className = 'd-flex justify-content-center'>
-            <Card id = 'myProfile' className = 'profile-card cga-session-card' style = {{maxWidth: '30rem'}}>
+            <Card id = 'myProfile' className = 'profile-card cga-session-card' style = {{maxWidth: signUp ? '30rem' : '20rem'}}>
               <Card.Body className = 'profile-card-body'>
               <Card.Title className = 'profile-card-title'>{signUp ? 'Register as a volunteer' : 'Sign in as a volunteer'}</Card.Title>
                 {!signUp? 

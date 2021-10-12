@@ -31,11 +31,11 @@ function LandingPage(props) {
 
                         Our “golf buddy” role means you get the chance to make a difference to people’s lives whilst enjoying a sport you love.
 
-                        For a full list of volunteer opportunities and venues, please visit our website</h3></p><br />
+                        For a full list of volunteer opportunities and venues, please visit our website.</h3></p><br />
 
                 <h2><b>Members</b></h2>
 
-                <p><h3>We are always looking to support more families with our golf sessions.The good news is that no previous golf experience is required to get involved.
+                <p><h3>We are always looking to support more families with our golf sessions. The good news is that no previous golf experience is required to get involved.
 
                     So, if you, or someone you know is looking for a service that supports carers and people diagnosed with dementia simultaneously, then our services could be the perfect match.</h3></p>
 

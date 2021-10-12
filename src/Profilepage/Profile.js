@@ -30,7 +30,6 @@ function Profile(props) {
         if (!props.activeUser) {
             return;
         }
-        console.log(props.activeUser)
         const { availability, details, email, location, nameFirst, nameLast, password, phone, role, toke, userName } = props.activeUser
         cUsers(
             {
@@ -53,10 +52,6 @@ function Profile(props) {
         updatedState[e.target.name] = e.target.value
         cUsers(updatedState)
         console.log(e.target.value, e.target.name);
-    }
-
-    const handleDropdownChanger = (e) => {
-        cLocation(e)
     }
 
     const handleSubmit = (e) => {
@@ -89,7 +84,6 @@ function Profile(props) {
                 const newArray = res.data.map((location) => {
                     return (location.locationName)
                 })
-                console.log(newArray);
                 cLocations(newArray);
                 // cUsers(res.data[0]['locationName'])
             })
@@ -150,37 +144,18 @@ function Profile(props) {
                                 </input>
                             </div>
                         </div>
-                        <Dropdown className="form-group row profile-drowdown" >
-                            <label
-                                form="inputLocation3"
-                                className="col-form-label col-sm-5">
-                                <DropdownButton
-                                    className="dropdownButton col-sm-12"
-                                    title="Location."
-                                    onSelect={(e) => handleDropdownChanger(e)}
-
-                                    style={{ backgroundColor: '#ccdddd' }}>
-
-                                    {locations.map((location) => {
-                                        return <Dropdown.Item eventKey={location}>{location}</Dropdown.Item>
-                                    })}
-
-                                </DropdownButton>
-                            </label>
-
-
-                            <div className="col col-sm-7 dropdownOffsetCol justify-content-left">
-                                <input
-                                    type="surname"
-                                    onInput={(e) => handleChange(e)}
-                                    className="form-control"
-                                    id="inputSurname3"
-                                    name="location"
-                                    value={location}>
-                                </input>
+                        <div className = 'form-group row'>
+                            <div className = 'col-sm-3 col-form-label'>
+                                <label className = 'input-form-label' form = 'inputLocation' >Location</label> 
                             </div>
-                        </Dropdown>
-
+                            <div className = 'col-sm-9'>                           
+                            <select size = '1' className = 'form-control' onChange={(e) => cLocation(e.target.value)} id = 'inputLocation' defaultValue = {'default'} >
+                                <option value = 'default' disabled>-- select an option --</option>
+                                {locations.map((location) => (
+                                <option key = {location} value = {location} name="location">{location}</option>))}
+                            </select> 
+                            </div>
+                        </div>
                         <div className="form-group row">
                             <label
                                 form="inputEmail3"
@@ -197,8 +172,6 @@ function Profile(props) {
                                 </input>
                             </div>
                         </div>
-
-
                         <div className="form-group row">
                             <label
                                 form="inputPhone3"
