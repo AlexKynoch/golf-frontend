@@ -5,11 +5,13 @@ import Button from 'react-bootstrap/Button'
 import React, { useState, useEffect } from "react"
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import "../Profilepage/changePassword.css"
 
 function ChangePassword(props) {
 
 
     const userId = "615d7fb42d2b095a0593e6d7";
+
 
     const showSuccess = () => {
         toast.success("Your details have been updated");
@@ -60,17 +62,20 @@ function ChangePassword(props) {
                     <Card.Subtitle className="mb-2 text-muted"></Card.Subtitle>
 
 
+
+
+
                     <form>
                         <div className="form-group row changePassword">
 
-                            <label form="inputUsername3" className="col-sm-12 col-form-label">Change Password</label>
-                            <div className="col-sm-12">
+                            <label form="inputUsername3" className="col-sm-12  col-form-label">Change Password</label>
+                            <div className="col-lg-9">
                                 <input type="password" className="form-control" name="password1" id="password1" placeholder="New Password"></input>
                             </div><br />
                         </div>
                         <div className="form-group row">
-                            <label form="inputFirstName3" className="col-sm-12 col-form-label">Confirm New Password</label>
-                            <div className="col-sm-12">
+                            <label form="inputFirstName3" className="col-sm-12  col-form-label">Confirm New Password</label>
+                            <div className="col-lg-9">
                                 <input type="password" className="form-control" name="password2" id="password2" placeholder="Confirm Password"></input>
                             </div>
                         </div>

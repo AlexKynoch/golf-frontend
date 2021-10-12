@@ -1,7 +1,19 @@
-.App {
+.contentContainer {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+h1 {
+  font-size: 20px;
+}
+
+b {
+  font-size: 20px;
+}
+
+h3 {
+  font-size: 15px;
 }
 
 .Landing-image {
@@ -9,14 +21,15 @@
   height: 50%;
   border: 0.2rem solid rgb(6, 101, 50);
   border-radius: 10px;
+  padding: 0;
 }
 
 .landing-text {
-  font-size: 1px !important;
+  font-size: 20px !important;
   margin-top: 30px;
   padding: 20px;
   text-align: left !important;
-  background-color: white;
+
   border-radius: 10px;
   width: 87%;
 }

@@ -28,7 +28,8 @@
   margin: 0;
 }
 
-.button-profile {
+.button-profile,
+.btn-light {
   background-color: rgb(204, 221, 221) !important;
   color: black;
   border: 1px solid rgb(6, 101, 50) !important;
@@ -57,7 +58,8 @@
   background-color: rgb(204, 221, 221) !important;
 }
 
-.button-profile:hover {
+.button-profile:hover,
+.btn-light:hover {
   background-color: rgb(6, 101, 50) !important;
   color: white;
 }
@@ -87,10 +89,10 @@
   margin-left: 5%;
 }
 
-/* .col-form-label {
+.col-form-label {
   display: flex;
-  justify-content: flex-start;
-} */
+  font-size: 1rem;
+}
 .volunteerDashboardColContainer {
   justify-content: center;
   align-items: center;
