@@ -7,6 +7,7 @@ import Footer from "./Footer"
 
 
 
+
 import Container from 'react-bootstrap/Container'
 import {
   HashRouter as Router,
@@ -29,10 +30,12 @@ import ManagerCalendar from "./Dashboards/ManagerDashboard/ManagerCalendar"
 
 
 
+
 function App() {
   const client = new ApiClient()
 
   return (
+
 
     <Router>
       <div className="App">
@@ -93,6 +96,7 @@ function App() {
         </div>
       </div>
     </Router>
+
 
   );
 }

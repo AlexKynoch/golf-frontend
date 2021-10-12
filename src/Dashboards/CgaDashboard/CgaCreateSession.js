@@ -14,7 +14,7 @@ function CreateSession(props) {
     // get data from database
     const refreshList = () => {
         props.client.getUserByRole('volunteer').then((response) => cVolunteers(response.data))
-        props.client.getAdminById('615d7e616d365c85eff5f442').then((response) => cCurrentCgaLocation(response.data[0].location)) 
+        props.client.getAdminById('615d7e616d365c85eff5f442').then((response) => cCurrentCgaLocation(response.data.location)) 
     }
 
     // return all registered volunteers for a location
@@ -67,25 +67,29 @@ function CreateSession(props) {
     const submitHandler = (e) => {
         e.preventDefault()
         cDisabled(true)
-        
-        props.client.addSession(
-            e.target.inputDate.value,
-            getItemValue('inputVolunteer'),
-            e.target.inputLocation.value,
-            e.target.inputStartTime.value,
-            e.target.inputFinishTime.value,
-            getItemValue('inputUserLimit'),
-            e.target.inputAdditionalDetails.value   
-            )
-        .then(() => {
-        showSuccess()
-        cDisabled(false)
-        document.getElementById('sessionForm').reset()
-        })
-        .catch(() => {
-        alert('an error occured, please try again')
-        cDisabled(false)
-        })
+        if (getItemValue('inputVolunteer') !== 'default' && getItemValue('inputUserLimit') !== 'default' ) {
+            props.client.addSession(
+                e.target.inputDate.value,
+                getItemValue('inputVolunteer'),
+                e.target.inputLocation.value,
+                e.target.inputStartTime.value,
+                e.target.inputFinishTime.value,
+                getItemValue('inputUserLimit'),
+                e.target.inputAdditionalDetails.value   
+                )
+            .then(() => {
+            showSuccess()
+            cDisabled(false)
+            document.getElementById('sessionForm').reset()
+            })
+            .catch(() => {
+            alert('an error occured, please try again')
+            cDisabled(false)
+            })
+        } else {
+            alert('Please fill in volunteer and session type fields')
+            cDisabled(false)
+        }
       }
 
     useEffect(() => {

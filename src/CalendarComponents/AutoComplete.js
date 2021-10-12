@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const Autocomplete = ({ suggestions, input, setInput }) => {
+const Autocomplete = ({ suggestions, input, setInput, newClassName, placeholder }) => {
   const [filteredSuggestions, setFilteredSuggestions] = useState([])
   const [activeSuggestionIndex, setActiveSuggestionIndex] = useState(0)
   const [showSuggestions, setShowSuggestions] = useState(false)
@@ -85,9 +85,9 @@ const Autocomplete = ({ suggestions, input, setInput }) => {
         onChange={onChange}
         onKeyDown={onKeyDown}
         value={input}
-        className = 'search-field' 
+        className = {newClassName}
         name = 'user' 
-        placeholder = 'Search by user...' 
+        placeholder = {placeholder}
         autoComplete = 'off'
         id = 'userform'
       />

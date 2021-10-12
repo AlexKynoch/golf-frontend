@@ -25,6 +25,10 @@ export class ApiClient {
         return this.apiCall("get", `${url}sessionlocation/${location}`)
     }
 
+    getUsersByLocation(location) {
+        return this.apiCall("get", `${url}userlocation/${location}`)
+    }
+
     getUsers() {
         return this.apiCall("get", url + 'user')
     }
@@ -37,14 +41,12 @@ export class ApiClient {
         return this.apiCall("put", url + `user/${id}`, dataObj)
     }
 
-
     updateUserProfile(id, username, firstname, lastname, location, emaildata, phonedata) {
         return this.apiCall("put", url + `user/${id}`, {
             userName: username, nameFirst: firstname, nameLast: lastname,
             location: location, email: emaildata, phone: phonedata
         })
     }
-
 
     removeSession(id) {
         return this.apiCall('delete', `${url}session/${id}`)
@@ -60,11 +62,6 @@ export class ApiClient {
 
     getLocations() {
         return this.apiCall("get", url + 'location')
-    }
-
-
-    updateUser(id, dataObj) {
-        return this.apiCall("put", url + `user/${id}`, dataObj)
     }
 
     getUserByRole(role) {
@@ -93,5 +90,22 @@ export class ApiClient {
     getAdminByLocation(location) {
         return this.apiCall('get', `${url}adminlocation/${location}`)
 
+    }
+
+    getAdmins() {
+        return this.apiCall('get', url + 'admin')
+    }
+
+    addLocation(data) {
+        return this.apiCall('post', url + 'location', data)
+    }
+
+    addCga(username, password, locationdata, emaildata, phonedata, namef, namel) {
+        return this.apiCall('post', url + 'admin', { userName: username, password: password, location: locationdata, 
+            role: "CGA", email: emaildata, phone: phonedata, nameFirst: namef, nameLast: namel })
+    }
+
+    getCgaByLocation(location) {
+        return this.apiCall('get', `${url}cgalocation/${location}`)
     }
 }
