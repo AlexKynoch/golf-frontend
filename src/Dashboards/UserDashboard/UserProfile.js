@@ -25,9 +25,10 @@ function UserProfile(props) {
         <NavBar links={links} />
       </div>
 
-      <div><Profile client={props.client} /></div>
-      <div><ChangePassword client={props.client} /></div>
 
+
+      <div><Profile activeUser={user} client={props.client} /></div>
+      <div><ChangePassword client={props.client} /></div>
     </div>
   )
 }
