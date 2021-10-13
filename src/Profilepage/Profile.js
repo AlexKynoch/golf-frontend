@@ -73,14 +73,12 @@ function Profile(props) {
     }
 
     useEffect(() => {
-        // Update the document title using the browser API
         props.client.getLocations()
             .then((res) => {
                 const newArray = res.data.map((location) => {
                     return (location.locationName)
                 })
                 cLocations(newArray);
-                // cUsers(res.data[0]['locationName'])
             })
     }, []);
 
@@ -90,7 +88,6 @@ function Profile(props) {
                 <Card.Body className="profile-card-body">
                     <Card.Title className="profile-card-title">My Profile</Card.Title>
                     <Card.Subtitle className="mb-2 text-muted"></Card.Subtitle>
-
                     <form className="cardFormContainer" >
                         <div className="form-group row">
                             <label
@@ -183,21 +180,13 @@ function Profile(props) {
                                 </input>
                             </div>
                         </div>
-
-
-
                         <div className="btn-container justify-content-end">
-
                             <Button className='button-profile' onClick={(e) => handleSubmit(e)} variant="light">Update</Button>
-
                             <ToastContainer position='bottom-center' />
                         </div>
                     </form >
-
                 </Card.Body>
             </Card>
-
-
         </div >
     )
 }

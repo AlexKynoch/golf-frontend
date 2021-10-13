@@ -1,6 +1,5 @@
 import Profile from "./Profile"
 import PPVolunteer from "./PPVolunteer"
-
 import "./VolunteerProfile.css"
 import "./Profile.css"
 import NavBar from "../NavBar"
@@ -22,12 +21,10 @@ function VolunteerProfile(props) {
   ]
 
   useEffect(() => {
-    // Update the document title using the browser API
     props.client.getUser(userId)
       .then((res) => {
         console.log(res);
         cUser(res.data)
-        // cRadios(res.data[0]['availability'])
       })
   }, [])
 
