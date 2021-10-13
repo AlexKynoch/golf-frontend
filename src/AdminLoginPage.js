@@ -6,14 +6,13 @@ import Button from 'react-bootstrap/Button'
 import NavBar from "./NavBar"
 
 function AdminLoginPage(props) {
-  const [signUp, cSignUp] = useState(false)
   const [disabled, cDisabled] = useState(false)
   let history = useHistory()
   const links = [
-    { name: "Customer", url: "/login/user" },
-    { name: "Volunteer", url: "/login/volunteer" },
-    { name: "Admin", url: "/login/admin" },
-    { name: "Home", url: "/home" }
+    { name: "Home", url: "/home" },
+    { name: "Sign In as Customer", url: "/login/user" },
+    { name: "Sign In as Volunteer", url: "/login/volunteer" },
+    { name: "Create an account", url: "/register" }
   ] 
 
   const submitHandler = (e) => {
@@ -23,15 +22,15 @@ function AdminLoginPage(props) {
       .then((response) => {
         if (response.data.admin.role === 'CGA') {
           props.loggedIn(response.data.admin.token)
-          props.cCurrentUser(response.data.admin)
+          props.setUser(response.data.admin)
           history.push('/cga/dashboard')
         } else if (response.data.admin.role === 'admin') {
           props.loggedIn(response.data.admin.token)
-          props.cCurrentUser(response.data.admin)
+          props.setUser(response.data.admin)
           history.push('/admin/calendar')
         } else if (response.data.admin.role === 'manager') {
           props.loggedIn(response.data.admin.token)
-          props.cCurrentUser(response.data.admin)
+          props.setUser(response.data.admin)
           history.push('/manager/calendar')
         } else {
           alert('not a valid username or password')

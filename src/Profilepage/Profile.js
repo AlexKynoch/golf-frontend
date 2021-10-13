@@ -8,23 +8,24 @@ import 'react-toastify/dist/ReactToastify.css'
 function Profile(props) {
 
     const [locations, cLocations] = useState([])
-    const [location, cLocation] = useState(props.activeUser.location)
+    const [userChange, cUserChange] = useState(undefined)
+    const [location, cLocation] = useState(props.currentUser.location)
     const [users, cUsers] = useState(
         {
-            userName: "Jonny5",
-            nameFirst: "Johnathan",
-            nameLast: "Smith",
-            location: "testLocation",
-            email: "jojosmith@hotmail.com",
-            phone: "07778574321"
+            userName: "",
+            nameFirst: "",
+            nameLast: "",
+            location: "",
+            email: "",
+            phone: ""
         }
     )
 
     useEffect(() => {
-        if (!props.activeUser) {
+        if (!props.currentUser) {
             return;
         }
-        const { availability, details, email, location, nameFirst, nameLast, password, phone, role, toke, userName } = props.activeUser
+        const { availability, details, email, location, nameFirst, nameLast, password, phone, role, token, userName } = props.currentUser
         cUsers(
             {
                 userName,
@@ -35,8 +36,7 @@ function Profile(props) {
                 phone
             }
         )
-    }, [props.activeUser]);
-    console.log(props.activeUser);
+    }, [props.currentUser]);
 
     const showSuccess = () => {
         toast.success("Your details have been updated");
@@ -52,7 +52,7 @@ function Profile(props) {
     const handleSubmit = (e) => {
         e.preventDefault()
         props.client.updateUser(
-            props.activeUser._id,
+            props.currentUser._id,
             {
                 userName: users.userName,
                 nameFirst: users.nameFirst,
@@ -64,13 +64,21 @@ function Profile(props) {
         )
             .then(() => {
                 showSuccess()
-
+                props.client.getUser(props.currentUser._id)
+                .then((response) => 
+                    cUserChange(response.data))
             })
             .catch(() => {
                 alert('an error occured, please try again')
 
             })
     }
+
+    useEffect(() => {
+        if (userChange) {
+        window.localStorage.setItem('user', JSON.stringify(userChange))
+        }  
+    },[userChange])
 
     useEffect(() => {
         // Update the document title using the browser API

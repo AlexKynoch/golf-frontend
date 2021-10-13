@@ -9,6 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./PPVolunteer.css";
 
 function PPVolunteer(props) {
+  const [userChange, cUserChange] = useState(undefined)
   const [radios, cRadios] = useState([
     ["Monday", false],
     ["Tuesday", false],
@@ -20,11 +21,11 @@ function PPVolunteer(props) {
   ]);
 
   useEffect(() => {
-    if (!props.activeUser) {
+    if (!props.currentUser) {
       return;
     }
-    cRadios(props.activeUser["availability"]);
-  }, [props.activeUser]);
+    cRadios(props.currentUser["availability"]);
+  }, [props.currentUser]);
 
   const showSuccess = () => {
     toast.success("Your details have been updated");
@@ -33,12 +34,15 @@ function PPVolunteer(props) {
   const handleSubmit = () => {
     console.log("your choices have been saved");
     showSuccess();
-    console.log(props.activeUser);
     props.client
-      .updateUser(props.activeUser._id, { availability: radios })
+      .updateUser(props.currentUser._id, { availability: radios })
       .then((res) => {
-        console.log(res);
-      });
+        props.client
+          .getUser(props.currentUser._id)
+          .then((response) => 
+          cUserChange(response.data))  
+      })
+    
   };
 
   const checkHandler = (e) => {
@@ -50,6 +54,13 @@ function PPVolunteer(props) {
     });
     cRadios(newState);
   };
+
+  useEffect(() => {
+    if (userChange) {
+      window.localStorage.setItem('user', JSON.stringify(userChange))
+    }  
+  },[userChange])
+
   return (
     <>
       <div className="volunteer-container">

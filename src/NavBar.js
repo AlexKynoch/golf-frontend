@@ -13,6 +13,7 @@ function NavBar(props) {
 
   function logout() {
     props.client.logout()
+    props.client.removeUser()
     history.push('/home')
   }
   
@@ -26,12 +27,12 @@ function NavBar(props) {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="justify-content-end me-auto" activeKey="/home" style={{ width: "100%" }}>
-              <Nav.Item >
+              {/* <Nav.Item >
                 {props.links[0] ?
                 <div className='custom-nav-item nav-link'>Log in as:</div>
                 : null      
                 }
-              </Nav.Item>
+              </Nav.Item> */}
               {props.links.slice(0).map((v, i) => {
                 return (
                   <Link key={i} className='custom-nav-item nav-link' to={v.url}>

@@ -9,10 +9,6 @@ import "../Profilepage/changePassword.css"
 
 function ChangePassword(props) {
 
-
-    const userId = props.currentUser._id
-
-
     const showSuccess = () => {
         toast.success("Your details have been updated");
     };
@@ -26,13 +22,14 @@ function ChangePassword(props) {
 
         if (password2 === password1) {
             props.client.updateUser(
-                userId,
+                props.currentUser._id,
                 {
                     password: password2,
-                }
+                }  
             )
                 .then(() => {
                     showSuccess()
+                    document.getElementById('change-password').reset()
 
                 })
                 .catch(() => {
@@ -49,7 +46,7 @@ function ChangePassword(props) {
                 <Card.Body className="profile-card-body">
                     <Card.Title className="profile-card-title">Change password</Card.Title>
                     <Card.Subtitle className="mb-2 text-muted"></Card.Subtitle>
-                    <form>
+                    <form id="change-password">
                         <div className="form-group row changePassword">
                             <label form="inputUsername3" className="col-sm-4 col-form-label">New Password</label>
                             <div className="col-lg-8">

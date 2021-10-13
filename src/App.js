@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { ApiClient } from "./apiClient"
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './CalendarComponents/Calendar.css'
@@ -23,18 +23,30 @@ import UserRegister from "./Dashboards/AdminDashboard/UserRegister"
 import UserLoginPage from "./UserLoginPage"
 import VolunteerLoginPage from "./VolunteerLoginPage"
 import AdminLoginPage from "./AdminLoginPage"
+import CreateAccount from "./CreateAccount"
 import ManagerPage from "./Dashboards/ManagerDashboard/ManagerPage"
 import ManagerCalendar from "./Dashboards/ManagerDashboard/ManagerCalendar"
 
 function App() {
   const client = new ApiClient(
     () => token,
-    () => logout()
+    () => logout(),
+    () => removeUser()
   )
 
   const [token, changeToken] = useState(window.localStorage.getItem('token'))
-  const [currentUser, cCurrentUser] = useState('')
- 
+  const [currentUser, cCurrentUser] = useState(JSON.parse(window.localStorage.getItem('user')))
+
+  const setUser = (u) => {
+    window.localStorage.setItem('user', JSON.stringify(u))
+    cCurrentUser(u)
+  }
+
+  const removeUser = () => {
+    window.localStorage.removeItem('user')
+    cCurrentUser(undefined)
+  }
+
   const login = (t) => {
     window.localStorage.setItem('token', t)
     changeToken(t)
@@ -44,6 +56,11 @@ function App() {
     window.localStorage.removeItem('token')
     changeToken(undefined)
   }
+
+  useEffect(()=> {
+    const user = window.localStorage.getItem('user')
+    cCurrentUser(JSON.parse(user))
+  }, [])
 
   return (
  
@@ -56,7 +73,7 @@ function App() {
                 <UserCalendar client={client} currentUser = {currentUser} />
               </Route>
               <Route path='/customer/profile'>
-                <UserProfile client={client} currentUser = {currentUser} />
+                <UserProfile client={client} currentUser = {currentUser} cCurrentUser = {cCurrentUser} />
               </Route>
               <Route path='/volunteer/calendar'>
                 <VolunteerCalendar client={client} currentUser = {currentUser}/>
@@ -83,13 +100,16 @@ function App() {
                 <UserRegister client={client}/>
               </Route>
               <Route path='/login/user'>
-                <UserLoginPage loggedIn = {(t => login(t))} client = {client} cCurrentUser = {cCurrentUser}/>
+                <UserLoginPage setUser = {(u => setUser(u))} loggedIn = {(t => login(t))} client = {client} cCurrentUser = {cCurrentUser}/>
               </Route>
               <Route path='/login/volunteer'>
-                <VolunteerLoginPage loggedIn = {(t => login(t))} client = {client} cCurrentUser = {cCurrentUser}/>
+                <VolunteerLoginPage setUser = {(u => setUser(u))} loggedIn = {(t => login(t))} client = {client} cCurrentUser = {cCurrentUser}/>
               </Route>
               <Route path='/login/admin'>
-                <AdminLoginPage loggedIn = {(t => login(t))} client = {client} cCurrentUser = {cCurrentUser}/>
+                <AdminLoginPage setUser = {(u => setUser(u))} loggedIn = {(t => login(t))} client = {client} cCurrentUser = {cCurrentUser}/>
+              </Route>
+              <Route path='/register'>
+                <CreateAccount client = {client}/>
               </Route>
               <Route path='/manager/calendar'>
                 <ManagerCalendar client={client} currentUser = {currentUser}/>
@@ -105,7 +125,7 @@ function App() {
           </Container>
         </div>
         <div className="footerOffset">
-          <Footer />
+          <Footer currentUser = {currentUser}/>
         </div>
       </div>
     </Router>
