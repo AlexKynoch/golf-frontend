@@ -3,9 +3,10 @@ const url = "https://golf-dka.herokuapp.com/"
 
 export class ApiClient {
 
-    constructor(token, logout) {
+    constructor(token, logout, removeUser) {
         this.token = token
         this.logout = logout
+        this.removeUser = removeUser
     }
 
     apiCall(method, url, data) {
@@ -48,6 +49,10 @@ export class ApiClient {
 
     updateUser(id, dataObj) {
         return this.apiCall("put", url + `user/${id}`, dataObj)
+    }
+
+    updateCgaLocation(id, loc) {
+        return this.apiCall("put", url + `admin/${id}`, {location: loc})
     }
 
     updateUserProfile(id, username, firstname, lastname, location, emaildata, phonedata) {

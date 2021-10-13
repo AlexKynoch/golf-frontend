@@ -31,7 +31,7 @@ function CgaNotifications(props) {
     const userNum = (arr) => {
         let counter = 0
         arr.map((user) => {
-            if (user.userNew === true) {
+            if (user.userNew === true && user.location === CgaLocation) {
                 counter += 1
             }
         })
@@ -43,7 +43,7 @@ function CgaNotifications(props) {
     <volunteer></volunteer>
     const buildRows = (arr, changer) => {
         return arr.map((current) => {
-            if (current.userNew === true) {
+            if (current.userNew === true && current.location === CgaLocation) {
             return  <tr key={current._id} className = 'notif-user-row'>
                         <td>{current.nameFirst + ' ' + current.nameLast}</td>
                         <td>{current.email}</td>

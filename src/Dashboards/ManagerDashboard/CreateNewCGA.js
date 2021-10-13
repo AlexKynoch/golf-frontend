@@ -5,7 +5,7 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 function CreateNewCGA(props) {
-    const [location, cLocation] = useState()
+    const [location, cLocation] = useState('none')
     const [locations, cLocations] = useState([])
     const [disabled, cDisabled] = useState(false)
 
@@ -50,6 +50,7 @@ function CreateNewCGA(props) {
         )
         .then(() => {
             showSuccess()
+            props.cNewCga(!props.newCga)
             cDisabled(false)
             document.getElementById('newCgaForm').reset()
         })
@@ -92,6 +93,7 @@ function CreateNewCGA(props) {
                             <div className='col-sm-8'>
                                 <select className = 'form-control' id = 'inputLocation' onChange = {(e) => cLocation(e.target.value)} defaultValue = {'default'}>
                                     <option value = 'default' disabled>-- select an option --</option>
+                                    <option value = 'none'>None of the below</option>
                                     {sessionLocations().map((location) => (
                                     <option value = {location}>{location}</option>))}
                                 </select>

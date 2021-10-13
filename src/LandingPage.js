@@ -6,9 +6,11 @@ import NavBar from "./NavBar"
 
 function LandingPage(props) {
     const links = [
-        { name: "Customer", url: "/login/user" },
-        { name: "Volunteer", url: "/login/volunteer" },
-        { name: "Admin", url: "/login/admin" },
+        { name: "Home", url: "/home" },
+        { name: "Sign In as Customer", url: "/login/user" },
+        { name: "Sign In as Volunteer", url: "/login/volunteer" },
+        { name: "Create an account", url: "/register" }   
+        // { name: "Admin", url: "/login/admin" },
     ]
 
     return (

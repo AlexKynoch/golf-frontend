@@ -22,7 +22,7 @@ function UserCalendar(props) {
     { name: "Calendar", url: "/customer/calendar" },
     { name: "Profile", url: "/customer/profile" }
   ]
-
+ 
   // gets all the sessions and users from the database
 
   const refreshList = () => {

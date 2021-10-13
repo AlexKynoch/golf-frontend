@@ -9,19 +9,12 @@ import './../../CalendarComponents/autoComplete.css'
 function NewArea(props) {
     const [autoCompleteInputBooking, cAutoCompleteInputBooking] = useState('')
     const [disabled, cDisabled] = useState(false)
-    const [admins, cAdmins] = useState([])
     const activeManager = props.currentUser._id
-
-    // get data from database
-
-    const refreshList = () => {
-        props.client.getAdmins().then((response) => cAdmins(response.data))
-    }
 
     // get names and usernames of all the CGAs
     const allCGAs = () => {
         let arr = []
-        admins.map((admin) => {
+        props.admins.map((admin) => {
             if (admin.role === 'CGA') {
                 arr.push(admin.nameFirst + ' ' + admin.nameLast + ' - ' + admin.userName)
             }
@@ -34,16 +27,16 @@ function NewArea(props) {
     const showSuccess = () => {
         toast.success('New session has been created')
     }
-
+ 
     // submit new session to database
-    const submitHandler = (e, suggestions) => {
+    const submitHandler = (e) => {
         e.preventDefault()
         cDisabled(true)
     
         if (allCGAs().includes(e.target.user.value)) {
             let userName = e.target.user.value.split(' - ')
             let userId
-            admins.forEach((admin) => {
+            props.admins.forEach((admin) => {
                 if(userName[1] === admin.userName) {
                   userId = admin._id
                 }
@@ -53,10 +46,11 @@ function NewArea(props) {
                 activeCGA:userId,
                 manager:activeManager
             })
+            props.client.updateCgaLocation(userId, e.target.inputLocation.value)
             .then(() => {
                 showSuccess()
                 cDisabled(false)
-                document.getElementById('sessionForm').reset()
+                document.getElementById('newAreaForm').reset()
                 cAutoCompleteInputBooking('')
             })
             .catch(() => {
@@ -82,10 +76,6 @@ function NewArea(props) {
             alert('Please select active CGA from the list or leave it empty')
         }
     }
-
-    useEffect(() => {
-    refreshList();
-    }, [])
 
     return (
             <Card id = 'myProfile' className = 'profile-card cga-session-card' >
