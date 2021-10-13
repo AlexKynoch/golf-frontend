@@ -10,7 +10,7 @@ import "../Profilepage/changePassword.css"
 function ChangePassword(props) {
 
 
-    const userId = "615d7fb42d2b095a0593e6d7";
+    const userId = props.currentUser._id
 
 
     const showSuccess = () => {

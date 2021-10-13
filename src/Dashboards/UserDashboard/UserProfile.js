@@ -5,7 +5,7 @@ import ChangePassword from "./../../Profilepage/ChangePassword"
 
 
 function UserProfile(props) {
-  const userId = "615d7fb42d2b095a0593e6d7"
+  const userId = props.currentUser._id
   const [user, cUser] = useState({ availability: [] })
 
   const links = [
@@ -16,20 +16,20 @@ function UserProfile(props) {
   ]
 
   useEffect(() => {
-    props.client.getUser(userId).then((res) => {cUser(res.data)})
+    props.client.getUser(userId).then((res) => { cUser(res.data) })
   }, [])
 
 
   return (
     <div>
       <div className="navOffset">
-        <NavBar links = {links} client = {props.client} />
+        <NavBar links={links} client={props.client} />
       </div>
 
 
 
-      <div><Profile activeUser={user} client={props.client} currentUser = {props.currentUser}/></div>
-      <div><ChangePassword client={props.client} currentUser = {props.currentUser}/></div>
+      <div><Profile activeUser={user} client={props.client} currentUser={props.currentUser} /></div>
+      <div><ChangePassword client={props.client} currentUser={props.currentUser} /></div>
     </div>
   )
 }

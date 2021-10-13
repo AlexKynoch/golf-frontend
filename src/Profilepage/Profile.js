@@ -8,7 +8,6 @@ import 'react-toastify/dist/ReactToastify.css'
 function Profile(props) {
 
     const [locations, cLocations] = useState([])
-    const [userId, setUserId] = React.useState("615d7fb42d2b095a0593e6d7")
     const [location, cLocation] = useState(props.activeUser.location)
     const [users, cUsers] = useState(
         {
@@ -37,6 +36,7 @@ function Profile(props) {
             }
         )
     }, [props.activeUser]);
+    console.log(props.activeUser);
 
     const showSuccess = () => {
         toast.success("Your details have been updated");
@@ -52,7 +52,7 @@ function Profile(props) {
     const handleSubmit = (e) => {
         e.preventDefault()
         props.client.updateUser(
-            userId,
+            props.activeUser._id,
             {
                 userName: users.userName,
                 nameFirst: users.nameFirst,
@@ -139,16 +139,16 @@ function Profile(props) {
                                 </input>
                             </div>
                         </div>
-                        <div className = 'form-group row'>
-                            <div className = 'col-sm-3 col-form-label'>
-                                <label className = 'input-form-label' form = 'inputLocation' >Location</label> 
+                        <div className='form-group row'>
+                            <div className='col-sm-3 col-form-label'>
+                                <label className='input-form-label' form='inputLocation' >Location</label>
                             </div>
-                            <div className = 'col-sm-9'>                           
-                            <select size = '1' className = 'form-control' onChange={(e) => cLocation(e.target.value)} id = 'inputLocation' value = {location} >
-                                <option value = 'default' disabled>-- select an option --</option>
-                                {locations.map((location) => (
-                                <option key = {location} value = {location} name="location">{location}</option>))}
-                            </select> 
+                            <div className='col-sm-9'>
+                                <select size='1' className='form-control' onChange={(e) => cLocation(e.target.value)} id='inputLocation' value={location} >
+                                    <option value='default' disabled>-- select an option --</option>
+                                    {locations.map((location) => (
+                                        <option key={location} value={location} name="location">{location}</option>))}
+                                </select>
                             </div>
                         </div>
                         <div className="form-group row">

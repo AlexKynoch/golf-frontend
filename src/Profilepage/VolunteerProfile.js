@@ -12,7 +12,7 @@ import Col from 'react-bootstrap/Col'
 
 function VolunteerProfile(props) {
 
-  const [userId, setUserId] = useState("615d7fb42d2b095a0593e6d7");
+  const userId = props.currentUser._id
   const [user, cUser] = useState({ availability: [] })
 
   const links = [
@@ -34,24 +34,24 @@ function VolunteerProfile(props) {
   return (
     <div className="row volunteerDashboardRow">
       <div className="navOffset">
-        <NavBar links = {links} client = {props.client} />
+        <NavBar links={links} client={props.client} />
       </div>
       <Container fluid>
         <Row >
-          <Col lg={8} className = 'volunteerDashboardCol'>
-          <Profile activeUser={user} client={props.client} />
+          <Col lg={8} className='volunteerDashboardCol'>
+            <Profile activeUser={user} client={props.client} />
           </Col>
-          <Col lg={4} className = 'volunteerDashboardCol'>
-          <PPVolunteer activeUser={user} client={props.client} />
+          <Col lg={4} className='volunteerDashboardCol'>
+            <PPVolunteer activeUser={user} client={props.client} />
           </Col>
         </Row>
         <Row>
           <Col >
-            <ChangePassword client = {props.client} currentUser = {props.currentUser}/>
+            <ChangePassword client={props.client} currentUser={props.currentUser} />
           </Col>
-      </Row>
+        </Row>
       </Container>
-    </div>    
+    </div>
 
   )
 }
