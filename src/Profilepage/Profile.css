@@ -35,7 +35,6 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  /* background-color: rgb(204, 221, 221) !important; */
   border-radius: 5px;
 }
 
@@ -106,20 +105,3 @@
   position: relative;
   width: fit-content;
 }
-
-/* .volunteerDashboardCol {
-  position: relative;
-  background-color: lightblue;
-  width: fit-content;
-}
-.profile-container,
-.volunteer-container {
-  margin: 0;
-  height: 100%;
-  width: fit-content;
-}
-.volunteerDashboardRow,
-.volunteerDashboardContainer {
-  width: 100%;
-  flex-wrap: nowrap;
-} */

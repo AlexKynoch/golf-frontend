@@ -16,6 +16,14 @@ function VolunteerProfile(props) {
     { name: "Profile", url: "/volunteer/profile" }
   ]
 
+  useEffect(() => {
+    props.client.getUser(userId)
+      .then((res) => {
+        console.log(res);
+        cUser(res.data)
+      })
+  }, [])
+
   return (
     <div className="row volunteerDashboardRow">
       <div className="navOffset">

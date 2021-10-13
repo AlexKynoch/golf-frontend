@@ -40,8 +40,6 @@ function ProfileForm() {
                         <input type="phone" className="form-control" id="inputPhone3" placeholder="Phone"></input>
                     </div>
                 </div>
-
-
             </form >
         </div >
     )

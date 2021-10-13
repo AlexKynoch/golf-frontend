@@ -9,6 +9,8 @@ import "../Profilepage/changePassword.css"
 
 function ChangePassword(props) {
 
+    const userId = props.currentUser._id
+
     const showSuccess = () => {
         toast.success("Your details have been updated");
     };
@@ -39,7 +41,6 @@ function ChangePassword(props) {
         }
     }
 
-
     return (
         <div className="profile-container" >
             <Card id="ChangePassword" className="profile-card" style={{ maxWidth: '50rem' }}>
@@ -67,7 +68,6 @@ function ChangePassword(props) {
                 </Card.Body>
             </Card>
         </div >
-
 
     )
 }
