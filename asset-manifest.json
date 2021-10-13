@@ -1,22 +1,26 @@
 {
   "files": {
-    "main.css": "/golf-frontend/static/css/main.a617e044.chunk.css",
-    "main.js": "/golf-frontend/static/js/main.db274793.chunk.js",
-    "main.js.map": "/golf-frontend/static/js/main.db274793.chunk.js.map",
-    "runtime-main.js": "/golf-frontend/static/js/runtime-main.c46a00a1.js",
-    "runtime-main.js.map": "/golf-frontend/static/js/runtime-main.c46a00a1.js.map",
-    "static/js/2.7082a711.chunk.js": "/golf-frontend/static/js/2.7082a711.chunk.js",
-    "static/js/2.7082a711.chunk.js.map": "/golf-frontend/static/js/2.7082a711.chunk.js.map",
-    "static/js/3.471d7313.chunk.js": "/golf-frontend/static/js/3.471d7313.chunk.js",
-    "static/js/3.471d7313.chunk.js.map": "/golf-frontend/static/js/3.471d7313.chunk.js.map",
+    "main.css": "/golf-frontend/static/css/main.82168680.chunk.css",
+    "main.js": "/golf-frontend/static/js/main.a5d1515a.chunk.js",
+    "main.js.map": "/golf-frontend/static/js/main.a5d1515a.chunk.js.map",
+    "runtime-main.js": "/golf-frontend/static/js/runtime-main.57631740.js",
+    "runtime-main.js.map": "/golf-frontend/static/js/runtime-main.57631740.js.map",
+    "static/css/2.e49f5c05.chunk.css": "/golf-frontend/static/css/2.e49f5c05.chunk.css",
+    "static/js/2.dee87dbd.chunk.js": "/golf-frontend/static/js/2.dee87dbd.chunk.js",
+    "static/js/2.dee87dbd.chunk.js.map": "/golf-frontend/static/js/2.dee87dbd.chunk.js.map",
+    "static/js/3.b884e452.chunk.js": "/golf-frontend/static/js/3.b884e452.chunk.js",
+    "static/js/3.b884e452.chunk.js.map": "/golf-frontend/static/js/3.b884e452.chunk.js.map",
     "index.html": "/golf-frontend/index.html",
-    "static/css/main.a617e044.chunk.css.map": "/golf-frontend/static/css/main.a617e044.chunk.css.map",
-    "static/js/2.7082a711.chunk.js.LICENSE.txt": "/golf-frontend/static/js/2.7082a711.chunk.js.LICENSE.txt"
+    "static/css/2.e49f5c05.chunk.css.map": "/golf-frontend/static/css/2.e49f5c05.chunk.css.map",
+    "static/css/main.82168680.chunk.css.map": "/golf-frontend/static/css/main.82168680.chunk.css.map",
+    "static/js/2.dee87dbd.chunk.js.LICENSE.txt": "/golf-frontend/static/js/2.dee87dbd.chunk.js.LICENSE.txt",
+    "static/media/logo.a2536534.png": "/golf-frontend/static/media/logo.a2536534.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.c46a00a1.js",
-    "static/js/2.7082a711.chunk.js",
-    "static/css/main.a617e044.chunk.css",
-    "static/js/main.db274793.chunk.js"
+    "static/js/runtime-main.57631740.js",
+    "static/css/2.e49f5c05.chunk.css",
+    "static/js/2.dee87dbd.chunk.js",
+    "static/css/main.82168680.chunk.css",
+    "static/js/main.a5d1515a.chunk.js"
   ]
 }
