@@ -141,7 +141,7 @@ function CreateSession(props) {
                                 <option value = 'default' disabled>-- select an option --</option>
                                 <option value = '1' >One-to-One Coaching</option>
                                 <option value = '2' >The Perfect Three Ball</option>
-                                <option value = '3' >Group Session</option>
+                                <option value = '5' >Group Session</option>
                             </select> 
                             </div>
                         </div>

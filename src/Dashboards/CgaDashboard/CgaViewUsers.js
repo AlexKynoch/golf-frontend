@@ -15,7 +15,7 @@ function ViewUsers(props) {
     ]
     
     const refreshList = () => {
-        props.client.getAdminById('615d7e616d365c85eff5f442').then((response) => cCurrentCgaLocation(response.data.location))
+        props.client.getAdminById(props.currentUser._id).then((response) => cCurrentCgaLocation(response.data.location))
         props.client.getUserByLocation(currentCgaLocation).then((response) => cUsers(response.data))
     }
 

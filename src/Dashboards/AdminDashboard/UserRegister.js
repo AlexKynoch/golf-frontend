@@ -36,7 +36,7 @@ function UserRegister(props) {
         resetInput() 
       })
       .catch(() => {
-        alert('please fill in both the username and password')
+        alert('please fill in all required fields')
         cDisabled(false)
         resetInput()
       })

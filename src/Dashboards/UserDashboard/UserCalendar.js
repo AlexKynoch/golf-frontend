@@ -7,6 +7,7 @@ import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import sessionInfo from "./../../CalendarComponents/sessionInfo"
+import sessionDate from "./../../CalendarComponents/sessionDate"
 import NavBar from '../../NavBar'
 
 function UserCalendar(props) {
@@ -168,10 +169,11 @@ function UserCalendar(props) {
   const showSessions = (day) => {
     let sessionsArray = []
     let finalSessionsArray = []
+    const dateFormat = 'yyyy-MM-dd'
+    const formattedDay = dateFns.format(day, dateFormat)
 
     let sessionsToDisplay =  sessions.map((session, i) => {
-      const sessionDate = new Date(session.date)
-      if (sessionDate.getTime() === day.getTime()) {
+      if (session.date === formattedDay) {
           return displaySessions(session, i)
       } 
     })
@@ -302,7 +304,7 @@ function UserCalendar(props) {
             {displaySessionDescription(session.userLimit).name}
           </Row>
           <Row>
-            {session.date}{' '}{session.sessionTimeStart}{'-'}{session.sessionTimeFinish}
+            {sessionDate(session)}{' '}{session.sessionTimeStart}{'-'}{session.sessionTimeFinish}
           </Row>
           <Row>
             <Col className = 'location-icon' xs='auto'>

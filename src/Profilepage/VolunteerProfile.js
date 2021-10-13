@@ -4,7 +4,7 @@ import "./VolunteerProfile.css"
 import "./Profile.css"
 import NavBar from "../NavBar"
 import ChangePassword from "./ChangePassword"
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Container } from 'react-bootstrap'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -15,14 +15,6 @@ function VolunteerProfile(props) {
     { name: "Calendar", url: "/volunteer/calendar" },
     { name: "Profile", url: "/volunteer/profile" }
   ]
-
-  useEffect(() => {
-    props.client.getUser(userId)
-      .then((res) => {
-        console.log(res);
-        cUser(res.data)
-      })
-  }, [])
 
   return (
     <div className="row volunteerDashboardRow">
@@ -50,6 +42,5 @@ function VolunteerProfile(props) {
 }
 
 export default VolunteerProfile
-
 
 

@@ -10,6 +10,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import './../../CalendarComponents/autoComplete.css'
 import Autocomplete from './../../CalendarComponents/AutoComplete'
 import sessionInfo from './../../CalendarComponents/sessionInfo'
+import sessionDate from './../../CalendarComponents/sessionDate'
 import NavBar from '../../NavBar'
 
 function AdminCalendar(props) {
@@ -206,10 +207,11 @@ function AdminCalendar(props) {
   const showSessions = (day) => {
     let sessionsArray = []
     let finalSessionsArray = []
+    const dateFormat = 'yyyy-MM-dd'
+    const formattedDay = dateFns.format(day, dateFormat)
 
     let sessionsToDisplay =  sessions.map((session, i) => {
-      const sessionDate = new Date(session.date)
-      if (sessionDate.getTime() === day.getTime()) {
+      if (session.date === formattedDay) {
           return displaySessions(session, i)
       } 
     })
@@ -498,7 +500,7 @@ function AdminCalendar(props) {
             {displaySessionDescription(session.userLimit).name}
           </Row>
           <Row>
-            {session.date}{' '}{session.sessionTimeStart}{'-'}{session.sessionTimeFinish}
+          {sessionDate(session)}{' '}{session.sessionTimeStart}{'-'}{session.sessionTimeFinish}
           </Row>
           <Row>
             <Col className = 'location-icon' xs='auto'>

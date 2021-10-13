@@ -116,7 +116,7 @@ function CgaCalendar(props) {
     let days = []
     let day = startDate
     let formattedDate = ''
-
+   
     while (day <= endDate) {
       for (let i = 0; i < 7; i++) {
         formattedDate = dateFns.format(day, dateFormat);
@@ -147,17 +147,24 @@ function CgaCalendar(props) {
 
   // shows sessions in the calendar cell for that specific day
 
+
+  const convertDate = () => {
+    // let date = Sun Nov 07 2021 00:00:00 GMT+0000 (Greenwich Mean Time)
+  }
+
+
   const showSessions = (day) => {
     let sessionsArray = []
     let finalSessionsArray = []
+    const dateFormat = 'yyyy-MM-dd'
+    const formattedDay = dateFns.format(day, dateFormat)
 
     let sessionsToDisplay =  sessions.map((session, i) => {
-      const sessionDate = new Date(session.date)
-      if (sessionDate.getTime() === day.getTime()) {
+      if (session.date === formattedDay) {
           return displaySessions(session, i)
       } 
     })
-
+    
     for (let i = 0; i < sessionsToDisplay.length; i++) {
       if (sessionsToDisplay[i] !== undefined) {
         sessionsArray.push(sessionsToDisplay[i])
@@ -168,6 +175,7 @@ function CgaCalendar(props) {
     for (let i = 0; i < sortedArray.length; i++) {
       finalSessionsArray.push(sortedArray[i][0])
     }
+
     return finalSessionsArray
   }
 
@@ -259,7 +267,7 @@ function CgaCalendar(props) {
             {displaySessionDescription(session.userLimit).name}
           </Row>
           <Row>
-            {sessionDate(session)}
+          {sessionDate(session)}{' '}{session.sessionTimeStart}{'-'}{session.sessionTimeFinish}
           </Row>
           <Row>
             <Col className = 'location-icon' xs='auto'>
