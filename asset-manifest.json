@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/golf-frontend/static/css/main.82168680.chunk.css",
-    "main.js": "/golf-frontend/static/js/main.80ebdd08.chunk.js",
-    "main.js.map": "/golf-frontend/static/js/main.80ebdd08.chunk.js.map",
+    "main.css": "/golf-frontend/static/css/main.84b76dfc.chunk.css",
+    "main.js": "/golf-frontend/static/js/main.f47ae396.chunk.js",
+    "main.js.map": "/golf-frontend/static/js/main.f47ae396.chunk.js.map",
     "runtime-main.js": "/golf-frontend/static/js/runtime-main.57631740.js",
     "runtime-main.js.map": "/golf-frontend/static/js/runtime-main.57631740.js.map",
     "static/css/2.e49f5c05.chunk.css": "/golf-frontend/static/css/2.e49f5c05.chunk.css",
@@ -12,7 +12,7 @@
     "static/js/3.b884e452.chunk.js.map": "/golf-frontend/static/js/3.b884e452.chunk.js.map",
     "index.html": "/golf-frontend/index.html",
     "static/css/2.e49f5c05.chunk.css.map": "/golf-frontend/static/css/2.e49f5c05.chunk.css.map",
-    "static/css/main.82168680.chunk.css.map": "/golf-frontend/static/css/main.82168680.chunk.css.map",
+    "static/css/main.84b76dfc.chunk.css.map": "/golf-frontend/static/css/main.84b76dfc.chunk.css.map",
     "static/js/2.dee87dbd.chunk.js.LICENSE.txt": "/golf-frontend/static/js/2.dee87dbd.chunk.js.LICENSE.txt",
     "static/media/logo.a2536534.png": "/golf-frontend/static/media/logo.a2536534.png"
   },
@@ -20,7 +20,7 @@
     "static/js/runtime-main.57631740.js",
     "static/css/2.e49f5c05.chunk.css",
     "static/js/2.dee87dbd.chunk.js",
-    "static/css/main.82168680.chunk.css",
-    "static/js/main.80ebdd08.chunk.js"
+    "static/css/main.84b76dfc.chunk.css",
+    "static/js/main.f47ae396.chunk.js"
   ]
 }
