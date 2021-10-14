@@ -21,7 +21,7 @@ function NavBar(props) {
     <>
       <Navbar>
         <Container className="navbarContentContainer">
-          <Navbar.Brand href="/">
+          <Navbar.Brand>
             <img src = {navImg} alt = 'Golf in Society logo'></img>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
