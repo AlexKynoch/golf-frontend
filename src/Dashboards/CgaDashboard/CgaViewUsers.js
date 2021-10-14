@@ -15,10 +15,9 @@ function ViewUsers(props) {
     ]
     
     const refreshList = () => {
-        props.client.getAdminById(props.currentUser._id).then((response) => cCurrentCgaLocation(response.data.location))
-        props.client.getUserByLocation(currentCgaLocation).then((response) => cUsers(response.data))
+        props.client.getAdminById(props.currentUser._id).then((response) => cCurrentCgaLocation(response.data.location))    
     }
-
+    
     // return an array of users and volunteers
 
     const usersVolunteers = () => {
@@ -116,6 +115,10 @@ function ViewUsers(props) {
     useEffect(() => {
         refreshList();
         }, [])
+
+    useEffect(() => {
+        props.client.getUserByLocation(currentCgaLocation).then((response) => cUsers(response.data))
+        }, [currentCgaLocation])
       
     return (
         <div>
