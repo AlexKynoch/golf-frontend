@@ -74,6 +74,9 @@ function NewArea(props) {
             })
         } else {
             alert('Please select active CGA from the list or leave it empty')
+            document.getElementById('newAreaForm').reset()
+            cAutoCompleteInputBooking('')
+            cDisabled(false)
         }
     }
 
