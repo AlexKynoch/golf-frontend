@@ -122,13 +122,13 @@ function CreateAccount(props) {
                         <label className = 'input-form-label' form = 'location' >Location<span className = 'required-asterisk'>*</span></label> 
                     </div>                          
                     <div className='col-sm-8'>
-                                <select size='1' className='form-control' onChange={(e) => cLocation(e.target.value)} id='inputLocation' defaultValue={'default'} >
-                                    <option value='default' disabled>-- select an option --</option>
-                                    {locations.map((location) => (
-                                        <option key={location} value={location} name="location">{location}</option>))}
-                                </select>
-                            </div> 
-                    </div>      
+                        <select size='1' className='form-control' onChange={(e) => cLocation(e.target.value)} id='inputLocation' defaultValue={'default'} >
+                            <option value='default' disabled>-- select an option --</option>
+                            {locations.map((location) => (
+                            <option key={location} value={location} name="location">{location}</option>))}
+                        </select>
+                    </div> 
+                </div>      
                 <div className = 'form-group row'>
                     <div className = 'col-form-label col-sm-4'>
                         <label className = 'input-form-label' form = 'email' >Email<span className = 'required-asterisk'>*</span></label> 
