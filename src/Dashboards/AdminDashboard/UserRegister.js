@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
 import { ToastContainer, toast } from 'react-toastify'
@@ -7,11 +7,20 @@ import NavBar from '../../NavBar'
 
 function UserRegister(props) {
   const [disabled, cDisabled] = useState(false)
+  const [location, cLocation] = useState('')
+  const [locations, cLocations] = useState([])
   const links = [
     false,
     { name: "Calendar", url: "/admin/calendar" },
     { name: "Register a customer", url: "/admin/register-customer" }
   ]
+
+  useEffect(() => {
+    props.client.getLocations().then((res) => {const newArray = res.data.map((location) => {
+        return (location.locationName)
+    })
+    cLocations(newArray)})
+  }, [])
 
   const showSuccess = () => {
     toast.success("New user added")
@@ -22,7 +31,7 @@ function UserRegister(props) {
       props.client.addUser({
           userName: e.target.username.value, 
           password: e.target.password.value,
-          location: e.target.location.value,
+          location: location,
           role: 'user', 
           email: e.target.email.value,
           phone: e.target.phone.value, 
@@ -93,14 +102,11 @@ function UserRegister(props) {
                         <label className = 'input-form-label' form = 'location' >Location<span className = 'required-asterisk'>*</span></label> 
                     </div>
                     <div className = 'col-sm-8'>                           
-                        <input 
-                            className = 'form-control' 
-                            type = 'text' 
-                            name = 'location' 
-                            placeholder = 'Location' 
-                            disabled = {disabled} 
-                            autoComplete = 'off'
-                        /> 
+                        <select size='1' className='form-control' onChange={(e) => cLocation(e.target.value)} id='inputLocation' defaultValue={'default'} >
+                            <option value='default' disabled>-- select an option --</option>
+                            {locations.map((location) => (
+                            <option key={location} value={location} name="location">{location}</option>))}
+                        </select>
                     </div>      
                 </div>
                 <div className = 'form-group row'>
